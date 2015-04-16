@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS-db
+"""SchoolCMS-util
 """
 
 from __future__ import absolute_import
