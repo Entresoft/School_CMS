@@ -16,8 +16,10 @@ import tornado.web
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
 
+from .util import BaseHandler
 
-class IndexHandler(tornado.web.RequestHandler):
+
+class IndexHandler(BaseHandler):
     def get(self):
         greeting = self.get_argument('greeting', 'Hello')
         self.write(greeting + ', friendly user!')

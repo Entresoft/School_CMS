@@ -11,6 +11,8 @@ from __future__ import unicode_literals
 import tornado.web
 from tornado.escape import json_encode
 
+# from schoolcms.db import User
+
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
