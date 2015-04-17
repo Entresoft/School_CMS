@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS-BaseHandler
-"""
+"""SchoolCMS-BaseHandler."""
 
 from __future__ import absolute_import
 from __future__ import print_function
