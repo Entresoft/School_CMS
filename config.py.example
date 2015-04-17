@@ -9,7 +9,10 @@ from __future__ import unicode_literals
 # cookie_secret
 cookie_secret = ""
 
-# Database Engine Configuration
+# Connection string for the database.
 # Replace [ user ][ password ][ database name ]
 # example: "mysql://myuser:abcd1234@localhost/myuserdb"
-database_config = "mysql://[ user ]:[ password ]@localhost/[ database name ]"
+database = "mysql://[ user ]:[ password ]@localhost/[ database name ]"
+
+# If database_debug is True,
+database_debug = False
