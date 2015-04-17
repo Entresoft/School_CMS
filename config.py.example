@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""SchoolCMS-config-file."""
+
+from __future__ import unicode_literals
+
+
+# cookie_secret
+cookie_secret = ""
+
+# Database Engine Configuration
+# Replace [ user ][ password ][ database name ]
+# example: "mysql://myuser:abcd1234@localhost/myuserdb"
+database_config = "mysql://[ user ]:[ password ]@localhost/[ database name ]"

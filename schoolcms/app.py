@@ -21,7 +21,7 @@ from .handler import route
 
 
 define("port", default=8000, help="run on the given port", type=int)
-define("cookie_secret", default="", help="test", type=unicode)
+define("cookie_secret", default="", help="cookie_secret", type=unicode)
 
 
 def make_app():
@@ -39,8 +39,9 @@ def make_app():
 def parse_config():
     tornado.options.parse_command_line()
     tornado.options.parse_config_file(
-        os.path.join(os.path.dirname(__file__), "config.py")
+        os.path.join(os.path.dirname(__file__), "../config.py")
     )
+    print(options.test)
 
 
 if __name__ == "__main__":
