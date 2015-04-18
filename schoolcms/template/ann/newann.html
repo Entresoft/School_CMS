@@ -1,0 +1,28 @@
+{% extends "../base.html" %}
+
+{#
+  New Announcement Page.
+  Post new announcement.
+#}
+
+
+{% block Body %}
+  <form method="POST" action="/announce/new">
+    <p style="color:red;">{{error_msg}}</p>
+    <table>
+      {% module xsrf_form_html() %}
+      <tr>
+        <td>Title</td>
+        <td><input type="text" name="title" value="{{title}}"></td>
+      </tr>
+      <tr>
+        <td>Content</td>
+        <td><textarea name="content">{{content}}</textarea></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="JIZZUP"></td>
+      </tr>
+    </table>
+  </form>
+  <a href="/announce">go back</a>
+{% end %}
