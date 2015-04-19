@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 import tornado.web
 from tornado.escape import json_encode
 
-from schoolcms.db import Session
+from schoolcms.db import Session, User
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -34,7 +34,11 @@ class BaseHandler(tornado.web.RequestHandler):
         If a valid cookie is retrieved, return a User object.
         Otherwise, return None.
         """
-        pass
+        uid = self.get_secure_cookie('uid')
+        if not uid:
+            return None
+        q = self.sql_session.query(User)
+        return q.filter(User.id == uid).first()
 
     def render(self, *arg, **kwargs):
         super(BaseHandler, self).render(*arg, **kwargs)
@@ -53,12 +57,13 @@ class BaseHandler(tornado.web.RequestHandler):
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, NewAnnHandler
-from .loginhandler import LoginHandler, LogoutHandler
+from .loginhandler import LoginHandler, LogoutHandler, AddUserHandler
 
 route = [
     (r'/', IndexHandler),
     (r'/login/?', LoginHandler),
     (r'/logout/?', LogoutHandler),
+    (r'/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/new/?', NewAnnHandler),
 ]

@@ -39,7 +39,7 @@ class LoginHandler(BaseHandler):
         if not user:
             self.render('user/login.html', **self._)
         else:
-            self.set_secure_cookie('uid',unicode(user.id))
+            self.set_secure_cookie('uid', unicode(user.id))
             self.redirect(self._['next_page'])
 
     def login(self):
@@ -71,8 +71,56 @@ class LogoutHandler(BaseHandler):
 
 
 class AddUserHandler(BaseHandler):
+    def prepare(self):
+        super(AddUserHandler, self).prepare()
+        self._ = {
+            'account' : '',
+            'passwd' : '',
+            'name' : '',
+            'student' : True,
+            'isadmin' : False,
+            'error_msg' : '',
+        }
+
     def get(self):
-        pass
+        self.render('user/adduser.html', **self._)
 
     def post(self):
-        pass
+        self._['account'] = self.get_argument('account', '')
+        self._['passwd'] = self.get_argument('passwd', '')
+        self._['name'] = self.get_argument('name', '')
+        self._['identity'] = self.get_argument('identity', '')
+        self._['isadmin'] = bool(self.get_argument('isadmin', ''))
+
+        user = self.add_user()
+        if user:
+            self.sql_session.add(user)
+            self.sql_session.commit()
+            self._={
+                'account' : '',
+                'passwd' : '',
+                'name' : '',
+                'student' : True,
+                'isadmin' : False,
+                'error_msg' : 'Add User Success!!',
+            }
+        
+        self.render('user/adduser.html', **self._)
+
+
+    def add_user(self):
+        if not re.match(r'^[a-z]{6,20}$', self._['account']):
+            self._['error_msg'] = '帳號格式錯誤'
+            return None
+        elif not re.match(r'^.{8,20}$', self._['passwd']):
+            self._['error_msg'] = '密碼格式錯誤'
+            return None
+        elif not re.match(r'^[\S]{0,15}$', self._['name']):
+            self._['error_msg'] = '姓名格式錯誤'
+            return None
+        elif not (self._['identity'] == '學生' or self._['identity'] == '教師'):
+            self._['error_msg'] = '錯誤'
+            return None
+
+        self._['name'] = unicode(self._['name'])
+        return User(**self._)
