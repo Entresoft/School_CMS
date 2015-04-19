@@ -29,7 +29,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(INTEGER, primary_key=True)
-    account = Column(CHAE(20), nullable=False)
+    account = Column(CHAR(20), nullable=False)
     passwd = Column(VARCHAR(90), nullable=False)
     name = Column(VARCHAR(10), nullable=False)
     identity = Column(INTEGER, nullable=False)
@@ -54,6 +54,6 @@ class User(Base):
         h = hashlib.sha256(account+passwd+salt).hexdigest()
         return '%s,%s'%(h,salt)
 
-    def check_user(self, passwd):
+    def check_passwd(self, passwd):
         salt = self.passwd.split(',')[1]
         return self.passwd == self.hash_passwd(self.account,passwd,salt)

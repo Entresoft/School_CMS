@@ -53,9 +53,12 @@ class BaseHandler(tornado.web.RequestHandler):
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, NewAnnHandler
+from .loginhandler import LoginHandler, LogoutHandler
 
 route = [
     (r'/', IndexHandler),
+    (r'/login/?', LoginHandler),
+    (r'/logout/?', LogoutHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/new/?', NewAnnHandler),
 ]

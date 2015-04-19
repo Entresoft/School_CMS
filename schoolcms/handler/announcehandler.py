@@ -27,27 +27,28 @@ class AnnounceHandler(BaseHandler):
 class NewAnnHandler(BaseHandler):
     def prepare(self):
         super(NewAnnHandler, self).prepare()
-        self.kw = dict()
-        self.kw['title'] = ''
-        self.kw['content'] = ''
-        self.kw['error_msg'] = ''
+        self._ = {
+            'title' : '',
+            'content' : '',
+            'error_msg' : '',
+        }
 
     def get(self):
-        self.render('ann/newann.html',**self.kw)
+        self.render('ann/newann.html',**self._)
 
     def post(self):
-        self.kw['title'] = self.get_argument('title','')
-        self.kw['content'] = self.get_argument('content','')
+        self._['title'] = self.get_argument('title','')
+        self._['content'] = self.get_argument('content','')
 
         has_error = False
-        if not self.kw['title']:
-            self.kw['error_msg'] = 'Title can\'t leave blank.'
+        if not self._['title']:
+            self._['error_msg'] = 'Title can\'t leave blank.'
             has_error = True
 
         if has_error:
-            return self.render('ann/newann.html',**self.kw)
+            return self.render('ann/newann.html',**self._)
 
-        new_ann = Announce(**self.kw)
+        new_ann = Announce(**self._)
         self.sql_session.add(new_ann)
         self.sql_session.commit()
 

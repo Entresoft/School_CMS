@@ -42,7 +42,7 @@ class SessionGen(object):
         self.session.close()
 
 
-# from .user import User
+from .user import User
 from .announce import Announce
 
 Base.metadata.create_all(engine)
