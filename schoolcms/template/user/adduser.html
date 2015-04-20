@@ -26,13 +26,13 @@
     <tr>
       <td>Identity</td>
       <td>
-        <input type="radio" name="identity" value="學生" {% if student %}check{% end %}>學生
-        <input type="radio" name="identity" value="教師" {% if not student %}check{% end %}>教師
+        <input type="radio" name="identity" value="學生" {% if student %}checked{% end %}>學生
+        <input type="radio" name="identity" value="教師" {% if not student %}checked{% end %}>教師
       </td>
     </tr>
     <tr>
       <td>AdminUser</td>
-      <td><input type="checkbox" name="isadmin" {% if isadmin %}check{% end %}>Yes</td>
+      <td><input type="checkbox" name="isadmin" {% if isadmin %}checked{% end %}>Yes</td>
     </tr>
     <tr>
       <td><input type="submit"></td>

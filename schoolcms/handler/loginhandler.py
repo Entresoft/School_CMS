@@ -91,6 +91,7 @@ class AddUserHandler(BaseHandler):
         self._['name'] = self.get_argument('name', '')
         self._['identity'] = self.get_argument('identity', '')
         self._['isadmin'] = bool(self.get_argument('isadmin', ''))
+        self._['student'] = self._['identity'] != '教師'
 
         user = self.add_user()
         if user:

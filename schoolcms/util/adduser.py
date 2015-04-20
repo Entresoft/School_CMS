@@ -11,10 +11,43 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
+from getpass import getpass
 
+from schoolcms.parse_config import parse_config
+parse_config()
 from schoolcms.db import SessionGen, User
+
+try:
+    xrange
+except NameError:
+    xrange = range
+
+
+def create():
+    print('Geez! Create a user!')
+    account = raw_input('Account:')
+    if not re.match(r'^[a-z]{6,20}$', account):
+        print('Error!')
+        return None
+    for i in xrange(3):
+        passwd = getpass('Enter new password:')
+        passwdv = getpass('Retype new password:')
+        if re.match(r'^.{8,20}$', passwd) and passwd == passwdv:
+            break
+        else:
+            passwd = None
+    if not passwd:
+        print('Error!')
+        return None
+    name = 'Mr.Geez'
+    identity = '教師'
+    isadmin = True
+
+    with SessionGen() as session:
+        user = User(account, passwd, name, identity, isadmin)
+        session.add(user)
+        session.commit()
 
 
 if __name__ == '__main__':
-    # if re.match(r'^[a-z]{6,20}$', account):
-    pass
+    create()
