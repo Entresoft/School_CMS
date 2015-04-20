@@ -1,0 +1,42 @@
+{% extends "../base.html" %}
+
+{#
+  Add user page.
+#}
+
+
+{% block Body %}
+<h1>Add User</h1>
+<p style="color:red;">{{error_msg}}</p>
+<form action="/adduser" method="POST">
+  {% module xsrf_form_html() %}
+  <table>
+    <tr>
+      <td>Account</td>
+      <td><input type="text" name="account" value="{{account}}"></td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td><input type="text" name="passwd" value="{{passwd}}"></td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td><input type="text" name="name" value="{{name}}"></td>
+    </tr>
+    <tr>
+      <td>Identity</td>
+      <td>
+        <input type="radio" name="identity" value="學生" {% if student %}checked{% end %}>學生
+        <input type="radio" name="identity" value="教師" {% if not student %}checked{% end %}>教師
+      </td>
+    </tr>
+    <tr>
+      <td>AdminUser</td>
+      <td><input type="checkbox" name="isadmin" {% if isadmin %}checked{% end %}>Yes</td>
+    </tr>
+    <tr>
+      <td><input type="submit"></td>
+    </tr>
+  </table>
+</form>
+{% end %}
