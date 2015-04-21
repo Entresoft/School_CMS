@@ -24,6 +24,6 @@ define('database_debug', default=False, help='', type=bool)
 
 
 def parse_config():
-    config_file_path = os.path.join(os.path.dirname(__file__), '../config.py')
+    config_file_path = os.path.join(os.path.dirname(__file__), '../../config.py')
     tornado.options.parse_config_file(config_file_path)
     tornado.options.parse_command_line()

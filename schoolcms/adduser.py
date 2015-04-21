@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 import re
 from getpass import getpass
 
-from schoolcms.parse_config import parse_config
+from schoolcms.util.parse_config import parse_config
 parse_config()
 from schoolcms.db import SessionGen, User
 

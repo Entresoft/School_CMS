@@ -33,9 +33,11 @@ class NewAnnHandler(BaseHandler):
             'error_msg' : '',
         }
 
+    @BaseHandler.is_admin_user
     def get(self):
         self.render('ann/newann.html',**self._)
 
+    @BaseHandler.is_admin_user
     def post(self):
         self._['title'] = self.get_argument('title','')
         self._['content'] = self.get_argument('content','')
