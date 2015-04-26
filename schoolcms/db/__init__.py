@@ -46,5 +46,13 @@ class SessionGen(object):
 from .user import User
 from .announce import Announce
 
-# Base.metadata.drop_all(engine)
+if options.rbdb:
+    Base.metadata.drop_all(engine)
+
 Base.metadata.create_all(engine)
+
+if options.rbdb:
+    with SessionGen() as session:
+        user = User('rootroot', 'rootroot', 'root', '教師', True)
+        session.add(user)
+        session.commit()

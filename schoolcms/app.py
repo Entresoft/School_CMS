@@ -37,7 +37,7 @@ def make_app():
 
 
 if __name__ == '__main__':
-    print("JIZZ %s" % options.cookie_secret)
+    print(os.path.join(os.path.dirname(__file__), 'template'))
     app = make_app()
     app.listen(options.port)
     IOLoop.current().start()

@@ -18,10 +18,19 @@ from sqlalchemy import desc
 
 class AnnounceHandler(BaseHandler):
     def get(self, ann_id):
-        q = self.sql_session.query(Announce)
-        q = q.order_by(Announce.created.desc())
-        ann = q.all()
-        self.render('ann/announce.html',ann=ann)
+        if ann_id:
+            q = self.sql_session.query(Announce)
+            q = q.filter(Announce.id == ann_id)
+            ann = q.first()
+            if ann:
+                self.render('ann/announce.html',ann=ann)
+            else:
+                raise self.HTTPError(404)
+        else:
+            q = self.sql_session.query(Announce)
+            q = q.order_by(Announce.created.desc())
+            anns = q.all()
+            self.render('ann/annindex.html',anns=anns)
 
 
 class NewAnnHandler(BaseHandler):
@@ -50,6 +59,7 @@ class NewAnnHandler(BaseHandler):
         if has_error:
             return self.render('ann/newann.html',**self._)
 
+        self._['author_id'] = self.current_user.id
         new_ann = Announce(**self._)
         self.sql_session.add(new_ann)
         self.sql_session.commit()

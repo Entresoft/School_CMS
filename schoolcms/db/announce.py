@@ -25,10 +25,12 @@ class Announce(Base):
     content = Column(TEXT(charset='utf8'))
     created = Column(TIMESTAMP, default=datetime.now())
     updated = Column(TIMESTAMP, default=datetime.now(), onupdate=datetime.now())
+    author_id = Column(INTEGER, nullable=True)
     
-    def __init__(self, title, content, **kwargs):
+    def __init__(self, title, content, author_id, **kwargs):
         self.title = title
         self.content = content
+        self.author_id = author_id
 
     def __repr__(self):
         return 'Announce(%s ,%s)' % \

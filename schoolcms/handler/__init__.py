@@ -45,11 +45,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def render(self, *arg, **kwargs):
         super(BaseHandler, self).render(*arg, **kwargs)
 
-    def render_json(self, dic):
-        self.set_header('Content-Type', 'application/json; charset=UTF-8')
-        self.write(json_encode(dic))
-
-    HTTPError = tornado.web.HTTPError
+    @property
+    def HTTPError(self):
+        return tornado.web.HTTPError
+    
     def write_error(self, error, **kargs):
         self.write('<p style="font-size:150px;">Geez! %d!</h1>' % error)
 
@@ -71,6 +70,7 @@ from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, NewAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
+from .tmp import TmpHandler
 
 route = [
     (r'/', IndexHandler),
@@ -79,4 +79,5 @@ route = [
     (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/new/?', NewAnnHandler),
+    (r'/tmp/?', TmpHandler),
 ]
