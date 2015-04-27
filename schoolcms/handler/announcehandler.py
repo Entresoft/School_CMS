@@ -48,8 +48,8 @@ class NewAnnHandler(BaseHandler):
 
     @BaseHandler.is_admin_user
     def post(self):
-        self._['title'] = self.get_argument('title','')
-        self._['content'] = self.get_argument('content','')
+        self._['title'] = self.get_argument('title', '')
+        self._['content'] = self.get_argument('content', '')
 
         has_error = False
         if not self._['title']:

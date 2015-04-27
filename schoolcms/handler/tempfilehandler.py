@@ -20,7 +20,7 @@ from tornado import gen
 from tornado.ioloop import IOLoop
 
 
-class TmpHandler(BaseHandler):
+class TempFileHandler(BaseHandler):
     @gen.coroutine
     def get(self):
         if self.get_argument('restart', ''):

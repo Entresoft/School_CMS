@@ -26,13 +26,13 @@ except NameError:
 def create():
     print('Geez! Create a user!')
     account = raw_input('Account:')
-    if not re.match(r'^[a-z]{6,20}$', account):
+    if not re.match(r'^[a-z]{4,20}$', account):
         print('Error!')
         return None
     for i in xrange(3):
         passwd = getpass('Enter new password:')
         passwdv = getpass('Retype new password:')
-        if re.match(r'^.{8,20}$', passwd) and passwd == passwdv:
+        if re.match(r'^.{4,20}$', passwd) and passwd == passwdv:
             break
         else:
             passwd = None
