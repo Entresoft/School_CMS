@@ -13,25 +13,23 @@ from __future__ import unicode_literals
 from . import BaseHandler
 
 import os
-import time
+import uuid
 
 import tornado
 from tornado import gen
-from tornado.ioloop import IOLoop
+from tornado.web import stream_request_body
 
 
+@stream_request_body
 class TempFileHandler(BaseHandler):
-    @gen.coroutine
-    def get(self):
-        if self.get_argument('restart', ''):
-            ioloop = IOLoop.instance()
-            ioloop.stop()
+    def prepare(self):
+        super(TempFileHandler, self).prepare()
+        # print self.request.headers
 
-        self.write('JIZZ1<br>')
-        self.flush()
-        yield tornado.gen.Task(tornado.ioloop.IOLoop.instance().add_timeout, time.time() + 3)
-        self.write('JIZZ2<br>')
-        self.flush()
-        yield tornado.gen.Task(tornado.ioloop.IOLoop.instance().add_timeout, time.time() + 3)
-        self.write('JIZZ3<br>')
+    def post(self):
+        print 'POST successfully completed.'
+
+    def data_received(self, chunk):
+        print len(chunk)
+        
         
