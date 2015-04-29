@@ -30,8 +30,9 @@ class TempUploadHandler(BaseHandler):
         if not os.path.exists('file/tmp'):
             os.makedirs('file/tmp')
 
-        self.tmp_file_name = '%s' % uuid.uuid1()
-        self.tmp_file = open('file/tmp/%s' % self.tmp_file_name, 'wb')
+        # self.tmp_file_name = '%s' % uuid.uuid1()
+        self.tmp_file_name = '%s' % 'tmp'
+        self.tmp_file = open('file/tmp/%s' % self.tmp_file_name, 'w')
 
     def get(self):
         self.render('file.html')
@@ -45,7 +46,9 @@ class TempUploadHandler(BaseHandler):
 
     def data_received(self, chunk):
         self.write({'TT':'GG'})
+        self.tmp_file.write('\nJIZZ\n')
         self.tmp_file.write(chunk)
+        self.tmp_file.write('\nJIZZZZ\n')
 
     def on_finish(self):
         self.tmp_file.close()
