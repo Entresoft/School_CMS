@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import functools
+import os
 
 import tornado.web
 from tornado.escape import json_encode
@@ -70,7 +71,7 @@ from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, NewAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
-from .tmp import TmpHandler
+from .tempfilehandler import TempHandler, TempFileHandler, TempUploadHandler
 
 route = [
     (r'/', IndexHandler),
@@ -79,5 +80,7 @@ route = [
     (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/new/?', NewAnnHandler),
-    (r'/tmp/?', TmpHandler),
+    (r'/file/?', TempHandler),
+    (r'/file/(.*)', TempFileHandler, {"path": os.path.join(os.path.dirname(__file__), 'file')}),
+    (r'/fileupload/?', TempUploadHandler),
 ]
