@@ -11,6 +11,7 @@
   <table>
     {% for i in anns %}
       <a href="/announce/{{i.id}}"><h4>{{i.title}}</h4></a>
+      <p>{{i.created}}</p>
     {% end %}
   </table>
 {% end %}

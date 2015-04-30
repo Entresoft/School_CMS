@@ -12,6 +12,7 @@ from __future__ import unicode_literals
 
 import functools
 import os
+import markdown
 
 import tornado.web
 from tornado.escape import json_encode
@@ -43,8 +44,10 @@ class BaseHandler(tornado.web.RequestHandler):
         q = self.sql_session.query(User)
         return q.filter(User.id == uid).first()
 
-    def render(self, *arg, **kwargs):
-        super(BaseHandler, self).render(*arg, **kwargs)
+    def get_template_namespace(self):
+        _ = super(BaseHandler, self).get_template_namespace()
+        _['markdown'] = markdown.markdown
+        return _
 
     @property
     def HTTPError(self):
@@ -71,7 +74,9 @@ from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, NewAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
-from .tempfilehandler import TempHandler, TempFileHandler, TempUploadHandler
+from .filehandler import FileHandler, TempUploadHandler
+
+print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
     (r'/', IndexHandler),
@@ -80,7 +85,6 @@ route = [
     (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/new/?', NewAnnHandler),
-    (r'/file/?', TempHandler),
-    (r'/file/(.*)', TempFileHandler, {"path": os.path.join(os.path.dirname(__file__), 'file')}),
+    (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload/?', TempUploadHandler),
 ]

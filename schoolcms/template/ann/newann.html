@@ -19,6 +19,18 @@
         <td>Content</td>
         <td><textarea name="content">{{content}}</textarea></td>
       </tr>
+      {% for att in attachments %}
+        {% if att %}
+          <tr>
+            <td>Attachment</td>
+            <td><input type="text" name="attachment" value="{{att}}"></td>
+          </tr>
+        {% end %}
+      {% end %}
+      <tr>
+        <td>Attachment</td>
+        <td><input type="text" name="attachment"></td>
+      </tr>
       <tr>
         <td><input type="submit" value="JIZZUP"></td>
       </tr>

@@ -124,6 +124,12 @@ class AddUserHandler(BaseHandler):
         elif not (self._['identity'] == '學生' or self._['identity'] == '教師'):
             self._['error_msg'] = '錯誤'
             return None
+        else:
+            q = self.sql_session.query(User.account)
+            q = q.filter(User.account == self._['account'])
+            if q.first():
+                self._['error_msg'] = '帳號已被使用'
+                return None
 
         self._['name'] = unicode(self._['name'])
         return User(**self._)

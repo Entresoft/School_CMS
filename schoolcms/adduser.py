@@ -29,6 +29,10 @@ def create():
     if not re.match(r'^[a-z]{4,20}$', account):
         print('Error!')
         return None
+    else:
+        with SessionGen() as session:
+            q = session.query(User.account)
+             = account)
     for i in xrange(3):
         passwd = getpass('Enter new password:')
         passwdv = getpass('Retype new password:')
