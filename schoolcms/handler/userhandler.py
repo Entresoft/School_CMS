@@ -33,7 +33,7 @@ class LoginHandler(BaseHandler):
     def post(self):
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
-        self._['next_page'] = self.get_argument('next', '/')
+        self._['next_page'] = self.get_argument('next_page', '/')
 
         user = self.login()
         if not user:
@@ -43,10 +43,10 @@ class LoginHandler(BaseHandler):
             self.redirect(self._['next_page'])
 
     def login(self):
-        if not re.match(r'^[a-z]{6,20}$', self._['account']):
+        if not re.match(r'^[a-z]{4,20}$', self._['account']):
             self._['error_msg'] = '無效的帳號或密碼'
             return None
-        elif not re.match(r'^.{8,20}$', self._['passwd']):
+        elif not re.match(r'^.{4,20}$', self._['passwd']):
             self._['error_msg'] = '帳號或密碼錯誤'
             return None
         
@@ -82,9 +82,11 @@ class AddUserHandler(BaseHandler):
             'error_msg' : '',
         }
 
+    @BaseHandler.is_admin_user
     def get(self):
         self.render('user/adduser.html', **self._)
 
+    @BaseHandler.is_admin_user
     def post(self):
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
@@ -110,10 +112,10 @@ class AddUserHandler(BaseHandler):
 
 
     def add_user(self):
-        if not re.match(r'^[a-z]{6,20}$', self._['account']):
+        if not re.match(r'^[a-z]{4,20}$', self._['account']):
             self._['error_msg'] = '帳號格式錯誤'
             return None
-        elif not re.match(r'^.{8,20}$', self._['passwd']):
+        elif not re.match(r'^.{4,20}$', self._['passwd']):
             self._['error_msg'] = '密碼格式錯誤'
             return None
         elif not re.match(r'^[\S]{0,15}$', self._['name']):
@@ -122,6 +124,12 @@ class AddUserHandler(BaseHandler):
         elif not (self._['identity'] == '學生' or self._['identity'] == '教師'):
             self._['error_msg'] = '錯誤'
             return None
+        else:
+            q = self.sql_session.query(User.account)
+            q = q.filter(User.account == self._['account'])
+            if q.first():
+                self._['error_msg'] = '帳號已被使用'
+                return None
 
         self._['name'] = unicode(self._['name'])
         return User(**self._)

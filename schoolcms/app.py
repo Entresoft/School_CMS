@@ -16,10 +16,10 @@ from tornado.ioloop import IOLoop
 from tornado.web import Application
 from tornado.options import options
 
-from .parse_config import parse_config
+from .util.parse_config import parse_config
 parse_config()
 
-from .handler import route
+from .handler import route, DefaultHandler
 
 
 def make_app():
@@ -32,11 +32,12 @@ def make_app():
         xsrf_cookies = True,
         debug = options.server_debug,
         autoreload = False,
+        default_handler_class = DefaultHandler,
     )
 
 
 if __name__ == '__main__':
-    print("JIZZ %s" % options.cookie_secret)
+    print(os.path.join(os.path.dirname(__file__), 'template'))
     app = make_app()
     app.listen(options.port)
     IOLoop.current().start()

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{#
+  File Page.
+  For dev version.
+#}
+
+
+{% block Body %}
+  <form action="/fileupload" method="POST" enctype="multipart/form-data">
+    {% module xsrf_form_html() %}
+    <input type="file" name="file">
+    <input type="submit">
+  </form>
+{% end %}

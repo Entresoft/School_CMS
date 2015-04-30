@@ -21,9 +21,10 @@ define('cookie_secret', default='', help='cookie_secret', type=unicode)
 define('database_config', default='', help='', type=unicode)
 define('server_debug', default=False, help='', type=bool)
 define('database_debug', default=False, help='', type=bool)
+define('rbdb', default=False, help='', type=bool)
 
 
 def parse_config():
-    config_file_path = os.path.join(os.path.dirname(__file__), '../config.py')
+    config_file_path = os.path.join(os.path.dirname(__file__), '../../config.py')
     tornado.options.parse_config_file(config_file_path)
     tornado.options.parse_command_line()

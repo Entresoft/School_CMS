@@ -6,16 +6,16 @@
 
 
 {% block Body %}
-  <h1>Announcement</h1>
-  <a href="/announce/new">New Announcement!</a><br>
-  <table>
-    {% for i in ann %}
-      <tr>
-        <td>{{i.title}}</td>
-        <td>{{i.content}}</td>
-        <td>{{i.created}}</td>
-        <td>{{i.updated}}</td>
-      </tr>
-    {% end %}
-  </table>
+  <h1>{{ann.title}}</h1>
+  <hr>
+    {% raw markdown(ann.content) %}
+  <hr>
+  {% for att in atts %}
+    <a href="/file/{{att.path}}">{{att.path[37:]}}</a><br>
+  {% end %}
+  <hr>
+  <p>created:{{ann.created}}</p>
+  <p>updated:{{ann.updated}}</p>
+  <hr>
+  <a href="/announce">Go Back</a><br>
 {% end %}
