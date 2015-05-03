@@ -41,8 +41,7 @@ class BaseHandler(tornado.web.RequestHandler):
         uid = self.get_secure_cookie('uid')
         if not uid:
             return None
-        q = self.sql_session.query(User)
-        return q.filter(User.id == uid).first()
+        return User.by_key(uid, self.sql_session).scalar()
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
@@ -64,14 +63,14 @@ class BaseHandler(tornado.web.RequestHandler):
     def is_admin_user(method):
         @BaseHandler.authenticated
         def wrapper(self, *args, **kwargs):
-            if not self.current_user.isadmin:
+            if not self.current_user.admin:
                 raise self.HTTPError(403)
             return method(self, *args, **kwargs)
         return wrapper
 
 
 from .indexhandler import IndexHandler
-from .announcehandler import AnnounceHandler, NewAnnHandler
+from .announcehandler import AnnounceHandler, EditAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
@@ -84,7 +83,7 @@ route = [
     (r'/logout/?', LogoutHandler),
     (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
-    (r'/announce/new/?', NewAnnHandler),
+    (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload/?', TempUploadHandler),
 ]

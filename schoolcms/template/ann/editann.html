@@ -7,7 +7,7 @@
 
 
 {% block Body %}
-  <form method="POST" action="/announce/new">
+  <form method="POST" action="/announce/edit/{{ann_id}}">
     <p style="color:red;">{{error_msg}}</p>
     <table>
       {% module xsrf_form_html() %}

@@ -25,9 +25,7 @@ except NameError:
 class AnnounceHandler(BaseHandler):
     def get(self, ann_id):
         if ann_id:
-            q = self.sql_session.query(Announce)
-            q = q.filter(Announce.id == ann_id)
-            ann = q.scalar()
+            ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
                 raise self.HTTPError(404)
             
@@ -43,34 +41,70 @@ class AnnounceHandler(BaseHandler):
             self.render('ann/annindex.html',anns=anns)
 
 
-class NewAnnHandler(BaseHandler):
+class EditAnnHandler(BaseHandler):
     def prepare(self):
-        super(NewAnnHandler, self).prepare()
+        super(EditAnnHandler, self).prepare()
         self._ = {
             'title' : '',
             'content' : '',
             'attachments' : [],
             'error_msg' : '',
+            'ann_id': '',
         }
 
     @BaseHandler.is_admin_user
-    def get(self):
-        self.render('ann/newann.html',**self._)
+    def get(self, ann_id):
+        if ann_id:
+            ann = Announce.by_id(ann_id, self.sql_session).scalar()
+            if not ann:
+                raise self.HTTPError(404)
+            self._['title'] = ann.title
+            self._['content'] = ann.content
+            self._['ann_id'] = ann_id
+
+        self.render('ann/editann.html',**self._)
 
     @BaseHandler.is_admin_user
-    def post(self):
+    def post(self, ann_id):
+        self.ann_id = ann_id
+        del ann_id
+        self._['ann_id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
         self._['attachments'] = self.get_arguments('attachment')
 
-        has_error = False
+        if not self.check_ann():
+            return self.render('ann/editann.html',**self._)
+
+        self._['author_key'] = self.current_user.key
+        self._['visible'] = True
+
+        if self.ann_id:
+            Announce.by_id(self.ann_id, self.sql_session).update({
+                    'title' : self._['title'],
+                    'content' : self._['content'],
+                    'visible' : self._['visible'],
+                })
+        else:
+            new_ann = Announce(**self._)
+            self.sql_session.add(new_ann)
+            self.sql_session.flush()
+            self.sql_session.refresh(new_ann)
+            self.ann_id = new_ann.id
+        
+        self.parse_att()
+
+        self.sql_session.commit()
+        self.redirect('/announce')
+
+    def check_ann(self):
         self.attachments = []
         if not self._['title']:
             self._['error_msg'] = 'Title can\'t leave blank.'
-            has_error = True
+            return False
         elif not self._['content']:
             self._['error_msg'] = 'Content can\'t leave blank.'
-            has_error = True
+            return False
         else:
             for i in xrange(len(self._['attachments'])):
                 if self._['attachments'][i]:
@@ -78,31 +112,22 @@ class NewAnnHandler(BaseHandler):
                     q = q.filter(TempFileList.key == self._['attachments'][i])
                     try:
                         new_att = q.one()
-                        assert new_att.author_id == self.current_user.id
-                        self.attachments.append()
+                        assert new_att.author_key == self.current_user.key
+                        self.attachments.append(new_att)
 
                     except:
                         self._['error_msg'] = 'Miss attachment!'
-                        has_error = True
+                        print(new_att.author_key == self.current_user.key)
                         self._['attachments'][i] = ''
+                        return False
+        return True
 
-        if has_error:
-            return self.render('ann/newann.html',**self._)
-
-        self._['author_id'] = self.current_user.id
-        new_ann = Announce(**self._)
-        self.sql_session.add(new_ann)
-        self.sql_session.flush()
-        self.sql_session.refresh(new_ann)
-        
+    def parse_att(self):
         for att in self.attachments:
             if not os.path.exists('file/%s' % att.key):
                 os.makedirs('file/%s' % att.key)
             os.rename('file/tmp/%s' % att.key, 'file/%s/%s' % (att.key, att.filename))
-            new_att = AttachmentList(att.key, new_ann.id, att.content_type, '%s/%s' % (att.key, att.filename))
+            new_att = AttachmentList(key=att.key, ann_id=self.ann_id, 
+                                    content_type=att.content_type, path='%s/%s' % (att.key, att.filename))
             self.sql_session.add(new_att)
-            self.sql_session.query(TempFileList).filter(TempFileList.key == att.key).delete()
-
-        self.sql_session.commit()
-
-        self.redirect('/announce')
+            TempFileList.by_key(att.key, self.sql_session).delete()

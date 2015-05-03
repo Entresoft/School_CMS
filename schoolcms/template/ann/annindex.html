@@ -7,7 +7,7 @@
 
 {% block Body %}
   <h1>Announcement</h1>
-  <a href="/announce/new">New Announcement!</a><br>
+  <a href="/announce/edit">New Announcement!</a><br>
   <table>
     {% for i in anns %}
       <a href="/announce/{{i.id}}"><h4>{{i.title}}</h4></a>

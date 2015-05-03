@@ -15,6 +15,7 @@ import hashlib
 import string
 
 from . import Base
+import uuid
 
 from sqlalchemy import Column
 from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN, CHAR, VARCHAR, ENUM
@@ -29,19 +30,20 @@ except NameError:
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(INTEGER, primary_key=True)
+    key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     account = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
     passwd = Column(VARCHAR(90, collation='utf8_unicode_ci'))
     name = Column(VARCHAR(20, collation='utf8_unicode_ci'))
     identity = Column(ENUM('學生','教師', charset='utf8'), nullable=False)
-    isadmin = Column(BOOLEAN, nullable=False)
+    admin = Column(BOOLEAN, nullable=False)
 
     def __init__(self, account, passwd, name,
-                identity='學生', isadmin=False, **kwargs):
+                identity='學生', admin=False, **kwargs):
+        self.key = uuid.uuid3(uuid.uuid1(), account.encode()).hex
         self.account = account
         self.name = name
         self.identity = identity
-        self.isadmin = isadmin
+        self.admin = admin
         self.passwd = self.hash_passwd(self.account, passwd)
 
     @staticmethod
@@ -58,3 +60,8 @@ class User(Base):
     def check_passwd(self, passwd):
         salt = self.passwd.split(',')[1]
         return self.passwd == self.hash_passwd(self.account,passwd,salt)
+
+    @classmethod
+    def by_key(cls, key, sql_session):
+        q = sql_session.query(cls)
+        return q.filter(cls.key == key)
