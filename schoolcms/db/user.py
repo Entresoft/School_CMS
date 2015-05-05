@@ -65,3 +65,18 @@ class User(Base):
     def by_key(cls, key, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.key == key)
+
+    def to_dict(self):
+        return {
+            'name' : self.name,
+            'account' : self.account,
+            'admin' : self.admin,
+            'identity' : self.identity,
+        }
+
+    def to_dict_str(self):
+        _l = []
+        _map = self.to_dict()
+        for i in _map:
+            _l.append("'%s':'%s'" % (i, _map[i]))
+        return '{%s}' % ','.join(_l)
