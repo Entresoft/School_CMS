@@ -46,6 +46,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
         _['markdown'] = markdown.markdown
+        _['xsrf_token'] = self.xsrf_token
         return _
 
     @property

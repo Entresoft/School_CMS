@@ -11,6 +11,8 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
+import logging
+logging.basicConfig(filename='logging.txt', level=logging.DEBUG)
 
 from tornado.ioloop import IOLoop
 from tornado.web import Application
@@ -37,7 +39,6 @@ def make_app():
 
 
 if __name__ == '__main__':
-    print(os.path.join(os.path.dirname(__file__), 'template'))
     app = make_app()
     app.listen(options.port)
     IOLoop.current().start()
