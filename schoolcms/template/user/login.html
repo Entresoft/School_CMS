@@ -6,23 +6,8 @@
 
 
 {% block Body %}
-<h1>Login</h1>
-<form action="/login" method="POST">
-  <p style="color:red;">{{error_msg}}</p>
-  {% module xsrf_form_html() %}
-  <input type="hidden" name="next_page" value="{{next_page}}">
-  <table>
-    <tr>
-      <td>Account</td>
-      <td><input type="text" name="account" value="{{account}}"></td>
-    </tr>
-    <tr>
-      <td>Passward</td>
-      <td><input type="password" name="passwd"></td>
-    </tr>
-    <tr>
-      <td><input type="submit"></td>
-    </tr>
-  </table>
-</form>
+<div id="loginform"></div>
+<script type="text/jsx">
+  React.render(<LoginPage account="{{account}}" _xsrf="{{xsrf_token}}" /> ,document.getElementById('loginform'));
+</script>
 {% end %}

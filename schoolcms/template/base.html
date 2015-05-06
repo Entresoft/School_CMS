@@ -11,15 +11,17 @@
     <link rel="stylesheet" href="{{ static_url('bootstrap-3.3.4-dist/css/bootstrap.min.css') }}">
     <script src="{{ static_url('js/jquery-2.1.3.min.js') }}"></script>
     <script src="{{ static_url('bootstrap-3.3.4-dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ static_url('js/react-0.13.2/react.js') }}"></script>
+    <script src="{{ static_url('js/react-0.13.2/react-with-addons.js') }}"></script>
     <script src="{{ static_url('react-bootstrap/react-bootstrap.min.js') }}"></script>
     <script src="{{ static_url('js/react-0.13.2/JSXTransformer.js') }}"></script>
   </head>
   <body>
     <div id="navbar"></div>
+    <div id="loginmodel"></div>
     <script type="text/jsx" src="{{ static_url('js/schoolcms.js') }}"></script>
     <script type="text/jsx">
       React.render(<NavbarInstance current_user={% raw current_user and '{%s}'%current_user.to_dict_str() or '{false}' %}/>, document.getElementById('navbar'));
+      React.render(<LoginModel/>, document.getElementById('loginmodel'));
     </script>
     {% block Body %}
     {% end %}
