@@ -1,0 +1,1029 @@
+INFO:sqlalchemy.engine.base.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SHOW VARIABLES LIKE 'sql_mode'
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `announcements`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `attachmentlist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `users`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `tempfilelist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': '1'}
+INFO:tornado.access:304 GET / (127.0.0.1) 156.51ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 4.54ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.15ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.92ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 0.85ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.47ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.46ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.28ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 0.97ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': '1'}
+INFO:tornado.access:304 GET / (127.0.0.1) 94.68ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.36ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.22ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.75ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 0.81ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 3.10ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 0.96ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': '1'}
+INFO:tornado.access:304 GET / (127.0.0.1) 276.82ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.31ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.24ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 1.49ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.92ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.28ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d0241e7c6ceca3cebf4cbe4da40a167e (127.0.0.1) 0.89ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': '1'}
+INFO:tornado.access:200 GET /login (127.0.0.1) 140.78ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=2f602a8e96fc129a5af37fbcd685072b (127.0.0.1) 1.36ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.account = %(account_1)s 
+ LIMIT %(param_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'account_1': u'root', u'param_1': 1}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': '1'}
+INFO:tornado.access:200 POST /login (127.0.0.1) 216.78ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.account = %(account_1)s 
+ LIMIT %(param_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'account_1': u'root', u'param_1': 1}
+INFO:tornado.access:302 POST /login (127.0.0.1) 82.49ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET / (127.0.0.1) 65.99ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements ORDER BY announcements.created DESC
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce (127.0.0.1) 273.79ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:302 GET /logout (127.0.0.1) 108.38ms
+INFO:tornado.access:200 GET / (127.0.0.1) 16.45ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 16.04ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 7.83ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.30ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.44ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.84ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.17ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=d742449a45872883381ee05cbc0a96c0 (127.0.0.1) 0.85ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.15ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.03ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d742449a45872883381ee05cbc0a96c0 (127.0.0.1) 0.89ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.20ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.43ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.19ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.78ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=7b46ec1d0e39ef6d71e3da1a28798942 (127.0.0.1) 0.86ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=7b46ec1d0e39ef6d71e3da1a28798942 (127.0.0.1) 1.07ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 11.96ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.09ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.42ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.08ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.90ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=6f4b0de86482d4f7e5c57c483c38af6a (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=6f4b0de86482d4f7e5c57c483c38af6a (127.0.0.1) 0.66ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 13.13ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=6f4b0de86482d4f7e5c57c483c38af6a:44:undefined (127.0.0.1) 0.84ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 10.86ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.25ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.37ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.03ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.35ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=d64d0ce1af65e198de760dfcdfd34301 (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d64d0ce1af65e198de760dfcdfd34301 (127.0.0.1) 1.06ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 17.27ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.13ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=7dbcd0c880aec9fd7676d515ead105aa (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.77ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.26ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.87ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.92ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=7dbcd0c880aec9fd7676d515ead105aa (127.0.0.1) 0.97ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 7.24ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.67ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.10ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=dc18a5c48ed155aa83c35c1d172609a7 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.93ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=dc18a5c48ed155aa83c35c1d172609a7 (127.0.0.1) 0.97ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=dc18a5c48ed155aa83c35c1d172609a7:41:undefined (127.0.0.1) 0.88ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 15.44ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.65ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.09ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.13ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=8ecf9070ef9eae531173580f2e33f2e1 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=8ecf9070ef9eae531173580f2e33f2e1 (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 15.90ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.50ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.32ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=fc108ea33f9a96b158fabb6b13a448e8 (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.15ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=fc108ea33f9a96b158fabb6b13a448e8 (127.0.0.1) 0.89ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 22.00ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=5bbe2665d4a2f30d6c537f009783e486 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.09ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.13ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=5bbe2665d4a2f30d6c537f009783e486 (127.0.0.1) 1.13ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 11.99ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.37ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.20ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.70ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=831213a9e456971acbea613e4d34ef92 (127.0.0.1) 2.45ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.32ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.31ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=831213a9e456971acbea613e4d34ef92 (127.0.0.1) 1.03ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 8.27ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.41ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.55ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.07ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.01ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=b8262df2b0c2ed0e538db24ecec71d14 (127.0.0.1) 0.79ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=b8262df2b0c2ed0e538db24ecec71d14 (127.0.0.1) 0.97ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.11ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.31ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.09ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=e5467970d0a11ca59524ac933bca6845 (127.0.0.1) 1.08ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.89ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.91ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.66ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=e5467970d0a11ca59524ac933bca6845 (127.0.0.1) 1.07ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 22.72ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.12ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=67568aa805e3d17dd8c8a534e339990d (127.0.0.1) 1.03ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.69ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.07ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=67568aa805e3d17dd8c8a534e339990d (127.0.0.1) 0.72ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 17.65ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.45ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.99ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.03ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.15ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=3fc4a2baeaddea054bcfa95e91f9542c (127.0.0.1) 0.92ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=3fc4a2baeaddea054bcfa95e91f9542c (127.0.0.1) 0.73ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 10.60ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 17.66ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.45ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.23ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 3.11ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.14ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.04ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=594a93847501942808ac96dbfc172ea6 (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=594a93847501942808ac96dbfc172ea6 (127.0.0.1) 0.88ms
+WARNING:tornado.general:403 POST /login (127.0.0.1): '_xsrf' argument missing from POST
+WARNING:tornado.access:403 POST /login (127.0.0.1) 1.46ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 19.35ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.15ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.71ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.07ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=594a93847501942808ac96dbfc172ea6 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.23ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.36ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=594a93847501942808ac96dbfc172ea6 (127.0.0.1) 0.92ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 9.76ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=be774c35238797a8e2bc670448f00eae (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.46ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.99ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.20ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.20ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.09ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.18ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=be774c35238797a8e2bc670448f00eae (127.0.0.1) 0.96ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 9.73ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 15.28ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.24ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.20ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.12ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.40ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.16ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=459184a11bde616e901dc08ffa1cb809 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=459184a11bde616e901dc08ffa1cb809 (127.0.0.1) 0.67ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 14.35ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.13ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.39ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.89ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.05ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=bce65648628bfc73b2452ef9f92f88e5 (127.0.0.1) 1.04ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=bce65648628bfc73b2452ef9f92f88e5 (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 9.99ms
+INFO:tornado.access:200 GET /login? (127.0.0.1) 11.50ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.50ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.64ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.99ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.14ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=c76110591a53f5dfefe44a5965a4e548 (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.29ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=c76110591a53f5dfefe44a5965a4e548 (127.0.0.1) 0.65ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 8.48ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 22.55ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.29ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.31ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.57ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.02ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=56057a2d164e57332d5da14509f19467 (127.0.0.1) 0.68ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=56057a2d164e57332d5da14509f19467 (127.0.0.1) 0.67ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 10.02ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.52ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.02ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=223ad640e0f173bcb1b30acef6243fb2 (127.0.0.1) 0.99ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.07ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.50ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=223ad640e0f173bcb1b30acef6243fb2 (127.0.0.1) 1.08ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 12.21ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.32ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.99ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=9c97edb5997b1cd7d3e960e7f3db472e (127.0.0.1) 0.73ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.78ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.01ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.16ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=9c97edb5997b1cd7d3e960e7f3db472e (127.0.0.1) 1.12ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 21.66ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.77ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.22ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.87ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=464b4a7ae2f619a763d1417a85f76de8 (127.0.0.1) 0.72ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.86ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=464b4a7ae2f619a763d1417a85f76de8 (127.0.0.1) 0.93ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 15.02ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.94ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.23ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=36649a7753390c0f7a0c4873bb604123 (127.0.0.1) 0.89ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.05ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=36649a7753390c0f7a0c4873bb604123 (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 8.69ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.24ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.56ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.29ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.24ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=49580108f875399221f505725222e7e2 (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=49580108f875399221f505725222e7e2 (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 16.43ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.18ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=cbd95e1902f280d5f39acc10dbe1e8b2 (127.0.0.1) 0.86ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.69ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.85ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.86ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=cbd95e1902f280d5f39acc10dbe1e8b2 (127.0.0.1) 0.66ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 19.72ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.42ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.20ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 3.06ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.96ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=efa7f4dbbdd9162564ad858c50678aa3 (127.0.0.1) 0.82ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=efa7f4dbbdd9162564ad858c50678aa3 (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 17.83ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.93ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.98ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=bca90afae6b8109fba21c17deb626e76 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.04ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.03ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=bca90afae6b8109fba21c17deb626e76 (127.0.0.1) 1.03ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 11.34ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.03ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.17ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.86ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=4a9fad6c16f2fce7e56e8356418e2f95 (127.0.0.1) 0.75ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.07ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=4a9fad6c16f2fce7e56e8356418e2f95 (127.0.0.1) 0.67ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 18.99ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.77ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.99ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=fed352daf6f4838e81510d6a68e08b0b (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.13ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 3.49ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=fed352daf6f4838e81510d6a68e08b0b (127.0.0.1) 1.02ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 20.79ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.24ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.01ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=22ac9ca12e501e53bb94adbe4815beae (127.0.0.1) 1.08ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.29ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=22ac9ca12e501e53bb94adbe4815beae (127.0.0.1) 0.89ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 10.77ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=42c77885b99d83973365c6b01250f3b5 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.03ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.91ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.85ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=42c77885b99d83973365c6b01250f3b5 (127.0.0.1) 0.84ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 15.42ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.25ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.09ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.47ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.36ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.66ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=510c7b925ade148115248275750d334b (127.0.0.1) 1.79ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=510c7b925ade148115248275750d334b (127.0.0.1) 0.92ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 15.82ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.34ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.87ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react.js?v=2b9f43abefbd9db91c3a0ebd4ebee821 (127.0.0.1) 2.31ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 1.25ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.92ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.81ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 0.92ms
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 22.74ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.22ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.04ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 0.79ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.20ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.20ms
+INFO:tornado.access:200 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.43ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 0.75ms
+ERROR:tornado.application:Uncaught exception GET /login?_xsrf=&account=root&passwd=root (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost:8000', method='GET', uri='/login?_xsrf=&account=root&passwd=root', version='HTTP/1.1', remote_ip='127.0.0.1', headers={'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4', 'Accept-Encoding': 'gzip, deflate, sdch', 'Host': 'localhost:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36', 'Connection': 'keep-alive', 'Referer': 'http://localhost:8000/login?', 'Cache-Control': 'max-age=0', 'If-None-Match': '"6433a758197cd164a2397912097e7da0a2ee2f89"', 'Cookie': '_xsrf=2|487c3a88|5ad623a1bdfae25a8798396f25615f88|1430910598'})
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1346, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+  File "schoolcms/handler/userhandler.py", line 31, in get
+    self.render('user/login.html', **self._)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 664, in render
+    html = self.render_string(template_name, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 771, in render_string
+    return t.generate(**namespace)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/template.py", line 278, in generate
+    return execute()
+  File "user/login_html.generated.py", line 83, in _tt_execute
+    _tt_tmp = xsrf_token  # user/login.html:30 (via base.html:24)
+NameError: global name 'xsrf_token' is not defined
+ERROR:tornado.access:500 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 12.91ms
+INFO:sqlalchemy.engine.base.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SHOW VARIABLES LIKE 'sql_mode'
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `announcements`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `attachmentlist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `users`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `tempfilelist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:tornado.access:200 GET /login?_xsrf=&account=root&passwd=root (127.0.0.1) 21.20ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 4.63ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.15ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.57ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.06ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=81da4aaa4dd48db53e82caa91df9d998 (127.0.0.1) 0.64ms
+INFO:tornado.access:200 GET /login?_xsrf=2%7C7ce44ba6%7C6e4e528f89629374b300484111f92ea6%7C1430910598&account=ro5555&passwd=575557 (127.0.0.1) 8.69ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=943cf0ef6b9486492383b1b77b51b18b (127.0.0.1) 0.75ms
+INFO:tornado.access:200 POST /login (127.0.0.1) 9.72ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.account = %(account_1)s 
+ LIMIT %(param_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'account_1': u'root', u'param_1': 1}
+INFO:tornado.access:302 POST /login (127.0.0.1) 74.85ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET / (127.0.0.1) 74.31ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:302 GET /logout (127.0.0.1) 155.10ms
+INFO:tornado.access:200 GET / (127.0.0.1) 7.49ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 12.65ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 17.71ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.29ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.18ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=943cf0ef6b9486492383b1b77b51b18b (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.05ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.95ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=943cf0ef6b9486492383b1b77b51b18b (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.85ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.23ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.43ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.37ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.00ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=72749bf3782e575b9166921105f5dda9 (127.0.0.1) 1.04ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=72749bf3782e575b9166921105f5dda9 (127.0.0.1) 0.83ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 9.88ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.51ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.22ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.45ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=72749bf3782e575b9166921105f5dda9 (127.0.0.1) 1.03ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=72749bf3782e575b9166921105f5dda9 (127.0.0.1) 1.04ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 11.80ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.51ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.87ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.20ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.22ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=3a101284e91bf8a06193be856868470a (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=3a101284e91bf8a06193be856868470a (127.0.0.1) 1.06ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.90ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.27ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.14ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.41ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.01ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=8b9d783b214a1dfc288255bc22c6dace (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=8b9d783b214a1dfc288255bc22c6dace (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 12.06ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.27ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.60ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.08ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.14ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=3a101284e91bf8a06193be856868470a (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=3a101284e91bf8a06193be856868470a (127.0.0.1) 0.94ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 8.43ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.25ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.14ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.28ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=f888806d940252c77f60d570c44fa7d5 (127.0.0.1) 0.87ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.14ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.23ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.72ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=f888806d940252c77f60d570c44fa7d5 (127.0.0.1) 0.92ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 11.16ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=cd64452901de6937a340ae59dd7c78a7 (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.72ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.78ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.02ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.14ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=cd64452901de6937a340ae59dd7c78a7 (127.0.0.1) 0.69ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 18.38ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.32ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.37ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=04d83bc975501849a4affc88f12e3477 (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.92ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=04d83bc975501849a4affc88f12e3477 (127.0.0.1) 0.98ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 18.78ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.43ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.45ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=2fa18e5e97ae244491a956938fe5f9d0 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.91ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.82ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=2fa18e5e97ae244491a956938fe5f9d0 (127.0.0.1) 0.99ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 8.47ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.81ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 4.25ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.12ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=ddf2429c6a4127b6ef85a7c82b622bd6 (127.0.0.1) 1.02ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ddf2429c6a4127b6ef85a7c82b622bd6 (127.0.0.1) 0.92ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 8.75ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.38ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.42ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.91ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.81ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=0a3a5b71b511266e525d3ea3d3fca121 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=0a3a5b71b511266e525d3ea3d3fca121 (127.0.0.1) 1.04ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 17.10ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.12ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.79ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.22ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=f1aa94014ac740555950d698cf18dedb (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.28ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=f1aa94014ac740555950d698cf18dedb (127.0.0.1) 0.82ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 9.00ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.47ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=891b2044a2010d3f12f488e6f1934c50 (127.0.0.1) 0.80ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.67ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.43ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.04ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.91ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=891b2044a2010d3f12f488e6f1934c50 (127.0.0.1) 0.67ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 12.15ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.25ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.99ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.79ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=c9ee0064037ca95ebd113c27ecde23b0 (127.0.0.1) 0.79ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=c9ee0064037ca95ebd113c27ecde23b0 (127.0.0.1) 0.93ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.02ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.98ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.41ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.79ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=14b440054775d8c4ae9339a4a611aa57 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.09ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=14b440054775d8c4ae9339a4a611aa57 (127.0.0.1) 0.68ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 20.52ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.24ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.07ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.66ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.29ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 6.61ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=17975cb214d0703d77e00debaf2f3053 (127.0.0.1) 0.85ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=17975cb214d0703d77e00debaf2f3053 (127.0.0.1) 0.69ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 17.48ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.51ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.22ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.44ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.79ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=97b9796ecd04f3dec9a5a54e148c433b (127.0.0.1) 0.73ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=97b9796ecd04f3dec9a5a54e148c433b (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 7.19ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.31ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.94ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.40ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.03ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=ad145d80ff060d481611320f3d699c6c (127.0.0.1) 2.01ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.07ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ad145d80ff060d481611320f3d699c6c (127.0.0.1) 0.66ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 16.42ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.34ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.19ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.80ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=ca6a3c3735d98b86f9015de9fe9552fe (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.35ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.29ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ca6a3c3735d98b86f9015de9fe9552fe (127.0.0.1) 0.64ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.81ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.27ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.05ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=2994a9669ee1eb50aa2ec6544c221e0f (127.0.0.1) 0.72ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.80ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.95ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.79ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=2994a9669ee1eb50aa2ec6544c221e0f (127.0.0.1) 0.66ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 23.59ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.28ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.72ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.21ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.19ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=ee6e9db27a9e6cb83ecdb38abb30d424 (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ee6e9db27a9e6cb83ecdb38abb30d424 (127.0.0.1) 0.98ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 18.36ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.30ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.62ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=f7c283bb66f5264d5deb3b82ca66f1e6 (127.0.0.1) 0.90ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.15ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.21ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=f7c283bb66f5264d5deb3b82ca66f1e6 (127.0.0.1) 0.97ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 11.03ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.38ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.97ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.40ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.10ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ee6e9db27a9e6cb83ecdb38abb30d424 (127.0.0.1) 1.45ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=ee6e9db27a9e6cb83ecdb38abb30d424 (127.0.0.1) 1.05ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.29ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.30ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.15ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.80ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.95ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.88ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.98ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 14.15ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.41ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=640334f709e9085fc9819bfe7c60e6d3 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.01ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.49ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.89ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.16ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=640334f709e9085fc9819bfe7c60e6d3 (127.0.0.1) 0.76ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 7.41ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.87ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.86ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.88ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=8b4e9c09b06c52f7ea321a155965ea86 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.88ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=8b4e9c09b06c52f7ea321a155965ea86 (127.0.0.1) 1.09ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.42ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.50ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.14ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.81ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.91ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.82ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=03d5b058237819f3857d151c027fde31 (127.0.0.1) 0.61ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=03d5b058237819f3857d151c027fde31 (127.0.0.1) 0.87ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 20.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.37ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.18ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.69ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.59ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.84ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.89ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 3.64ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.94ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 20.84ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.59ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.99ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.15ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=41dd4dffe88513b09beca5ec00f44759 (127.0.0.1) 0.84ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=41dd4dffe88513b09beca5ec00f44759 (127.0.0.1) 0.86ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 10.84ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.35ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.10ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=123617c892660de5ae56e18a302a00d6 (127.0.0.1) 0.66ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.96ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.40ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.96ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=123617c892660de5ae56e18a302a00d6 (127.0.0.1) 0.69ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.54ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.26ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.85ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.81ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.06ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.81ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.07ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.87ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.90ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+ERROR:tornado.application:Uncaught exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/tornado/http1connection.py", line 236, in _read_message
+    delegate.finish()
+  File "/usr/local/lib/python2.7/dist-packages/tornado/httpserver.py", line 269, in finish
+    self.delegate.finish()
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1898, in finish
+    self.execute()
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1929, in execute
+    f = self.handler._execute(transforms, *self.path_args, **self.path_kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/gen.py", line 212, in wrapper
+    yielded = next(result)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1346, in _execute
+    result = method(*self.path_args, **self.path_kwargs)
+  File "schoolcms/handler/userhandler.py", line 38, in post
+    user = self.login()
+  File "schoolcms/handler/userhandler.py", line 55, in login
+    user = q.first()
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2282, in first
+    ret = list(self[0:1])
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2149, in __getitem__
+    return list(res)
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2353, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2368, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 662, in execute
+    params)
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 761, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 824, in _execute_context
+    context = constructor(dialect, self, conn, *args)
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 442, in _init_compiled
+    self.cursor = self.create_cursor()
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 605, in create_cursor
+    return self._dbapi_connection.cursor()
+  File "/usr/lib/python2.7/dist-packages/sqlalchemy/pool.py", line 491, in cursor
+    return self.connection.cursor(*args, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/mysql/connector/connection.py", line 1230, in cursor
+    if not self.is_connected():
+  File "/usr/lib/python2.7/dist-packages/mysql/connector/connection.py", line 814, in is_connected
+    self.cmd_ping()
+  File "/usr/lib/python2.7/dist-packages/mysql/connector/connection.py", line 783, in cmd_ping
+    return self._handle_ok(self._send_cmd(ServerCmd.PING))
+  File "/usr/lib/python2.7/dist-packages/mysql/connector/connection.py", line 427, in _send_cmd
+    return self._socket.recv()
+  File "/usr/lib/python2.7/dist-packages/mysql/connector/network.py", line 190, in recv_plain
+    packet = self.sock.recv(1)
+KeyboardInterrupt
+INFO:tornado.access:200 GET / (127.0.0.1) 7.71ms
+INFO:tornado.access:200 GET / (127.0.0.1) 7.33ms
+INFO:tornado.access:200 GET / (127.0.0.1) 7.95ms
+INFO:sqlalchemy.engine.base.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SHOW VARIABLES LIKE 'sql_mode'
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `announcements`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `attachmentlist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `users`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:DESCRIBE `tempfilelist`
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:tornado.access:200 GET /login (127.0.0.1) 18.67ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 4.19ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.87ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.92ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.55ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.93ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.70ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=492e84f3910456914206c44aa0d3aec7 (127.0.0.1) 0.71ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.account = %(account_1)s 
+ LIMIT %(param_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'account_1': u'root', u'param_1': 1}
+INFO:tornado.access:302 POST /login (127.0.0.1) 76.82ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET / (127.0.0.1) 64.83ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements ORDER BY announcements.created DESC
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce (127.0.0.1) 139.34ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce/edit (127.0.0.1) 79.69ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:sqlalchemy.engine.base.Engine:INSERT INTO announcements (title, content, created, updated, author_key, visible) VALUES (%(title)s, %(content)s, %(created)s, %(updated)s, %(author_key)s, %(visible)s)
+INFO:sqlalchemy.engine.base.Engine:{'updated': datetime.datetime(2015, 5, 6, 20, 39, 27, 384979), 'created': datetime.datetime(2015, 5, 6, 20, 39, 27, 384933), 'title': u'TEST', 'content': u"*Markdown*\r\n#H1\r\n##H2\r\n`print('JIZZ');`\r\nend", 'visible': 1, 'author_key': u'df642f54edce3d5687b8c038b0c364cf'}
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements 
+WHERE announcements.id = %(param_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'param_1': 6}
+INFO:sqlalchemy.engine.base.Engine:COMMIT
+INFO:tornado.access:302 POST /announce/edit/ (127.0.0.1) 860.69ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements ORDER BY announcements.created DESC
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce (127.0.0.1) 141.29ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements 
+WHERE announcements.id = %(id_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'id_1': u'6'}
+INFO:sqlalchemy.engine.base.Engine:SELECT attachmentlist.`key` AS attachmentlist_key, attachmentlist.ann_id AS attachmentlist_ann_id, attachmentlist.content_type AS attachmentlist_content_type, attachmentlist.path AS attachmentlist_path 
+FROM attachmentlist 
+WHERE attachmentlist.ann_id = %(ann_id_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'ann_id_1': 6}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce/6 (127.0.0.1) 223.07ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements 
+WHERE announcements.id = %(id_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'id_1': u'6'}
+INFO:tornado.access:200 GET /announce/edit/6 (127.0.0.1) 153.32ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:sqlalchemy.engine.base.Engine:UPDATE announcements SET title=%(title)s, content=%(content)s, updated=%(updated)s, visible=%(visible)s WHERE announcements.id = %(id_1)s
+INFO:sqlalchemy.engine.base.Engine:{'content': u"***Markdown***\r\n#H1\r\n##H2\r\n`print('JIZZ');`\r\nend", 'visible': 1, 'updated': datetime.datetime(2015, 5, 6, 20, 39, 41, 844883), u'id_1': u'6', 'title': u'TEST'}
+INFO:sqlalchemy.engine.base.Engine:COMMIT
+INFO:tornado.access:302 POST /announce/edit/6 (127.0.0.1) 213.12ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements ORDER BY announcements.created DESC
+INFO:sqlalchemy.engine.base.Engine:{}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:304 GET /announce (127.0.0.1) 141.57ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT announcements.id AS announcements_id, announcements.title AS announcements_title, announcements.content AS announcements_content, announcements.created AS announcements_created, announcements.updated AS announcements_updated, announcements.author_key AS announcements_author_key, announcements.visible AS announcements_visible 
+FROM announcements 
+WHERE announcements.id = %(id_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'id_1': u'6'}
+INFO:sqlalchemy.engine.base.Engine:SELECT attachmentlist.`key` AS attachmentlist_key, attachmentlist.ann_id AS attachmentlist_ann_id, attachmentlist.content_type AS attachmentlist_content_type, attachmentlist.path AS attachmentlist_path 
+FROM attachmentlist 
+WHERE attachmentlist.ann_id = %(ann_id_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'ann_id_1': 6}
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:200 GET /announce/6 (127.0.0.1) 234.29ms
+INFO:sqlalchemy.engine.base.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.base.Engine:SELECT users.`key` AS users_key, users.account AS users_account, users.passwd AS users_passwd, users.name AS users_name, users.identity AS users_identity, users.admin AS users_admin 
+FROM users 
+WHERE users.`key` = %(key_1)s
+INFO:sqlalchemy.engine.base.Engine:{u'key_1': 'df642f54edce3d5687b8c038b0c364cf'}
+INFO:tornado.access:302 GET /logout (127.0.0.1) 903.00ms
+INFO:tornado.access:200 GET / (127.0.0.1) 7.29ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=b776cd829b5dec664dd455925c62fa5d (127.0.0.1) 0.72ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.86ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 19.66ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 2.00ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.68ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.89ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.51ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.11ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.01ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=895465faf295174a1ee038bfc60599d7 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=895465faf295174a1ee038bfc60599d7 (127.0.0.1) 1.05ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 16.41ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.34ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.00ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.17ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.36ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 1.89ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=e6b73704573379b5adab10edf2dd54a1 (127.0.0.1) 0.76ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=e6b73704573379b5adab10edf2dd54a1 (127.0.0.1) 0.94ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 21.53ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.37ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.16ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.09ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=d8c2cf1fc070a94e0a1ead6d3c383eda (127.0.0.1) 0.83ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 0.98ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.49ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.97ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=d8c2cf1fc070a94e0a1ead6d3c383eda (127.0.0.1) 0.95ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 16.85ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.37ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=92778ebf6f9a37dc5113705367f61f73 (127.0.0.1) 5.35ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.31ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 2.95ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 4.75ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 2.55ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.99ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=92778ebf6f9a37dc5113705367f61f73 (127.0.0.1) 1.28ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 24.09ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 1.50ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.13ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 0.73ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=cf2e50e8d1b4a90392ecb195d9f36841 (127.0.0.1) 0.88ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.03ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.39ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=cf2e50e8d1b4a90392ecb195d9f36841 (127.0.0.1) 0.94ms
+INFO:tornado.access:200 GET /login (127.0.0.1) 7.76ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/css/bootstrap.min.css?v=eedf9ee80c2faa4e1b9ab9017cdfcb88 (127.0.0.1) 2.63ms
+INFO:tornado.access:304 GET /static/js/jquery-2.1.3.min.js?v=32015dd42e9582a80a84736f5d9a44d7 (127.0.0.1) 1.22ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/react-with-addons.js?v=0b20e0f0ea8465713b22b7bb7d620048 (127.0.0.1) 2.77ms
+INFO:tornado.access:304 GET /static/bootstrap-3.3.4-dist/js/bootstrap.min.js?v=8c237312864d2e4c4f03544cd4f9b195 (127.0.0.1) 1.06ms
+INFO:tornado.access:304 GET /static/js/react-bootstrap.min.js?v=8e1797a1bcbbc4500e4935c903da4a1e (127.0.0.1) 1.14ms
+INFO:tornado.access:200 GET /static/js/schoolcms.js?v=399c1a025e737eb21cae1e8c723ae2fe (127.0.0.1) 1.05ms
+INFO:tornado.access:304 GET /static/js/react-0.13.2/JSXTransformer.js?v=80eb443a5f3e348edb1f1f5b411e0410 (127.0.0.1) 2.14ms
+INFO:tornado.access:304 GET /static/js/schoolcms.js?v=399c1a025e737eb21cae1e8c723ae2fe (127.0.0.1) 0.91ms

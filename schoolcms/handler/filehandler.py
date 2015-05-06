@@ -30,7 +30,7 @@ class TempUploadHandler(BaseHandler):
         if not os.path.exists('file/tmp'):
             os.makedirs('file/tmp')
 
-        self.tmp_file_name = '%s' % uuid.uuid1()
+        self.tmp_file_name = '%s' % uuid.uuid1().hex
 
     def get(self):
         self.render('file.html')
@@ -44,13 +44,17 @@ class TempUploadHandler(BaseHandler):
         body = self.request.files['file'][0]['body']
         content_type = self.request.files['file'][0]['content_type']
 
-        with open('file/tmp/%s' % self.tmp_file_name, 'wb') as f:
-            f.write(body)
+        try:
+            with open('file/tmp/%s' % self.tmp_file_name, 'wb') as f:
+                f.write(body)
 
-        new_file = TempFileList(self.tmp_file_name, filename, content_type, self.current_user.id)
-        self.sql_session.add(new_file)
+            new_file = TempFileList(self.tmp_file_name, filename, content_type, self.current_user.key)
+            self.sql_session.add(new_file)
+        except:
+            os.remove('file/tmp/%s' % self.tmp_file_name)
+            raise self.HTTPError(403)
+
         self.sql_session.commit()
-
         self.write({'file_name':self.tmp_file_name})
 
     # def check_xsrf_cookie(self):

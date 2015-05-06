@@ -27,10 +27,16 @@ class LoginHandler(BaseHandler):
         }
 
     def get(self):
+        if self.current_user:
+            raise self.HTTPError(404)
+
         self._['next_page'] = self.get_argument('next', '/')
         self.render('user/login.html', **self._)
 
     def post(self):
+        if self.current_user:
+            raise self.HTTPError(404)
+
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
         self._['next_page'] = self.get_argument('next_page', '/')
@@ -39,7 +45,7 @@ class LoginHandler(BaseHandler):
         if not user:
             self.render('user/login.html', **self._)
         else:
-            self.set_secure_cookie('uid', unicode(user.id))
+            self.set_secure_cookie('uid', unicode(user.key))
             self.redirect(self._['next_page'])
 
     def login(self):
@@ -78,7 +84,7 @@ class AddUserHandler(BaseHandler):
             'passwd' : '',
             'name' : '',
             'student' : True,
-            'isadmin' : False,
+            'admin' : False,
             'error_msg' : '',
         }
 
@@ -92,7 +98,7 @@ class AddUserHandler(BaseHandler):
         self._['passwd'] = self.get_argument('passwd', '')
         self._['name'] = self.get_argument('name', '')
         self._['identity'] = self.get_argument('identity', '')
-        self._['isadmin'] = bool(self.get_argument('isadmin', ''))
+        self._['admin'] = bool(self.get_argument('admin', ''))
         self._['student'] = self._['identity'] != '教師'
 
         user = self.add_user()
