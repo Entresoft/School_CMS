@@ -42,3 +42,12 @@ class Announce(Base):
     def by_id(cls, ann_id, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.id == ann_id)
+
+    def to_dict(self):
+        return {
+            'id' : self.id,
+            'title' : self.title,
+            'content' : self.content,
+            'created' : repr(self.created),
+            'updated' : repr(self.updated),
+        }

@@ -16,8 +16,12 @@ const NavbarInstance = React.createClass({
           <RB.MenuItem eventKey='4' href="/logout">Logout</RB.MenuItem>
         </RB.DropdownButton>
       )
-    }else{
-      return <RB.NavItem eventKey={3} href='#loginmodel'>Login</RB.NavItem>
+    }else if(!this.props.loginpage){
+      return (
+        <RB.ModalTrigger modal={<LoginModel _xsrf_token={this.props._xsrf_token} />}>
+          <RB.NavItem eventKey={3}>Login</RB.NavItem>
+        </RB.ModalTrigger>
+      );
     }
   },
   render: function(){
@@ -38,16 +42,14 @@ const LoginForm = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function() {
     return {
-      _xsrf : this.props._xsrf,
+      _xsrf_token : this.props._xsrf_token,
       account : this.props.account,
     };
   },
   render: function() {
     return (
       <form action="/login" method="POST">
-        <h1>登入</h1>
-        <hr/>
-        <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf} />
+        <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf_token} />
         <RB.Input type='text' name="account" valueLink={this.linkState('account')} placeholder='帳號' />
         <RB.Input type='password' name="passwd" placeholder='密碼' />
         <RB.Input type='submit' value='登入' />
@@ -63,7 +65,9 @@ const LoginPage = React.createClass({
       <RB.Grid>
         <RB.Col xs={12} md={6} mdOffset={3}>
           <RB.Well>
-            <LoginForm account={this.props.account} _xsrf={this.props._xsrf}/>
+            <h1>登入</h1>
+            <hr/>
+            <LoginForm account={this.props.account} _xsrf_token={this.props._xsrf_token}/>
           </RB.Well>
         </RB.Col>
       </RB.Grid>
@@ -71,27 +75,63 @@ const LoginPage = React.createClass({
   }
 });
 
-function handleHide() {
-  alert('Close me!');
-}
 
 const LoginModel = React.createClass({
   render: function() {
     return (
-      <RB.Modal title='Modal title'
-        bsStyle='primary'
-        backdrop={false}
-        animation={false}
-        container={document.getElementById('loginmodel')}
-        onRequestHide={handleHide}>
+      <RB.Modal {...this.props} title='登入' bsStyle='info' backdrop={true} animation={true}>
         <div className='modal-body'>
-          One fine body...
-        </div>
-        <div className='modal-footer'>
-          <RB.Button>Close</RB.Button>
-          <RB.Button bsStyle='primary'>Save changes</RB.Button>
+          <LoginForm {...this.props} />
         </div>
       </RB.Modal>
+    );
+  }
+});
+
+
+const AnnIndexPage = React.createClass({
+  render: function() {
+    var annItems = this.props.annlist.map(function (ann) {
+      return (
+        <tr key={ann.id}>
+          <td><a href={'/announce/'+ann.id}>{ann.title}</a></td>
+          <td>{ann.created}</td>
+        </tr>
+      );
+    });
+    return (
+      <RB.Grid>
+        <RB.Row>
+          <RB.Col xs={12} md={12}>
+            <h1>Announcement</h1>
+            <a href="/announce/edit">New Announcement!</a>
+          </RB.Col>
+        </RB.Row>
+        <RB.Row><RB.Col xs={12} md={12}><RB.Well>
+          <RB.Table striped bordered hover>
+            <thead>
+              <tr><th>標題</th><th>公告時間</th></tr>
+            </thead>
+            <tbody>{annItems}</tbody>
+          </RB.Table>
+        </RB.Well></RB.Col></RB.Row>
+      </RB.Grid>
+    );
+  }
+});
+
+
+const AnnouncePage = React.createClass({
+  render: function() {
+    return (
+      <RB.Grid>
+        <RB.PageHeader>{this.props.ann.title} 
+          <small>發布於：{this.props.ann.created}，最後更新：{this.props.ann.updated}</small>
+        </RB.PageHeader>
+        <RB.Row><RB.Col xs={12} md={12}><RB.Well>
+          <span dangerouslySetInnerHTML={{__html: marked(this.props.ann.content, {sanitize: true,breaks:true})}} />
+        </RB.Well></RB.Col></RB.Row>
+      </RB.Grid>
     );
   }
 });

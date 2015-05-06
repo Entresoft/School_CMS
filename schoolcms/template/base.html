@@ -14,16 +14,22 @@
     <script src="{{ static_url('js/react-0.13.2/react-with-addons.js') }}"></script>
     <script src="{{ static_url('react-bootstrap/react-bootstrap.min.js') }}"></script>
     <script src="{{ static_url('js/react-0.13.2/JSXTransformer.js') }}"></script>
+    <script src="{{ static_url('js/marked.min.js') }}"></script>
   </head>
   <body>
     <div id="navbar"></div>
-    <div id="loginmodel"></div>
-    <script type="text/jsx" src="{{ static_url('js/schoolcms.js') }}"></script>
-    <script type="text/jsx">
-      React.render(<NavbarInstance current_user={% raw current_user and '{%s}'%current_user.to_dict_str() or '{false}' %}/>, document.getElementById('navbar'));
-      React.render(<LoginModel/>, document.getElementById('loginmodel'));
+    <script>
+      var _data = {
+        loginpage: false,
+        current_user: {% raw current_user and current_user.to_dict_str() or 'false' %},
+        _xsrf_token: '{{xsrf_token}}',
+      };
     </script>
+    <script type="text/jsx" src="{{ static_url('js/schoolcms.js') }}"></script>
     {% block Body %}
     {% end %}
+    <script type="text/jsx">
+      React.render(<NavbarInstance loginpage={_data.loginpage} current_user={_data.current_user} _xsrf_token={_data._xsrf_token} />, document.getElementById('navbar'));
+    </script>
   </body>
 </html>

@@ -6,6 +6,11 @@
 
 
 {% block Body %}
+  <div id="ann"></div>
+  <script type="text/jsx">
+    var ann = {% raw json_encode(ann.to_dict()) %};
+    React.render(<AnnouncePage ann={ann} />, document.getElementById('ann'));
+  </script>
   <h1>{{ann.title}}</h1>
   <hr>
     {% raw markdown(ann.content, extensions=['markdown.extensions.nl2br']) %}

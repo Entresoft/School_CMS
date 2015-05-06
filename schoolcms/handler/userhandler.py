@@ -27,10 +27,16 @@ class LoginHandler(BaseHandler):
         }
 
     def get(self):
+        if self.current_user:
+            raise self.HTTPError(404)
+
         self._['next_page'] = self.get_argument('next', '/')
         self.render('user/login.html', **self._)
 
     def post(self):
+        if self.current_user:
+            raise self.HTTPError(404)
+
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
         self._['next_page'] = self.get_argument('next_page', '/')
