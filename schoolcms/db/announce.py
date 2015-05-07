@@ -48,6 +48,6 @@ class Announce(Base):
             'id' : self.id,
             'title' : self.title,
             'content' : self.content,
-            'created' : repr(self.created),
-            'updated' : repr(self.updated),
+            'created' : self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            'updated' : self.updated.strftime("%Y-%m-%d %H:%M:%S"),
         }

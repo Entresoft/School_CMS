@@ -10,6 +10,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import re
+
 from . import Base
 from datetime import datetime
 
@@ -64,3 +66,13 @@ class AttachmentList(Base):
     def by_key(cls, key, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.key == key)
+
+    def to_dict(self):
+        match = re.search('[a-zA-Z0-9]+$', self.path)
+        _filetype = match and match.group() or 'file'
+        return {
+            'key' : self.key,
+            'filename' : self.path[33:],
+            'path' : self.path,
+            'filetype' : _filetype,
+        }
