@@ -86,5 +86,5 @@ route = [
     (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
-    (r'/fileupload/?', TempUploadHandler),
+    (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
 ]

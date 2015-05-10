@@ -43,6 +43,14 @@ class TempFileList(Base):
         q = sql_session.query(cls)
         return q.filter(cls.key == key)
 
+    def to_dict(self):
+        return {
+            'key' : self.key,
+            'filename' : self.filename,
+            'path' : self.key,
+            'filetype' : 'file',
+        }
+
 
 class AttachmentList(Base):
     __tablename__ = 'attachmentlist'
@@ -66,6 +74,11 @@ class AttachmentList(Base):
     def by_key(cls, key, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.key == key)
+
+    @classmethod
+    def by_ann_id(cls, ann_id, sql_session):
+        q = sql_session.query(cls)
+        return q.filter(cls.ann_id == ann_id)
 
     def to_dict(self):
         match = re.search('[a-zA-Z0-9]+$', self.path)

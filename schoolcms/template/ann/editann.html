@@ -7,34 +7,20 @@
 
 
 {% block Body %}
-  <form method="POST" action="/announce/edit/{{ann_id}}">
-    <p style="color:red;">{{error_msg}}</p>
-    <table>
-      {% module xsrf_form_html() %}
-      <tr>
-        <td>Title</td>
-        <td><input type="text" name="title" value="{{title}}"></td>
-      </tr>
-      <tr>
-        <td>Content</td>
-        <td><textarea name="content">{{content}}</textarea></td>
-      </tr>
-      {% for att in attachments %}
-        {% if att %}
-          <tr>
-            <td>Attachment</td>
-            <td><input type="text" name="attachment" value="{{att}}"></td>
-          </tr>
-        {% end %}
+  <div id="editform"></div>
+  <script type="text/jsx">
+    {% set ann={'title':title,'content':content,'id':ann_id} %}
+    var ann = {% raw json_encode(ann) %}
+    var atts = [
+      {% for att in atts %}
+        {% raw json_encode(att.to_dict()) %},
       {% end %}
-      <tr>
-        <td>Attachment</td>
-        <td><input type="text" name="attachment"></td>
-      </tr>
-      <tr>
-        <td><input type="submit" value="JIZZUP"></td>
-      </tr>
-    </table>
-  </form>
-  <a href="/announce">go back</a>
+    ];
+    var tmpatts = [
+      {% for att in tmpatts %}
+        {% raw json_encode(att.to_dict()) %},
+      {% end %}
+    ];
+    React.render(<SC.EditAnnPage ann={ann} attlist={atts} tmpatts={tmpatts} _xsrf_token={_data._xsrf_token}/>, document.getElementById('editform'));
+  </script>
 {% end %}
