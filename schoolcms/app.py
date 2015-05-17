@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 
 import os
 import logging
-logging.basicConfig(filename='logging.txt', level=logging.DEBUG)
+# logging.basicConfig(filename='logging.txt', filemod='w', level=logging.DEBUG)
 
 from tornado.ioloop import IOLoop
 from tornado.web import Application

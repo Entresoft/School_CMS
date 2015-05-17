@@ -9,19 +9,11 @@
   <div id="ann"></div>
   <script type="text/jsx">
     var ann = {% raw json_encode(ann.to_dict()) %};
-    React.render(<AnnouncePage ann={ann} />, document.getElementById('ann'));
+    var atts = [
+      {% for att in atts %}
+        {% raw json_encode(att.to_dict()) %},
+      {% end %}
+    ];
+    React.render(<SC.AnnouncePage ann={ann} attlist={atts} />, document.getElementById('ann'));
   </script>
-  <h1>{{ann.title}}</h1>
-  <hr>
-    {% raw markdown(ann.content, extensions=['markdown.extensions.nl2br']) %}
-  <hr>
-  {% for att in atts %}
-    <a href="/file/{{att.path}}">{{att.path[33:]}}</a><br>
-  {% end %}
-  <hr>
-  <p>created:{{ann.created}}</p>
-  <p>updated:{{ann.updated}}</p>
-  <hr>
-  <a href="/announce/edit/{{ann.id}}">Edit</a>
-  <a href="/announce">Go Back</a><br>
 {% end %}

@@ -18,7 +18,7 @@ version = -100
 
 # creat engine
 engine = sqlalchemy.create_engine(options.database_config, 
-                        echo=options.database_debug)
+                        echo=options.database_debug, pool_recycle=3600)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 

@@ -28,17 +28,30 @@ class AnnounceHandler(BaseHandler):
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
                 raise self.HTTPError(404)
-            
-            q = self.sql_session.query(AttachmentList)
-            q = q.filter(AttachmentList.ann_id == ann.id)
-            atts = q.all()
+
+            atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self.render('ann/announce.html',ann=ann, atts=atts)
 
         else:
-            q = self.sql_session.query(Announce)
-            q = q.order_by(Announce.created.desc())
-            anns = q.all()
-            self.render('ann/annindex.html',anns=anns)
+            start = self.get_argument('start', '')
+            search = self.get_argument('search', '')
+            if not start.isdigit():
+                start = 0
+            start = int(start)
+
+            anns = None
+            totle = 0
+            if search:
+                q = Announce.by_full_text(search, self.sql_session)
+                totle = q.count()
+                anns = q.all()
+            else:
+                totle = self.sql_session.query(Announce.id).count()
+                q = self.sql_session.query(Announce)
+                q = q.order_by(Announce.created.desc())
+                anns = q.all()
+            q = q.offset(start).limit(10)
+            self.render('ann/annindex.html',anns=anns,search=search,start=start,totle=totle)
 
 
 class EditAnnHandler(BaseHandler):
@@ -47,9 +60,10 @@ class EditAnnHandler(BaseHandler):
         self._ = {
             'title' : '',
             'content' : '',
-            'attachments' : [],
             'error_msg' : '',
             'ann_id': '',
+            'tmpatts' : [],
+            'atts' : [],
         }
 
     @BaseHandler.is_admin_user
@@ -61,18 +75,20 @@ class EditAnnHandler(BaseHandler):
             self._['title'] = ann.title
             self._['content'] = ann.content
             self._['ann_id'] = ann_id
+            self._['atts'] = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
         self.render('ann/editann.html',**self._)
 
     @BaseHandler.is_admin_user
     def post(self, ann_id):
-        self.ann_id = ann_id
+        self.ann_id = ann_id if ann_id else ''
         del ann_id
         self._['ann_id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
-        self._['attachments'] = self.get_arguments('attachment')
+        self.attkeys = self.get_arguments('attachment')
 
+        # check ann and att
         if not self.check_ann():
             return self.render('ann/editann.html',**self._)
 
@@ -95,35 +111,34 @@ class EditAnnHandler(BaseHandler):
         self.parse_att()
 
         self.sql_session.commit()
-        self.redirect('/announce')
+        self.redirect('/announce/%s' % self.ann_id)
 
     def check_ann(self):
-        self.attachments = []
+        for i in xrange(len(self.attkeys)):
+            if self.attkeys[i]:
+                q = self.sql_session.query(TempFileList)
+                q = q.filter(TempFileList.key == self.attkeys[i])
+                try:
+                    new_att = q.one()
+                    assert new_att.author_key == self.current_user.key
+                    assert os.path.exists('file/tmp/%s' % new_att.key)
+                    self._['tmpatts'].append(new_att)
+
+                except:
+                    self._['error_msg'] = 'Miss attachment!'
+                    return False
+
         if not self._['title']:
             self._['error_msg'] = 'Title can\'t leave blank.'
             return False
         elif not self._['content']:
             self._['error_msg'] = 'Content can\'t leave blank.'
             return False
-        else:
-            for i in xrange(len(self._['attachments'])):
-                if self._['attachments'][i]:
-                    q = self.sql_session.query(TempFileList)
-                    q = q.filter(TempFileList.key == self._['attachments'][i])
-                    try:
-                        new_att = q.one()
-                        assert new_att.author_key == self.current_user.key
-                        self.attachments.append(new_att)
-
-                    except:
-                        self._['error_msg'] = 'Miss attachment!'
-                        print(new_att.author_key == self.current_user.key)
-                        self._['attachments'][i] = ''
-                        return False
+            
         return True
 
     def parse_att(self):
-        for att in self.attachments:
+        for att in self._['tmpatts']:
             if not os.path.exists('file/%s' % att.key):
                 os.makedirs('file/%s' % att.key)
             os.rename('file/tmp/%s' % att.key, 'file/%s/%s' % (att.key, att.filename))
