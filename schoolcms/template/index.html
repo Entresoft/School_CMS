@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{#
+  Index Page.
+#}
+
+
+{% block Body %}
+  {% if current_user %}
+    <p>Gezz, {{current_user.name}}!!</p>
+  {% end %}
+  <p>{{greeting}}, friendly user!</p>
+  <a href="/announce">Announcement!</a><br>
+{% end %}

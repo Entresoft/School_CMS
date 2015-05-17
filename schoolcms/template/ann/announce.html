@@ -1,0 +1,19 @@
+{% extends "../base.html" %}
+
+{#
+  Announcement Page.
+#}
+
+
+{% block Body %}
+  <div id="ann"></div>
+  <script type="text/jsx">
+    var ann = {% raw json_encode(ann.to_dict()) %};
+    var atts = [
+      {% for att in atts %}
+        {% raw json_encode(att.to_dict()) %},
+      {% end %}
+    ];
+    React.render(<SC.AnnouncePage ann={ann} attlist={atts} />, document.getElementById('ann'));
+  </script>
+{% end %}
