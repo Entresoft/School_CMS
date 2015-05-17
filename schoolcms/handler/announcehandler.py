@@ -32,7 +32,10 @@ class AnnounceHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             
             if self.api:
-                pass
+                self.write({
+                        'ann' : ann.to_dict(),
+                        'atts' : [att.to_dict() for att in atts],
+                    })
             else:
                 self.render('ann/announce.html',ann=ann, atts=atts)
 
