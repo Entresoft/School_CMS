@@ -34,15 +34,24 @@ class AnnounceHandler(BaseHandler):
 
         else:
             start = self.get_argument('start', '')
+            search = self.get_argument('search', '')
             if not start.isdigit():
                 start = 0
             start = int(start)
-            totle = self.sql_session.query(Announce.id).count()
-            q = self.sql_session.query(Announce)
-            q = q.order_by(Announce.created.desc())
+
+            anns = None
+            totle = 0
+            if search:
+                q = Announce.by_full_text(search, self.sql_session)
+                totle = q.count()
+                anns = q.all()
+            else:
+                totle = self.sql_session.query(Announce.id).count()
+                q = self.sql_session.query(Announce)
+                q = q.order_by(Announce.created.desc())
+                anns = q.all()
             q = q.offset(start).limit(10)
-            anns = q.all()
-            self.render('ann/annindex.html',anns=anns,start=start,totle=totle)
+            self.render('ann/annindex.html',anns=anns,search=search,start=start,totle=totle)
 
 
 class EditAnnHandler(BaseHandler):

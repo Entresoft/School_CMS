@@ -116,6 +116,7 @@ SC.AnnIndexPage = React.createClass({
           <RB.Col xs={12} md={12}>
             <h1>Announcement</h1>
             <a href="/announce/edit">New Announcement!</a>
+            <SC.SearchAnnForm search={this.props.search} />
           </RB.Col>
         </RB.Row>
         <RB.Row><RB.Col xs={12} md={12}>
@@ -133,6 +134,24 @@ SC.AnnIndexPage = React.createClass({
     );
   }
 });
+
+
+SC.SearchAnnForm = React.createClass({
+  mixins: [React.addons.LinkedStateMixin],
+  getInitialState: function() {
+    return {
+      search: this.props.search,
+    };
+  },
+  render: function() {
+    return (
+      <form action="/announce">
+        <RB.Input type='text' name="search" valueLink={this.linkState('search')} placeholder='搜尋公告' />
+        <RB.Input type='submit' value='搜尋' />
+      </form>
+    );
+  }
+})
 
 
 SC.Pager = React.createClass({
