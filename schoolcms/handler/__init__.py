@@ -21,6 +21,9 @@ from schoolcms.db import Session, User
 
 
 class BaseHandler(tornado.web.RequestHandler):
+    def initialize(self, api=False):
+        self.api = api
+
     def prepare(self):
         """This method is executed at the beginning of each request.
 
@@ -87,4 +90,6 @@ route = [
     (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
+    # API
+    (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler, {'api': True}),
 ]

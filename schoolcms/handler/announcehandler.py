@@ -30,7 +30,14 @@ class AnnounceHandler(BaseHandler):
                 raise self.HTTPError(404)
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
-            self.render('ann/announce.html',ann=ann, atts=atts)
+            
+            if self.api:
+                self.write({
+                        'ann' : ann.to_dict(),
+                        'atts' : [att.to_dict() for att in atts],
+                    })
+            else:
+                self.render('ann/announce.html',ann=ann, atts=atts)
 
         else:
             start = self.get_argument('start', '')
@@ -39,19 +46,29 @@ class AnnounceHandler(BaseHandler):
                 start = 0
             start = int(start)
 
-            anns = None
             totle = 0
             if search:
                 q = Announce.by_full_text(search, self.sql_session)
                 totle = q.count()
-                anns = q.all()
             else:
                 totle = self.sql_session.query(Announce.id).count()
                 q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
-                anns = q.all()
             q = q.offset(start).limit(10)
-            self.render('ann/annindex.html',anns=anns,search=search,start=start,totle=totle)
+            anns = q.all()
+
+            if self.api:
+                self.write({
+                        'anns' : [{
+                            'title': ann.title,
+                            'id' : ann.id,
+                            'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),} for ann in anns],
+                        'search' : search,
+                        'start' : start,
+                        'totle' : totle,
+                    })
+            else:
+                self.render('ann/annindex.html',anns=anns,search=search,start=start,totle=totle)
 
 
 class EditAnnHandler(BaseHandler):

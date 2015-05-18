@@ -19,6 +19,8 @@ from schoolcms.util.sqlalchemy_fulltext import FullText, FullTextSearch
 import schoolcms.util.sqlalchemy_fulltext.modes as FullTextMode
 import jieba
 
+jieba.set_dictionary('schoolcms/util/sqlalchemy_fulltext/dict.txt.big')
+
 
 class Announce(FullText, Base):
     __tablename__ = 'announcements'
@@ -26,7 +28,6 @@ class Announce(FullText, Base):
     __fulltext_columns__ = ('search',)
 
     id = Column(INTEGER, primary_key=True)
-    # title = Column(CHAR(100, collation='utf8_unicode_ci'), nullable=False)
     title = Column(TEXT(charset='utf8'), nullable=False)
     content = Column(TEXT(charset='utf8'), nullable=False)
     created = Column(TIMESTAMP, default=datetime.now)
