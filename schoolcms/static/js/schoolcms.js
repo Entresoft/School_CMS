@@ -5,6 +5,41 @@ var Alert = RB.Alert;
 var SC = {}
 
 
+SC.ResizeTextArea = React.createClass({
+  getInitialState: function(){
+    return {
+      'value': this.props.value,
+    }
+  },
+  textareaResize: function(){
+    var textarea = React.findDOMNode(this.refs.textarea).getElementsByTagName('textarea')[0];
+    textarea.style.height = '0px'
+    textarea.style.height = textarea.scrollHeight+20 + 'px';
+    if(this.props.onChange){
+      this.props.onChange();
+    }else if(this.props.valueLink){
+      this.props.valueLink.requestChange(this.refs.textarea.getValue());
+    }
+  },
+  getValue: function(){
+    return this.refs.textarea.getValue();
+  },
+  render: function() {
+    var out = ['valueLink', 'onChange', 'type', 'ref'];
+    var other = {};
+    for(var key in this.props){
+      if(out.indexOf(key) === -1){
+        other[key]=this.props[key];
+      }
+    }
+    other.className = (other.className?other.className:'')+'resizetextarea';
+    return (
+      <RB.Input {...other} type='textarea' ref='textarea' onChange={this.textareaResize} value={this.state.value} />
+    );
+  }
+});
+
+
 SC.NavbarInstance = React.createClass({
   userSign: function(){
     if( this.props.current_user ){
@@ -113,7 +148,7 @@ SC.AnnIndexPage = React.createClass({
     return (
       <RB.Grid>
         <RB.Row>
-          <RB.Col xs={12} md={12}>
+          <RB.Col xs={12} md={6}>
             <h1>Announcement</h1>
             <a href="/announce/edit">New Announcement!</a>
             <SC.SearchAnnForm search={this.props.search} />
@@ -146,8 +181,9 @@ SC.SearchAnnForm = React.createClass({
   render: function() {
     return (
       <form action="/announce">
-        <RB.Input type='text' name="search" valueLink={this.linkState('search')} placeholder='搜尋公告' />
-        <RB.Input type='submit' value='搜尋' />
+        <RB.Input type='text' name="search" valueLink={this.linkState('search')}
+            placeholder='搜尋公告'
+            buttonAfter={<RB.Input bsStyle='primary' className='btn-flat' type='submit' value='搜尋' />}/>
       </form>
     );
   }
@@ -257,6 +293,9 @@ SC.EditAnnPage = React.createClass({
       content: this.props.ann.content,
     };
   },
+  componentDidMount: function(){
+    $.material.init();
+  },
   render: function() {
     return (
       <RB.Grid>
@@ -267,7 +306,7 @@ SC.EditAnnPage = React.createClass({
               <RB.Well>
                 <RB.Input type='hidden' name="_xsrf" value={this.props._xsrf_token} />
                 <RB.Input type='text' name="title" valueLink={this.linkState('title')} label="公告標題" placeholder='輸入公告標題' />
-                <RB.Input type='textarea' name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' />
+                <SC.ResizeTextArea name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' />
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
