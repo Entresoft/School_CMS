@@ -43,7 +43,7 @@ class SessionGen(object):
         self.session.close()
 
 
-from .user import User
+from .user import User, Group, GroupList
 from .announce import Announce
 from .filelist import TempFileList, AttachmentList
 
@@ -56,4 +56,12 @@ if options.rbdb:
     with SessionGen() as session:
         user = User('root', 'root', 'root', '教師', True)
         session.add(user)
+
+        group = Group(1, '行政人員')
+        session.add(group)
+        group = Group(2, '系統師')
+        session.add(group)
+        group = Group(1000, 'END')
+        session.add(group)
+
         session.commit()

@@ -49,7 +49,7 @@ class LoginHandler(BaseHandler):
             self.redirect(self._['next_page'])
 
     def login(self):
-        if not re.match(r'^[a-z]{4,20}$', self._['account']):
+        if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):
             self._['error_msg'] = '無效的帳號或密碼'
             return None
         elif not re.match(r'^.{4,20}$', self._['passwd']):
@@ -110,7 +110,7 @@ class AddUserHandler(BaseHandler):
                 'passwd' : '',
                 'name' : '',
                 'student' : True,
-                'isadmin' : False,
+                'admin' : False,
                 'error_msg' : 'Add User Success!!',
             }
         
@@ -118,7 +118,7 @@ class AddUserHandler(BaseHandler):
 
 
     def add_user(self):
-        if not re.match(r'^[a-z]{4,20}$', self._['account']):
+        if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):
             self._['error_msg'] = '帳號格式錯誤'
             return None
         elif not re.match(r'^.{4,20}$', self._['passwd']):

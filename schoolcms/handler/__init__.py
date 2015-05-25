@@ -17,7 +17,7 @@ import markdown
 import tornado.web
 from tornado.escape import json_encode
 
-from schoolcms.db import Session, User
+from schoolcms.db import Session, User, GroupList
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -72,12 +72,27 @@ class BaseHandler(tornado.web.RequestHandler):
             return method(self, *args, **kwargs)
         return wrapper
 
+    @staticmethod
+    def is_group_user(groupid):
+        def decorator(method):
+            @BaseHandler.authenticated
+            def wrapper(self, *args, **kwargs):
+                if not self.current_user.admin:
+                    group = GroupList.check(self.current_user.key,
+                                            groupid, self.sql_session)
+                    if not group:
+                        raise self.HTTPError(403)
+                return method(self, *args, **kwargs)
+            return wrapper
+        return decorator
+
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
+from .grouphandler import GroupHandler, GroupListHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
@@ -90,6 +105,8 @@ route = [
     (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
+    (r'/group/?', GroupHandler),
+    (r'/grouplist/?', GroupListHandler),
     # API
     (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler, {'api': True}),
 ]

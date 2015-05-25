@@ -80,3 +80,50 @@ class User(Base):
         for i in _map:
             _l.append("'%s':'%s'" % (i, _map[i]))
         return '{%s}' % ','.join(_l)
+
+
+class Group(Base):
+    __tablename__ = 'groups'
+
+    id = Column(INTEGER, primary_key=True)
+    name = Column(VARCHAR(20, collation='utf8_unicode_ci'), nullable=False)
+    system = Column(BOOLEAN, nullable=False)
+
+    def __init__(self, id, name):
+        self.id = id if id else None
+        self.name = name
+
+    @classmethod
+    def by_id(cls, id, sql_session):
+        q = sql_session.query(cls)
+        return q.filter(cls.id == id)
+
+    def to_dict(self):
+        return {
+            'id' : self.id,
+            'name' : self.name,
+        }
+
+
+class GroupList(Base):
+    __tablename__ = 'grouplist'
+
+    userkey = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
+    groupid = Column(INTEGER, nullable=False)
+
+    def __init__(self, userkey, groupid):
+        self.userkey = userkey
+        self.groupid = groupid
+
+    @classmethod
+    def check(cls, userkey, groupid, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.userkey == userkey)
+        q = q.filter(cls.groupid == groupid)
+        return q.scalar()
+
+    def to_dict(self):
+        return {
+            'userkey' : self.userkey,
+            'groupid' : self.groupid,
+        }
