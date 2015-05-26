@@ -1,0 +1,3 @@
+V/** @jsx React.DOM */\u000a\u000aSC.GroupPage = React.createClass({displayName: 'GroupPage',\u000a  render: function() {\u000a    var group_tag = this.props.groups.map(function(group){\u000a      return (\u000a        React.createElement(RB.Label, {key: group.id, bsStyle: "primary"}, group.name)\u000a      );\u000a    });\u000a    return (\u000a      React.createElement(RB.Grid, null, \u000a        React.createElement(RB.Row, null, \u000a          React.createElement(RB.Col, null, React.createElement(RB.Well, null, \u000a            React.createElement("h3", null, "\u7fa4\u7d44"), React.createElement("hr", null), \u000a            group_tag\u000a          ))\u000a        )\u000a      )\u000a    );\u000a  }\u000a});\u000a
+p1
+.

@@ -18,42 +18,40 @@ from schoolcms.db import User
 
 
 class LoginHandler(BaseHandler):
-    def prepare(self):
-        super(LoginHandler, self).prepare()
-        self._ = {
-            'account' : '',
-            'error_msg' : '',
-            'next_page' : '',
-        }
-
     def get(self):
         if self.current_user:
             raise self.HTTPError(404)
 
-        self._['next_page'] = self.get_argument('next', '/')
-        self.render('user/login.html', **self._)
+        next_page = self.get_argument('next', '/')
+        self.write({
+                '_xsrf': self.xsrf_token,
+                'alert': None,
+                'next': next_page,
+            })
 
     def post(self):
         if self.current_user:
             raise self.HTTPError(404)
 
+        self._ = dict()
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
-        self._['next_page'] = self.get_argument('next_page', '/')
+        self._['next'] = self.get_argument('next', '/')
 
         user = self.login()
         if not user:
-            self.render('user/login.html', **self._)
+            del self._['passwd']
+            self.write(self._)
         else:
             self.set_secure_cookie('uid', unicode(user.key))
-            self.redirect(self._['next_page'])
+            self.redirect(self._['next'])
 
     def login(self):
         if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):
-            self._['error_msg'] = '無效的帳號或密碼'
+            self._['alert'] = '無效的帳號或密碼'
             return None
         elif not re.match(r'^.{4,20}$', self._['passwd']):
-            self._['error_msg'] = '帳號或密碼錯誤'
+            self._['alert'] = '帳號或密碼錯誤'
             return None
         
         q = self.sql_session.query(User)
@@ -61,7 +59,7 @@ class LoginHandler(BaseHandler):
         user = q.first()
 
         if not user or not user.check_passwd(self._['passwd']):
-            self._['error_msg'] = '帳號或密碼錯誤'
+            self._['alert'] = '帳號或密碼錯誤'
             return None
         else:
             return user

@@ -1,0 +1,3 @@
+V/** @jsx React.DOM */\u000a\u000aconst RB = ReactBootstrap;\u000avar Alert = RB.Alert;\u000avar SC = {}\u000a
+p1
+.

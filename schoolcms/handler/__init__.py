@@ -18,11 +18,27 @@ import tornado.web
 from tornado.escape import json_encode
 
 from schoolcms.db import Session, User, GroupList
+from webassets import Environment, Bundle
+from schoolcms.util  import webassets_react
 
 
 class BaseHandler(tornado.web.RequestHandler):
-    def initialize(self, api=False):
-        self.api = api
+    def initialize(self):
+        self.assets = Environment(
+                os.path.join(os.path.dirname(__file__), '../static'),'/static')
+        jsx = Bundle('schoolcms/init.jsx','schoolcms/import/*.jsx',filters=('react','jsmin'),output='js/jsx.js')
+        all_js = Bundle(
+                'js/jquery-2.1.3.min.js',
+                'bootstrap-3.3.4-dist/js/bootstrap.min.js',
+                'react-0.13.2/react-with-addons.js',
+                'react-0.13.2/JSXTransformer.js',
+                'js/react-bootstrap.min.js',
+                'js/react-mini-router.min.js',
+                'js/marked.min.js',
+                'bootstrap-material/js/material.min.js',
+                output='js/plugin.js')
+        self.assets.register('js_all', all_js)
+        self.assets.register('jsx', jsx)
 
     def prepare(self):
         """This method is executed at the beginning of each request.
@@ -49,7 +65,9 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
         _['markdown'] = markdown.markdown
-        _['xsrf_token'] = self.xsrf_token
+        _['xsrf'] = self.xsrf_token
+        _['js_urls'] = self.assets['js_all'].urls()
+        _['jsx_urls'] = self.assets['jsx'].urls()
         return _
 
     @property
@@ -87,6 +105,11 @@ class BaseHandler(tornado.web.RequestHandler):
         return decorator
 
 
+class AppHandler(BaseHandler):
+    def get(self):
+        self.render('app.html')
+
+
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
@@ -98,15 +121,16 @@ print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
     (r'/', IndexHandler),
-    (r'/login/?', LoginHandler),
+    (r'/login/?', AppHandler),
     (r'/logout/?', LogoutHandler),
     (r'/admin/adduser/?', AddUserHandler),
-    (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
+    (r'/announce(?:/([0-9]+))?/?', AppHandler),
     (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
     (r'/group/?', GroupHandler),
     (r'/grouplist/?', GroupListHandler),
     # API
-    (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler, {'api': True}),
+    (r'/api/login/?', LoginHandler),
+    (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
 ]

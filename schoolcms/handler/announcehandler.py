@@ -37,7 +37,7 @@ class AnnounceHandler(BaseHandler):
                         'atts' : [att.to_dict() for att in atts],
                     })
             else:
-                self.render('ann/announce.html',ann=ann, atts=atts)
+                self.render('app.html')
 
         else:
             start = self.get_argument('start', '')
@@ -68,7 +68,7 @@ class AnnounceHandler(BaseHandler):
                         'totle' : totle,
                     })
             else:
-                self.render('ann/annindex.html',anns=anns,search=search,start=start,totle=totle)
+                self.render('app.html')
 
 
 class EditAnnHandler(BaseHandler):

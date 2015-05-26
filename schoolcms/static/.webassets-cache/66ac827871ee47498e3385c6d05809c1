@@ -1,0 +1,3 @@
+V/** @jsx React.DOM */\u000a\u000aconst RB = ReactBootstrap;\u000aconst RMR = ReactMiniRouter;\u000avar Alert = RB.Alert;\u000avar SC = {}\u000a\u000aSC.makeURL = function(path,query){\u000a    var q = [];\u000a    for(var key in query){\u000a        q.push(encodeURIComponent(key)+'='+encodeURIComponent(query[key]));\u000a    }\u000a    return path+'?'+(q.join('&'));\u000a}\u000a
+p1
+.
