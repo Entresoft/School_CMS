@@ -6,7 +6,7 @@ SC.AnnIndexPage = React.createClass({
       annlist: [],
     };
   },
-  componentDidMount: function(){
+  componentWillMount: function(){
     var url = '/api'+window.location.pathname+window.location.search;
     this.props.ajax(url,'GET',null,function(data){
       this.setState({annlist:data.anns,start:data.start,totle:data.totle});

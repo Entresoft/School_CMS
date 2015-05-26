@@ -1,3 +1,4 @@
 *.json
 *.pyc
 config.py
+schoolcms/static/.webassets-cache

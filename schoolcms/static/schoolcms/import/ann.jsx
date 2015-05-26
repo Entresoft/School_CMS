@@ -82,25 +82,35 @@ SC.EditAnnPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function() {
     return {
-      title: this.props.ann.title,
-      content: this.props.ann.content,
+      title: '',
+      content: '',
+      tmpatts: [],
+      atts: [],
+      annid: '',
+      _xsrf: '',
     };
+  },
+  componentWillMount: function(){
+    var url = '/api'+window.location.pathname;
+    this.props.ajax(url,'GET',null,function(json){
+      this.setState(json);
+    }.bind(this));
   },
   render: function() {
     return (
       <RB.Grid>
         <RB.PageHeader>編輯公告</RB.PageHeader>
-        <form action={'/announce/edit/'+this.props.ann.id} method="POST">
+        <form>
           <RB.Row>
             <RB.Col xs={12} md={6}>
               <RB.Well>
-                <RB.Input type='hidden' name="_xsrf" value={this.props._xsrf_token} />
+                <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf} />
                 <RB.Input type='text' name="title" valueLink={this.linkState('title')} label="公告標題" placeholder='輸入公告標題' />
                 <SC.ResizeTextArea name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' />
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
-                <SC.EditAttPanel attlist={this.props.attlist} tmpatts={this.props.tmpatts} _xsrf_token={this.props._xsrf_token} />
+                <SC.EditAttPanel atts={this.state.atts} tmpatts={this.state.tmpatts} _xsrf={this.state._xsrf} />
               </RB.Well>
             </RB.Col>
             <RB.Col xs={12} md={6}><RB.Well>
@@ -113,10 +123,9 @@ SC.EditAnnPage = React.createClass({
               <RB.Button bsStyle='success' bsSize='xsmall' block type='submit'>確定</RB.Button>
             </RB.Col>
             <RB.Col xs={12} md={2}>
-              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.props.ann.id}>返回</a>
+              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.state.annid}>返回</a>
             </RB.Col>
           </RB.Row>
-          
         </form>
       </RB.Grid>
     );
@@ -128,7 +137,7 @@ SC.EditAttPanel = React.createClass({
   getInitialState: function() {
     return {
       tmpatts: this.props.tmpatts,
-      attlist: this.props.attlist,
+      atts: this.props.atts,
     };
   },
   handleChange: function(file){
@@ -146,15 +155,15 @@ SC.EditAttPanel = React.createClass({
         tmpatts:tmpatts,
       });
     }else{
-      attlist = this.state.attlist;
-      attlist.splice(attlist.indexOf(att),1);
+      atts = this.state.atts;
+      atts.splice(atts.indexOf(att),1);
       this.setState({
-        attlist:attlist,
+        atts:atts,
       });
     }
   },
   render: function() {
-    var uploadedatts = this.state.attlist.map(function (att) {
+    var uploadedatts = this.state.atts.map(function (att) {
       return <SC.DeleteAttComponent key={att.key} att={att} handleDelete={this.handleDelete} _xsrf_token={this.props._xsrf_token} />
     }.bind(this));
     var atts = this.state.tmpatts.map(function (att) {

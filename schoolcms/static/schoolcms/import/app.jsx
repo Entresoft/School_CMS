@@ -8,8 +8,9 @@ SC.App = React.createClass({
       '/logout': 'logoutHandler',
       '/admin/adduser': 'adduserHandler',
       '/announce': 'annIndexHandler',
-      '/announce/:annid': 'announceHandler',
+      '/announce/edit': 'editAnnHandler',
       '/announce/edit/:annid': 'editAnnHandler',
+      '/announce/:annid': 'announceHandler',
       '/group': 'groupHandler',
       '/grouplist': 'groupListHandler',
   },
@@ -45,10 +46,17 @@ SC.App = React.createClass({
     return {
       loading: -1,
       status: 200,
+      current_user: null,
     };
   },
   componentDidMount: function(){
+    this.getCurrentUser();
     $.material.init();
+  },
+  getCurrentUser: function(){
+    this.ajax('/api','GET',null,function(json){
+      this.setState({current_user:json.current_user});
+    }.bind(this));
   },
   render: function() {
     var getPage = function(){
@@ -61,7 +69,7 @@ SC.App = React.createClass({
     var progressBar = function(){
       if(this.state.loading>=0){
         return (
-          <RB.ProgressBar now={this.state.loading} bsStyle='info' 
+          <RB.ProgressBar now={this.state.loading} bsStyle='danger' 
             style={{position:'fixed',top:'0px',height:'4px',width:'100%',zIndex:100,}} />
         );
       }
@@ -69,21 +77,21 @@ SC.App = React.createClass({
     return (
       <div>
         {progressBar()}
-        <SC.NavbarInstance loginpage={false} current_user={null} />
+        <SC.NavbarInstance current_user={this.state.current_user} />
         {getPage()}
       </div>
     );
   },
 
   indexHandler: function() {
-      return <div>Hello World</div>;
+      return <a href='/announce'>Announce</a>;
   },
   loginHandler: function(params) {
     if(!params.next){params.next='/';}
-    return <SC.LoginPage ajax={this.ajax} next={params.next}/>;
+    return <SC.LoginPage ajax={this.ajax} next={params.next} onLogin={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
-      return <SC.LoginPage/>;
+      return <SC.LogoutPage ajax={this.ajax} onLogout={this.getCurrentUser}/>;
   },
   adduserHandler: function() {
       return <SC.LoginPage/>;
@@ -99,8 +107,8 @@ SC.App = React.createClass({
   announceHandler: function() {
       return <SC.LoginPage/>;
   },
-  editAnnHandler: function() {
-      return <SC.LoginPage/>;
+  editAnnHandler: function(annid, params) {
+    return <SC.EditAnnPage ajax={this.ajax}/>;
   },
   groupHandler: function() {
       return <SC.LoginPage/>;

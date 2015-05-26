@@ -106,7 +106,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
 
 class AppHandler(BaseHandler):
-    def get(self):
+    def get(self,  *a, **kwargs):
         self.render('app.html')
 
 
@@ -120,17 +120,20 @@ from .grouphandler import GroupHandler, GroupListHandler
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
-    (r'/', IndexHandler),
+    (r'/', AppHandler),
     (r'/login/?', AppHandler),
-    (r'/logout/?', LogoutHandler),
+    (r'/logout/?', AppHandler),
     (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AppHandler),
-    (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
+    (r'/announce/edit(?:/([0-9]+))?/?', AppHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
     (r'/group/?', GroupHandler),
     (r'/grouplist/?', GroupListHandler),
     # API
+    (r'/api/?', IndexHandler),
     (r'/api/login/?', LoginHandler),
+    (r'/api/logout/?', LogoutHandler),
     (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
+    (r'/api/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
 ]

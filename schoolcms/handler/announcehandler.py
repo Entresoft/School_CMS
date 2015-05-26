@@ -31,13 +31,10 @@ class AnnounceHandler(BaseHandler):
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             
-            if self.api:
-                self.write({
-                        'ann' : ann.to_dict(),
-                        'atts' : [att.to_dict() for att in atts],
-                    })
-            else:
-                self.render('app.html')
+            self.write({
+                    'ann' : ann.to_dict(),
+                    'atts' : [att.to_dict() for att in atts],
+                })
 
         else:
             start = self.get_argument('start', '')
@@ -57,30 +54,27 @@ class AnnounceHandler(BaseHandler):
             q = q.offset(start).limit(10)
             anns = q.all()
 
-            if self.api:
-                self.write({
-                        'anns' : [{
-                            'title': ann.title,
-                            'id' : ann.id,
-                            'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),} for ann in anns],
-                        'search' : search,
-                        'start' : start,
-                        'totle' : totle,
-                    })
-            else:
-                self.render('app.html')
+            self.write({
+                    'anns' : [{
+                        'title': ann.title,
+                        'id' : ann.id,
+                        'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),} for ann in anns],
+                    'search' : search,
+                    'start' : start,
+                    'totle' : totle,
+                })
 
 
 class EditAnnHandler(BaseHandler):
     def prepare(self):
         super(EditAnnHandler, self).prepare()
         self._ = {
-            'title' : '',
-            'content' : '',
-            'error_msg' : '',
+            'title': '',
+            'content': '',
             'ann_id': '',
-            'tmpatts' : [],
-            'atts' : [],
+            'tmpatts': [],
+            'atts': [],
+            '_xsrf': self.xsrf_token,
         }
 
     @BaseHandler.is_group_user(1)
@@ -94,7 +88,7 @@ class EditAnnHandler(BaseHandler):
             self._['ann_id'] = ann_id
             self._['atts'] = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
-        self.render('ann/editann.html',**self._)
+        self.write(self._)
 
     @BaseHandler.is_group_user(1)
     def post(self, ann_id):

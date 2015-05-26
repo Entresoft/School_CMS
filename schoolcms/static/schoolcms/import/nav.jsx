@@ -12,9 +12,9 @@ SC.NavbarInstance = React.createClass({
           <RB.MenuItem eventKey='4' href="/logout">Logout</RB.MenuItem>
         </RB.DropdownButton>
       )
-    }else if(!this.props.loginpage){
+    }else if(window.location.pathname.substr(0,6)!='/login'){
       return (
-        <a href='/login'>Login</a>
+        <RB.NavItem eventKey={1} href={'/login?next='+encodeURIComponent(window.location.pathname)}>Login</RB.NavItem>
       );
     }
   },

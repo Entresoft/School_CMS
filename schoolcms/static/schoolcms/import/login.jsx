@@ -9,15 +9,24 @@ SC.LoginForm = React.createClass({
       alert: null,
     };
   },
-  componentDidMount: function(){
+  componentWillMount: function(){
     var url = '/api'+window.location.pathname+window.location.search;
     this.props.ajax(url,'GET',null,function(json){
       this.setState({_xsrf:json._xsrf,alert: json.alert});
     }.bind(this));
   },
   handleLogin: function(){
-    ;
-  }
+    var url = '/api'+window.location.pathname;
+    var form = new FormData(React.findDOMNode(this.refs.form));
+    this.props.ajax(url,'POST',form,function(json){
+      if(json.login){
+        this.props.onLogin();
+        RMR.navigate(this.props.next);
+      }else{
+        this.setState({alert: json.alert});
+      }
+    }.bind(this));
+  },
   errorMsg: function() {
     if(this.state.alert){
       return (
@@ -29,13 +38,13 @@ SC.LoginForm = React.createClass({
   },
   render: function() {
     return (
-      <form onSubmit={function(e){e.preventDefault();e.stopPropagation();this.handleLogin();}.bind(this)}>
+      <form ref='form' onSubmit={function(e){e.preventDefault();e.stopPropagation();this.handleLogin();}.bind(this)}>
         {this.errorMsg() }
         <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf} />
         <RB.Input type='hidden' name="next" value={this.props.next} />
         <RB.Input type='text' name="account" valueLink={this.linkState('account')} placeholder='帳號' />
         <RB.Input type='password' name="passwd" placeholder='密碼' />
-        <RB.Button></RB.Button>
+        <RB.Button bsStyle='primary' className='btn-flat' onClick={this.handleLogin}>登入</RB.Button>
       </form>
     );
   },
@@ -43,6 +52,12 @@ SC.LoginForm = React.createClass({
 
 
 SC.LoginPage = React.createClass({
+  componentWillMount: function(){
+    var url = '/api'+window.location.pathname+window.location.search;
+    this.props.ajax(url,'GET',null,function(json){
+      this.setState({_xsrf:json._xsrf,alert: json.alert});
+    }.bind(this));
+  },
   render: function() {
     return (
       <RB.Grid>
@@ -54,6 +69,22 @@ SC.LoginPage = React.createClass({
           </RB.Well>
         </RB.Col>
       </RB.Grid>
+    );
+  }
+});
+
+
+SC.LogoutPage = React.createClass({
+  componentWillMount: function(){
+    var url = '/api'+window.location.pathname;
+    this.props.ajax(url,'GET',null,function(json){
+      this.props.onLogout();
+      RMR.navigate('/');
+    }.bind(this));
+  },
+  render: function() {
+    return (
+      <div />
     );
   }
 });

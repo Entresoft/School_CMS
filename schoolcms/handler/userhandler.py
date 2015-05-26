@@ -44,7 +44,7 @@ class LoginHandler(BaseHandler):
             self.write(self._)
         else:
             self.set_secure_cookie('uid', unicode(user.key))
-            self.redirect(self._['next'])
+            self.write({'login':True,'next':self._['next']})
 
     def login(self):
         if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):
@@ -67,11 +67,8 @@ class LoginHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
     def get(self):
-        if not self.current_user:
-            self.error(403)
-        else :
-            self.clear_cookie('uid')
-            self.redirect('/')
+        self.clear_cookie('uid')
+        self.write({'logout':True})
 
 
 class AddUserHandler(BaseHandler):
