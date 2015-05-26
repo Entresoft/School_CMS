@@ -44,7 +44,7 @@ SC.NavbarInstance = React.createClass({
   userSign: function(){
     if( this.props.current_user ){
       return (
-        <RB.DropdownButton eventKey={3} title={ this.props.current_user.name }>
+        <RB.DropdownButton eventKey={1} title={ this.props.current_user.name }>
           <RB.MenuItem eventKey='1'>Action</RB.MenuItem>
           <RB.MenuItem eventKey='2'>Another action</RB.MenuItem>
           <RB.MenuItem eventKey='3'>Something else here</RB.MenuItem>
@@ -55,7 +55,7 @@ SC.NavbarInstance = React.createClass({
     }else if(!this.props.loginpage){
       return (
         <RB.ModalTrigger modal={<SC.LoginModel _xsrf_token={this.props._xsrf_token} />}>
-          <RB.NavItem eventKey={3}>Login</RB.NavItem>
+          <RB.NavItem eventKey={1}>Login</RB.NavItem>
         </RB.ModalTrigger>
       );
     }
@@ -64,8 +64,6 @@ SC.NavbarInstance = React.createClass({
     return (
       <RB.Navbar brand={<a href="/">School Cms</a>} inverse toggleNavKey={0}>
         <RB.Nav right eventKey={0}> {/* This is the eventKey referenced */}
-          <RB.NavItem eventKey={1} href='#'>Link</RB.NavItem>
-          <RB.NavItem eventKey={2} href='#'>Link</RB.NavItem>
           { this.userSign() }
         </RB.Nav>
       </RB.Navbar>
@@ -145,27 +143,38 @@ SC.AnnIndexPage = React.createClass({
         </tr>
       );
     });
+    var pageAjax = function(){
+      if(this.state.precent>=0){
+        return(
+          <RB.ProgressBar now={this.state.precent} bsStyle='info' 
+            style={{position:'fixed',top:'0px',height:'4px',width:'100%'}} />
+        );
+      }
+    }
     return (
-      <RB.Grid>
-        <RB.Row>
-          <RB.Col xs={12} md={6}>
-            <h1>Announcement</h1>
-            <a href="/announce/edit">New Announcement!</a>
-            <SC.SearchAnnForm search={this.props.search} />
-          </RB.Col>
-        </RB.Row>
-        <RB.Row><RB.Col xs={12} md={12}>
-          <RB.Well>
-            <RB.Table striped bordered hover>
-              <thead>
-                <tr><th>標題</th><th>公告時間</th></tr>
-              </thead>
-              <tbody>{annItems}</tbody>
-            </RB.Table>
-          </RB.Well>
-          <SC.Pager start={this.props.start} totle={this.props.totle} />
-        </RB.Col></RB.Row>
-      </RB.Grid>
+      <div>
+        {pageAjax()}
+        <RB.Grid>
+          <RB.Row>
+            <RB.Col xs={12} md={6}>
+              <h1>Announcement</h1>
+              <a href="/announce/edit">New Announcement!</a>
+              <SC.SearchAnnForm search={this.props.search} />
+            </RB.Col>
+          </RB.Row>
+          <RB.Row><RB.Col xs={12} md={12}>
+            <RB.Well>
+              <RB.Table striped bordered hover>
+                <thead>
+                  <tr><th>標題</th><th>公告時間</th></tr>
+                </thead>
+                <tbody>{annItems}</tbody>
+              </RB.Table>
+            </RB.Well>
+            <SC.Pager start={this.props.start} totle={this.props.totle} />
+          </RB.Col></RB.Row>
+        </RB.Grid>
+      </div>
     );
   }
 });
