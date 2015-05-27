@@ -30,11 +30,10 @@ class AnnounceHandler(BaseHandler):
                 raise self.HTTPError(404)
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
-            
-            self.write({
-                    'ann' : ann.to_dict(),
-                    'atts' : [att.to_dict() for att in atts],
-                })
+
+            self._ = ann.to_dict()
+            self._['atts'] = [att.to_dict() for att in atts]
+            self.write(self._)
 
         else:
             start = self.get_argument('start', '')
@@ -75,6 +74,7 @@ class EditAnnHandler(BaseHandler):
             'tmpatts': [],
             'atts': [],
             '_xsrf': self.xsrf_token,
+            'alert': None,
         }
 
     @BaseHandler.is_group_user(1)
@@ -86,7 +86,8 @@ class EditAnnHandler(BaseHandler):
             self._['title'] = ann.title
             self._['content'] = ann.content
             self._['ann_id'] = ann_id
-            self._['atts'] = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
+            atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
+            self._['atts'] = [att.to_dict() for att in atts]
 
         self.write(self._)
 
@@ -101,7 +102,7 @@ class EditAnnHandler(BaseHandler):
 
         # check ann and att
         if not self.check_ann():
-            return self.render('ann/editann.html',**self._)
+            return self.write(self._)
 
         self._['author_key'] = self.current_user.key
         self._['visible'] = True
@@ -118,11 +119,11 @@ class EditAnnHandler(BaseHandler):
             self.sql_session.flush()
             self.sql_session.refresh(new_ann)
             self.ann_id = new_ann.id
-        
+
         self.parse_att()
 
         self.sql_session.commit()
-        self.redirect('/announce/%s' % self.ann_id)
+        self.write({'posted': True,'ann_id': self.ann_id})
 
     def check_ann(self):
         for i in xrange(len(self.attkeys)):
@@ -136,14 +137,14 @@ class EditAnnHandler(BaseHandler):
                     self._['tmpatts'].append(new_att)
 
                 except:
-                    self._['error_msg'] = 'Miss attachment!'
+                    self._['alert'] = 'Miss attachment!'
                     return False
 
         if not self._['title']:
-            self._['error_msg'] = 'Title can\'t leave blank.'
+            self._['alert'] = 'Title can\'t leave blank.'
             return False
         elif not self._['content']:
-            self._['error_msg'] = 'Content can\'t leave blank.'
+            self._['alert'] = 'Content can\'t leave blank.'
             return False
             
         return True

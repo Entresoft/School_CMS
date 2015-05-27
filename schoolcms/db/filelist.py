@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
+import mimetypes
 
 from . import Base
 from datetime import datetime
@@ -81,11 +82,11 @@ class AttachmentList(Base):
         return q.filter(cls.ann_id == ann_id)
 
     def to_dict(self):
-        match = re.search('[a-zA-Z0-9]+$', self.path)
-        _filetype = match and match.group() or 'file'
+        _filetype = mimetypes.guess_extension(self.content_type)
+        _filetype = _filetype if _filetype else ''
         return {
             'key' : self.key,
             'filename' : self.path[33:],
             'path' : self.path,
-            'filetype' : _filetype,
+            'filetype' : _filetype[1:],
         }

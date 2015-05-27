@@ -1,29 +1,45 @@
 /** @jsx React.DOM */
 
 SC.AnnouncePage = React.createClass({
+  getInitialState: function() {
+    return {
+      title: '',
+      content: '',
+      created: '',
+      updated: '',
+      atts: [],
+      id: '',
+    };
+  },
+  componentWillMount: function(){
+    var url = '/api'+window.location.pathname;
+    this.props.ajax(url,'GET',null,function(json){
+      this.setState(json);
+    }.bind(this));
+  },
   render: function() {
     return (
       <RB.Grid>
-        <RB.PageHeader>{this.props.ann.title}
+        <RB.PageHeader>{this.state.title}
           <small> by 設備組‧組長</small>
         </RB.PageHeader>
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <span dangerouslySetInnerHTML={{__html: marked(this.props.ann.content, {sanitize: true,breaks:true})}} />
+          <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>附件</h4><hr/>
-            <SC.AttachmentPanel attlist={this.props.attlist} />
+            <SC.AttachmentPanel atts={this.state.atts} />
           </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>時間</h4><hr/>
-            <p>發布於：{this.props.ann.created}</p>
-            <p>最後更新：{this.props.ann.updated}</p>
+            <p>發布於：{this.state.created}</p>
+            <p>最後更新：{this.state.updated}</p>
           </RB.Well></RB.Col>
         </RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={2}>
-            <a className="btn btn-warning btn-xs btn-block" href={'/announce/edit/'+this.props.ann.id}>編輯</a>
+            <a className="btn btn-warning btn-xs btn-block" href={'/announce/edit/'+this.state.id}>編輯</a>
           </RB.Col>
           <RB.Col xs={12} md={2}>
             <a className="btn btn-primary btn-xs btn-block" href="/announce/">返回</a>
@@ -52,7 +68,7 @@ SC.AttachmentPanel = React.createClass({
     }
   },
   render: function() {
-    var attItems = this.props.attlist.map(function (att) {
+    var attItems = this.props.atts.map(function (att) {
       if(this._icon.indexOf(att.filetype)<0){
         att.filetype = 'file';
       }
@@ -69,227 +85,10 @@ SC.AttachmentPanel = React.createClass({
         </div>
       );
     }.bind(this));
-    if( this.props.attlist.length ){
+    if( this.props.atts.length ){
       return <div>{attItems}</div>;
     }else{
       return <p>沒有附件</p>;
     }
   },
-});
-
-
-SC.EditAnnPage = React.createClass({
-  mixins: [React.addons.LinkedStateMixin],
-  getInitialState: function() {
-    return {
-      title: '',
-      content: '',
-      tmpatts: [],
-      atts: [],
-      annid: '',
-      _xsrf: '',
-    };
-  },
-  componentWillMount: function(){
-    var url = '/api'+window.location.pathname;
-    this.props.ajax(url,'GET',null,function(json){
-      this.setState(json);
-    }.bind(this));
-  },
-  render: function() {
-    return (
-      <RB.Grid>
-        <RB.PageHeader>編輯公告</RB.PageHeader>
-        <form>
-          <RB.Row>
-            <RB.Col xs={12} md={6}>
-              <RB.Well>
-                <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf} />
-                <RB.Input type='text' name="title" valueLink={this.linkState('title')} label="公告標題" placeholder='輸入公告標題' />
-                <SC.ResizeTextArea name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' />
-              </RB.Well>
-              <RB.Well>
-                <h4>編輯附件</h4><hr/>
-                <SC.EditAttPanel atts={this.state.atts} tmpatts={this.state.tmpatts} _xsrf={this.state._xsrf} />
-              </RB.Well>
-            </RB.Col>
-            <RB.Col xs={12} md={6}><RB.Well>
-              <h4>預覽內容</h4><hr/>
-              <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
-            </RB.Well></RB.Col>
-          </RB.Row>
-          <RB.Row>
-            <RB.Col xs={12} md={2}>
-              <RB.Button bsStyle='success' bsSize='xsmall' block type='submit'>確定</RB.Button>
-            </RB.Col>
-            <RB.Col xs={12} md={2}>
-              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.state.annid}>返回</a>
-            </RB.Col>
-          </RB.Row>
-        </form>
-      </RB.Grid>
-    );
-  }
-});
-
-
-SC.EditAttPanel = React.createClass({
-  getInitialState: function() {
-    return {
-      tmpatts: this.props.tmpatts,
-      atts: this.props.atts,
-    };
-  },
-  handleChange: function(file){
-    tmpatts = this.state.tmpatts;
-    tmpatts.push(file);
-    this.setState({
-      tmpatts: tmpatts,
-    });
-  },
-  handleDelete: function(att, upload){
-    if(upload){
-      tmpatts = this.state.tmpatts;
-      tmpatts.splice(tmpatts.indexOf(att),1);
-      this.setState({
-        tmpatts:tmpatts,
-      });
-    }else{
-      atts = this.state.atts;
-      atts.splice(atts.indexOf(att),1);
-      this.setState({
-        atts:atts,
-      });
-    }
-  },
-  render: function() {
-    var uploadedatts = this.state.atts.map(function (att) {
-      return <SC.DeleteAttComponent key={att.key} att={att} handleDelete={this.handleDelete} _xsrf_token={this.props._xsrf_token} />
-    }.bind(this));
-    var atts = this.state.tmpatts.map(function (att) {
-      return <SC.DeleteAttComponent key={att.key} att={att} handleDelete={this.handleDelete} upload={true} _xsrf_token={this.props._xsrf_token} />
-    }.bind(this)); 
-    return (
-      <div>
-        {uploadedatts}
-        {atts}
-        <SC.UploadAttBox _xsrf_token={this.props._xsrf_token} newUpload={this.handleChange} />
-      </div>
-    );
-  }
-});
-
-
-SC.DeleteAttComponent = React.createClass({
-  uploadfile: function(){
-    if(this.props.upload){
-      return <RB.Input key={0} type="hidden" name="attachment" value={this.props.att.key} />;
-    }
-  },
-  deleteAtt: function(){
-    if(!confirm('你確定要刪除 '+this.props.att.filename+' 嗎?'))return;
-    xhr = new XMLHttpRequest();
-    form = new FormData();
-    form.append('_xsrf', this.props._xsrf_token);
-    path = this.props.upload?'/fileupload/':'/file/';
-    path+=this.props.att.key;
-    xhr.open('DELETE',path,true);
-    xhr.onreadystatechange = function(){
-      if(xhr.readyState==4&&xhr.status==200){
-        console.log(xhr.responseText);
-        this.props.handleDelete(this.props.att,this.props.upload);
-      }
-    }.bind(this);
-    xhr.send(form);
-  },
-  render: function() {
-    return (
-      <RB.Panel key={this.props.key}>
-        <RB.Row>
-          <RB.Col xs={10} md={10}>
-            <span className="glyphicon glyphicon-file" aria-hidden="true"></span>
-            <span className="hideOverflow">{this.props.att.filename.substring(0,50)}</span>
-          </RB.Col>
-          <RB.Col xs={2} md={2}>
-            <RB.Button onClick={this.deleteAtt} bsStyle='danger'>刪除</RB.Button>
-            {this.uploadfile()}
-          </RB.Col>
-        </RB.Row>
-      </RB.Panel>
-    );
-  }
-});
-
-
-SC.UploadAttBox = React.createClass({
-  getInitialState: function() {
-    return {
-      file: '',
-      filelist: {},
-    };
-  },
-  handleChange: function(evt) {
-    file = evt.target.files[0];
-    form = new FormData();
-    xhr = new XMLHttpRequest();
-    uuid = new Date().getTime();
-
-    filelist = this.state.filelist;
-    filelist[uuid] = {
-      percent: 0.0,
-      filename: file.name,
-    };
-    this.setState({
-      filelist:filelist,
-      file: '',
-    });
-
-    form.append('file',file);
-    form.append('_xsrf',this.props._xsrf_token);
-    xhr.open('POST','/fileupload',true);
-    xhr.onreadystatechange = function(){
-      if(xhr.readyState==4&&xhr.status==200){
-        console.log(xhr.responseText);
-        attfile = JSON.parse(xhr.responseText);
-        this.props.newUpload({
-          'filename': attfile.file_name,
-          'key': attfile.key,
-        });
-        filelist = this.state.filelist;
-        delete filelist[uuid];
-        this.setState({
-          filelist: filelist,
-        })
-      }
-    }.bind(this);
-    xhr.upload.onprogress = function(e){
-      if(e.lengthComputable){
-          filelist = this.state.filelist;
-          filelist[uuid].percent = e.loaded*100 / e.total;
-          this.setState({filelist: filelist});
-      }
-    }.bind(this);
-    xhr.send(form);
-  },
-  progressBar: function (uuid){
-    return (
-      <RB.Panel key={uuid}>
-        <span className="glyphicon glyphicon-file" aria-hidden="true"></span>
-        {this.state.filelist[uuid].filename}
-        <RB.ProgressBar active now={this.state.filelist[uuid].percent} label='%(percent)s%'/>
-      </RB.Panel>
-    )
-  },
-  render: function() {
-    var uploading = [];
-    for (var i in this.state.filelist){
-      uploading.push(this.progressBar(i));
-    }
-    return (
-      <div>
-        {uploading}
-        <RB.Input type="file" ref="file" value={this.state.file} onChange={this.handleChange} />
-      </div>
-    );
-  }
 });

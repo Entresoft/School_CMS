@@ -19,7 +19,7 @@ SC.AnnIndexPage = React.createClass({
                   'search': search,
                 });
     RMR.navigate(url, true);
-    this.props.ajax('api'+url,'GET',null,function(data){
+    this.props.ajax('/api'+url,'GET',null,function(data){
       this.setState({annlist:data.anns,start:data.start,totle:data.totle});
     }.bind(this));
   },
@@ -75,11 +75,11 @@ SC.SearchAnnForm = React.createClass({
       <RB.Button bsStyle='primary' className='btn-flat' onClick={this.handleSearch}>搜尋</RB.Button>
     );
     return (
-      <form onSubmit={function(e){e.preventDefault();e.stopPropagation();this.handleSearch();}.bind(this)}>
+      <SC.Form onSubmit={this.handleSearch}>
         <RB.Input rel='search' type='text' name="search" valueLink={this.linkState('search')}
             placeholder='搜尋公告'
             buttonAfter={search_button}/>
-      </form>
+      </SC.Form>
     );
   }
 })

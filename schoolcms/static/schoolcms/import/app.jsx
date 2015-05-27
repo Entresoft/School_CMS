@@ -9,8 +9,8 @@ SC.App = React.createClass({
       '/admin/adduser': 'adduserHandler',
       '/announce': 'annIndexHandler',
       '/announce/edit': 'editAnnHandler',
-      '/announce/edit/:annid': 'editAnnHandler',
-      '/announce/:annid': 'announceHandler',
+      '/announce/edit/:ann_id': 'editAnnHandler',
+      '/announce/:ann_id': 'announceHandler',
       '/group': 'groupHandler',
       '/grouplist': 'groupListHandler',
   },
@@ -105,9 +105,9 @@ SC.App = React.createClass({
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} totle={params.totle} search={params.search} />;
   },
   announceHandler: function() {
-      return <SC.LoginPage/>;
+      return <SC.AnnouncePage ajax={this.ajax}/>;
   },
-  editAnnHandler: function(annid, params) {
+  editAnnHandler: function(ann_id, params) {
     return <SC.EditAnnPage ajax={this.ajax}/>;
   },
   groupHandler: function() {
