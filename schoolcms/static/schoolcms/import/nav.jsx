@@ -14,13 +14,14 @@ SC.NavbarInstance = React.createClass({
       )
     }else if(window.location.pathname.substr(0,6)!='/login'){
       return (
-        <RB.NavItem eventKey={1} href={'/login?next='+encodeURIComponent(window.location.pathname)}>Login</RB.NavItem>
+        <RB.NavItem eventKey={1} href={'/login?next='+encodeURIComponent(this.props.url)}>Login</RB.NavItem>
       );
     }
   },
   render: function(){
     return (
-      <RB.Navbar brand={<a href="/">School Cms</a>} inverse toggleNavKey={0}>
+      <RB.Navbar brand={<a href="/">School Cms</a>} inverse toggleNavKey={0}
+        className='navbar-material-brown' >
         <RB.Nav right eventKey={0}> {/* This is the eventKey referenced */}
           { this.userSign() }
         </RB.Nav>

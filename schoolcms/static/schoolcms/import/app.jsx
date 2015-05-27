@@ -49,13 +49,21 @@ SC.App = React.createClass({
       current_user: null,
     };
   },
-  componentDidMount: function(){
+  componentWillMount: function(){
     this.getCurrentUser();
+  },
+  componentDidMount: function(){
     $.material.init();
   },
-  getCurrentUser: function(){
+  componentWillUpdate: function(){
+    if(this.state.url!=window.location.pathname+window.location.search){
+      this.setState({url:window.location.pathname+window.location.search});
+    }
+  },
+  getCurrentUser: function(callback){
     this.ajax('/api','GET',null,function(json){
       this.setState({current_user:json.current_user});
+      if(callback){callback(json.current_user);}
     }.bind(this));
   },
   render: function() {
@@ -69,7 +77,7 @@ SC.App = React.createClass({
     var progressBar = function(){
       if(this.state.loading>=0){
         return (
-          <RB.ProgressBar now={this.state.loading} bsStyle='danger' 
+          <RB.ProgressBar now={this.state.loading} className='progress-bar-material-green-700'
             style={{position:'fixed',top:'0px',height:'4px',width:'100%',zIndex:100,}} />
         );
       }
@@ -77,7 +85,7 @@ SC.App = React.createClass({
     return (
       <div>
         {progressBar()}
-        <SC.NavbarInstance current_user={this.state.current_user} />
+        <SC.NavbarInstance current_user={this.state.current_user} url={this.state.url}/>
         {getPage()}
       </div>
     );
@@ -88,10 +96,13 @@ SC.App = React.createClass({
   },
   loginHandler: function(params) {
     if(!params.next){params.next='/';}
-    return <SC.LoginPage ajax={this.ajax} next={params.next} onLogin={this.getCurrentUser}/>;
+    if(this.state.current_user!=null){
+      return <SC.Redirect url={params.next} />
+    }
+    return <SC.LoginPage ajax={this.ajax} next={params.next} redirect={params.redirect} onLogin={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
-      return <SC.LogoutPage ajax={this.ajax} onLogout={this.getCurrentUser}/>;
+      return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
   },
   adduserHandler: function() {
       return <SC.LoginPage/>;
@@ -101,13 +112,15 @@ SC.App = React.createClass({
       return parseInt(i)?parseInt(i):0;
     }
     params.start = toInt(params.start);
-    params.totle = toInt(params.totle);
-    return <SC.AnnIndexPage ajax={this.ajax} start={params.start} totle={params.totle} search={params.search} />;
+    return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
   announceHandler: function() {
       return <SC.AnnouncePage ajax={this.ajax}/>;
   },
   editAnnHandler: function(ann_id, params) {
+    if(this.state.current_user==null){
+      return <SC.Redirect url={SC.makeURL('/login',{redirect:1,next:window.location.pathname})} />
+    }
     return <SC.EditAnnPage ajax={this.ajax}/>;
   },
   groupHandler: function() {
@@ -119,5 +132,17 @@ SC.App = React.createClass({
 
   notFound: function(path) {
       return <div className="not-found">Page Not Found: {path}</div>;
+  }
+});
+
+
+SC.Redirect = React.createClass({
+  componentWillMount: function(){
+    RMR.navigate(this.props.url);
+  },
+  render: function() {
+    return (
+      <div />
+    );
   }
 });

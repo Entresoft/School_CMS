@@ -3,28 +3,33 @@
 SC.AnnIndexPage = React.createClass({
   getInitialState: function() {
     return {
-      annlist: [],
+      anns: [],
+      totle: 0,
     };
   },
-  componentWillMount: function(){
+  ajax: function(){
     var url = '/api'+window.location.pathname+window.location.search;
-    this.props.ajax(url,'GET',null,function(data){
-      this.setState({annlist:data.anns,start:data.start,totle:data.totle});
+    this.props.ajax(url,'GET',null,function(json){
+      this.setState({anns:json.anns,totle:json.totle});
     }.bind(this));
+  },
+  componentWillMount: function(){
+    this.ajax();
+  },
+  componentWillReceiveProps: function(nextprops) {
+    if(this.props.search!=nextprops.search||this.props.start!=nextprops.start){
+      this.ajax();
+    }
   },
   handleSearch: function(search){
     var url = SC.makeURL(window.location.pathname,{
                   'start': this.props.start,
-                  'totle': this.props.totle,
                   'search': search,
                 });
-    RMR.navigate(url, true);
-    this.props.ajax('/api'+url,'GET',null,function(data){
-      this.setState({annlist:data.anns,start:data.start,totle:data.totle});
-    }.bind(this));
+    RMR.navigate(url);
   },
   render: function() {
-    var annItems = this.state.annlist.map(function (ann) {
+    var annItems = this.state.anns.map(function (ann) {
       return (
         <tr key={ann.id}>
           <td><a href={'/announce/'+ann.id}>{ann.title}</a></td>
@@ -51,7 +56,7 @@ SC.AnnIndexPage = React.createClass({
                 <tbody>{annItems}</tbody>
               </RB.Table>
             </RB.Well>
-            <SC.Pager start={this.props.start} totle={this.props.totle} />
+            <SC.Pager start={this.props.start} totle={this.state.totle} />
           </RB.Col></RB.Row>
         </RB.Grid>
       </div>
@@ -66,6 +71,11 @@ SC.SearchAnnForm = React.createClass({
     return {
       search: this.props.search,
     };
+  },
+  componentWillReceiveProps: function(nextprops) {
+    if(nextprops.search!=this.props.search){
+      this.setState({search:nextprops.search});
+    }
   },
   handleSearch: function(){
     this.props.onSearch(this.state.search);

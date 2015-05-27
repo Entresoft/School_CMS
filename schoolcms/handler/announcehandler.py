@@ -137,14 +137,14 @@ class EditAnnHandler(BaseHandler):
                     self._['tmpatts'].append(new_att)
 
                 except:
-                    self._['alert'] = 'Miss attachment!'
+                    self._['alert'] = '遺失附件!'
                     return False
 
         if not self._['title']:
-            self._['alert'] = 'Title can\'t leave blank.'
+            self._['alert'] = '標題不能空白'
             return False
         elif not self._['content']:
-            self._['alert'] = 'Content can\'t leave blank.'
+            self._['alert'] = '內容不能空白'
             return False
             
         return True

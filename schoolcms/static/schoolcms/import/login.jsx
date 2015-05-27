@@ -7,21 +7,30 @@ SC.LoginForm = React.createClass({
       _xsrf : '',
       account : '',
       alert: null,
+      ready: false,
     };
   },
   componentWillMount: function(){
     var url = '/api'+window.location.pathname+window.location.search;
-    this.props.ajax(url,'GET',null,function(json){
-      this.setState({_xsrf:json._xsrf,alert: json.alert});
+    this.props.onLogin(function(user){
+      if(user){
+        RMR.navigate(this.props.next);
+      }else{
+        this.props.ajax(url,'GET',null,function(json){
+          this.setState({_xsrf:json._xsrf,alert: json.alert,ready: true});
+        }.bind(this));
+      }
     }.bind(this));
   },
   handleLogin: function(){
+    if(!this.state.ready)return;
     var url = '/api'+window.location.pathname;
     var form = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',form,function(json){
       if(json.login){
-        this.props.onLogin();
-        RMR.navigate(this.props.next);
+        this.props.onLogin(function(){
+          RMR.navigate(this.props.next);
+        }.bind(this));
       }else{
         this.setState({alert: json.alert});
       }
@@ -44,7 +53,11 @@ SC.LoginForm = React.createClass({
         <RB.Input type='hidden' name="next" value={this.props.next} />
         <RB.Input type='text' name="account" valueLink={this.linkState('account')} placeholder='帳號' />
         <RB.Input type='password' name="passwd" placeholder='密碼' />
-        <RB.Button bsStyle='primary' className='btn-flat' onClick={this.handleLogin}>登入</RB.Button>
+        <hr/>
+        <div className="btn-group btn-group-justified">
+          <a className='btn btn-danger btn-flat' onClick={function(){window.history.go(this.props.redirect?-2:-1);}.bind(this)}>返回</a>
+          <a className='btn btn-primary' onClick={this.handleLogin} disabled={!this.state.ready}>登入</a>
+        </div>
       </SC.Form>
     );
   },
