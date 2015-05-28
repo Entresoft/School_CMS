@@ -47,12 +47,11 @@ SC.App = React.createClass({
       loading: -1,
       status: 200,
       current_user: null,
+      ready: false,
     };
   },
-  componentWillMount: function(){
-    this.getCurrentUser();
-  },
   componentDidMount: function(){
+    this.getCurrentUser();
     $.material.init();
   },
   componentWillUpdate: function(){
@@ -60,15 +59,17 @@ SC.App = React.createClass({
       this.setState({url:window.location.pathname+window.location.search});
     }
   },
-  getCurrentUser: function(callback){
+  getCurrentUser: function(){
+    this.setState({ready:false});
     this.ajax('/api','GET',null,function(json){
-      this.setState({current_user:json.current_user});
-      if(callback){callback(json.current_user);}
+      this.setState({current_user:json.current_user,ready:true});
     }.bind(this));
   },
   render: function() {
     var getPage = function(){
-      if(this.state.status==200){
+      if(!this.state.ready){
+        return <h1>Wait...</h1>;
+      }else if(this.state.status==200){
         return this.renderCurrentRoute();
       }else{
         return <h1>Geez, {this.state.status}</h1>;
@@ -95,11 +96,7 @@ SC.App = React.createClass({
       return <a href='/announce'>Announce</a>;
   },
   loginHandler: function(params) {
-    if(!params.next){params.next='/';}
-    if(this.state.current_user!=null){
-      return <SC.Redirect url={params.next} />
-    }
-    return <SC.LoginPage ajax={this.ajax} next={params.next} redirect={params.redirect} onLogin={this.getCurrentUser}/>;
+    return <SC.LoginPage ajax={this.ajax} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
       return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
@@ -112,16 +109,14 @@ SC.App = React.createClass({
       return parseInt(i)?parseInt(i):0;
     }
     params.start = toInt(params.start);
+    if(!params.search)params.search = '';
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
   announceHandler: function() {
       return <SC.AnnouncePage ajax={this.ajax}/>;
   },
   editAnnHandler: function(ann_id, params) {
-    if(this.state.current_user==null){
-      return <SC.Redirect url={SC.makeURL('/login',{redirect:1,next:window.location.pathname})} />
-    }
-    return <SC.EditAnnPage ajax={this.ajax}/>;
+    return <SC.EditAnnPage ajax={this.ajax} current_user={this.state.current_user}/>;
   },
   groupHandler: function() {
       return <SC.LoginPage/>;
@@ -137,7 +132,8 @@ SC.App = React.createClass({
 
 
 SC.Redirect = React.createClass({
-  componentWillMount: function(){
+  componentDidMount: function(){
+    console.log('RB run');
     RMR.navigate(this.props.url);
   },
   render: function() {

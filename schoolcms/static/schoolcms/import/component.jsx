@@ -30,7 +30,7 @@ SC.ResizeTextArea = React.createClass({
     other.className = (other.className?other.className:'')+'resizetextarea';
     return (
       <RB.Input {...other} type='textarea' ref='textarea' onChange={this.textareaResize}
-        value={this.props.valueLink?this.props.valueLink.value:this.state.value} />
+        value={this.props.valueLink?this.props.valueLink.value:this.state.value}/>
     );
   }
 });
@@ -38,6 +38,7 @@ SC.ResizeTextArea = React.createClass({
 
 SC.Form = React.createClass({
   handleSubmit: function(e){
+    console.log('handleSubmit');
     e.preventDefault();
     e.stopPropagation();
     this.props.onSubmit();

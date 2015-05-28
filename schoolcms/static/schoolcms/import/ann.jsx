@@ -79,7 +79,7 @@ SC.AttachmentPanel = React.createClass({
             <div className="media-heading">{att.filename}</div>
             <div>
               {this.openlink(att)}
-              <a href={'/file/'+att.path+'?download=1'}>下載</a>
+              <a target="_blank" href={'/file/'+att.path+'?download=1'}>下載</a>
             </div>
           </div>
         </div>

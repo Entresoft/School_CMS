@@ -10,27 +10,21 @@ SC.LoginForm = React.createClass({
       ready: false,
     };
   },
-  componentWillMount: function(){
+  componentDidMount: function(){
     var url = '/api'+window.location.pathname+window.location.search;
-    this.props.onLogin(function(user){
-      if(user){
-        RMR.navigate(this.props.next);
-      }else{
-        this.props.ajax(url,'GET',null,function(json){
-          this.setState({_xsrf:json._xsrf,alert: json.alert,ready: true});
-        }.bind(this));
-      }
+    this.props.ajax(url,'GET',null,function(json){
+      this.setState({_xsrf:json._xsrf,alert: json.alert,ready: true});
     }.bind(this));
   },
   handleLogin: function(){
+    console.log('handleLogin');
     if(!this.state.ready)return;
     var url = '/api'+window.location.pathname;
     var form = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',form,function(json){
       if(json.login){
-        this.props.onLogin(function(){
-          RMR.navigate(this.props.next);
-        }.bind(this));
+        this.props.getCurrentUser();
+        RMR.navigate(this.props.next);
       }else{
         this.setState({alert: json.alert});
       }
@@ -65,7 +59,7 @@ SC.LoginForm = React.createClass({
 
 
 SC.LoginPage = React.createClass({
-  componentWillMount: function(){
+  componentDidMount: function(){
     var url = '/api'+window.location.pathname+window.location.search;
     this.props.ajax(url,'GET',null,function(json){
       this.setState({_xsrf:json._xsrf,alert: json.alert});

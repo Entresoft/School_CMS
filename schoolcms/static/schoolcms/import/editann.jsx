@@ -14,7 +14,11 @@ SC.EditAnnPage = React.createClass({
       ready: false,
     };
   },
-  componentWillMount: function(){
+  componentDidMount: function(){
+    if(!this.props.current_user){
+      RMR.navigate(SC.makeURL('/login',{redirect:1,next:window.location.pathname}));
+      return false;
+    }
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
       json.submitLock=false;
@@ -252,23 +256,18 @@ SC.UploadAttBox = React.createClass({
       uploading.push(this.progressBar(i));
     }
     var uploadButtonStyle = {
-        overflow:'hidden',
-        position: 'relative',
         width: '100%',
       };
     var uploadInputStyle = {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      opacity: 0,
+      display: 'none',
     };
     var uploadButton = (
-      <RB.Button disabled={this.props.disabled} style={uploadButtonStyle}
-        className='btn-material-grey-300 mdi-content-add'>
-        <input style={uploadInputStyle} type='file'
-          onChange={this.handleChange} disabled={this.props.disabled} value={''}/>
-      </RB.Button>
+        <RB.Button disabled={this.props.disabled} style={uploadButtonStyle}
+        className='btn-material-grey-300 mdi-content-add'
+        onClick={function(){React.findDOMNode(this.refs.file).click()}.bind(this)}>
+          <input style={uploadInputStyle} type='file' ref='file'
+            onChange={this.handleChange} disabled={this.props.disabled} value={''}/>
+        </RB.Button>
     );
     return (
       <div>
