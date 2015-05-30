@@ -56,3 +56,45 @@ SC.Form = React.createClass({
     );
   }
 });
+
+
+SC.A = React.createClass({
+  propTypes: {
+    href: React.PropTypes.string,
+  },
+  handleClick: function(e){
+    e.preventDefault();
+    RMR.navigate(this.props.href);
+    console.log('nave to '+this.props.href);
+  },
+  render: function() {
+    var out = ['onClick', 'href'];
+    var other = {};
+    for(var key in this.props){
+      if(out.indexOf(key) === -1){
+        other[key]=this.props[key];
+      }
+    }
+    return (
+      <a {...other} href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
+    );
+  }
+});
+
+SC.MenuItem = React.createClass({
+  propTypes: {
+    href:      React.PropTypes.string,
+  },
+  getDefaultProps: function() {
+    return {
+      href: '#',
+    };
+  },
+  render: function() {
+    return (
+      <RB.MenuItem eventKey={this.props.eventKey}>
+        <SC.A href={this.props.href}>{this.props.children}</SC.A>
+      </RB.MenuItem>
+    );
+  }
+});

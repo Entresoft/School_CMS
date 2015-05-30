@@ -11,7 +11,7 @@ SC.AnnouncePage = React.createClass({
       id: '',
     };
   },
-  componentWillMount: function(){
+  componentDidMount: function(){
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
       this.setState(json);

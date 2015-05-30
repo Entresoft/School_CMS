@@ -54,14 +54,11 @@ Base.metadata.create_all(engine)
 
 if options.rbdb:
     with SessionGen() as session:
-        user = User('root', 'root', 'root', '教師', True)
-        session.add(user)
-
-        group = Group(1, '行政人員')
-        session.add(group)
-        group = Group(2, '系統師')
-        session.add(group)
-        group = Group(1000, 'END')
-        session.add(group)
+        session.add_all([
+                User('root', 'root', 'root', '教師', True),
+                Group(1, '行政人員'),
+                Group(2, '系統師'),
+                Group(1000, 'END'),
+            ])
 
         session.commit()

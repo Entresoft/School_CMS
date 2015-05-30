@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 SC.EditAnnPage = React.createClass({
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
   getInitialState: function() {
     return {
       title: '',
@@ -11,19 +11,13 @@ SC.EditAnnPage = React.createClass({
       ann_id: '',
       _xsrf: '',
       submitLock: 0,
-      ready: false,
     };
   },
-  componentDidMount: function(){
-    if(!this.props.current_user){
-      RMR.navigate(SC.makeURL('/login',{redirect:1,next:window.location.pathname}));
-      return false;
-    }
+  pageInit: function(callback){
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
-      json.submitLock=false;
-      json.ready=true;
       this.setState(json);
+      callback();
     }.bind(this));
   },
   handlePost: function(){

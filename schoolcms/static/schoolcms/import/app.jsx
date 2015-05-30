@@ -3,22 +3,23 @@
 SC.App = React.createClass({
   mixins: [RMR.RouterMixin],
   routes: {
-      '/': 'indexHandler',
-      '/login': 'loginHandler',
-      '/logout': 'logoutHandler',
-      '/admin/adduser': 'adduserHandler',
-      '/announce': 'annIndexHandler',
-      '/announce/edit': 'editAnnHandler',
-      '/announce/edit/:ann_id': 'editAnnHandler',
-      '/announce/:ann_id': 'announceHandler',
-      '/group': 'groupHandler',
-      '/grouplist': 'groupListHandler',
+    '/': 'indexHandler',
+    '/login': 'loginHandler',
+    '/logout': 'logoutHandler',
+    '/admin/adduser': 'adduserHandler',
+    '/announce': 'annIndexHandler',
+    '/announce/edit': 'editAnnHandler',
+    '/announce/edit/:ann_id': 'editAnnHandler',
+    '/announce/:ann_id': 'announceHandler',
+    '/group': 'groupHandler',
+    '/userindex': 'userIndexHandler',
+    '/error/:status': 'errorHandler',
   },
   ajax: function(url,method,data,callback){
     console.log('AJAX TO URL:'+url);
     var xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
-    this.setState({loading:0});
+    this.setState({loading:15});
     xhr.onreadystatechange = function(){
       if(xhr.readyState==4){
         console.log('AJAX END');
@@ -56,11 +57,11 @@ SC.App = React.createClass({
   },
   componentWillUpdate: function(){
     if(this.state.url!=window.location.pathname+window.location.search){
-      this.setState({url:window.location.pathname+window.location.search});
+      this.setState({url:window.location.pathname+window.location.search,status:200});
     }
   },
   getCurrentUser: function(){
-    this.setState({ready:false});
+    this.setState({ready: false});
     this.ajax('/api','GET',null,function(json){
       this.setState({current_user:json.current_user,ready:true});
     }.bind(this));
@@ -69,7 +70,7 @@ SC.App = React.createClass({
     var getPage = function(){
       if(!this.state.ready){
         return <h1>Wait...</h1>;
-      }else if(this.state.status==200){
+      }else if(this.state.status===200){
         return this.renderCurrentRoute();
       }else{
         return <h1>Geez, {this.state.status}</h1>;
@@ -93,13 +94,13 @@ SC.App = React.createClass({
   },
 
   indexHandler: function() {
-      return <a href='/announce'>Announce</a>;
+    return <SC.A href='/announce'>Announce</SC.A>;
   },
   loginHandler: function(params) {
     return <SC.LoginPage ajax={this.ajax} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
-      return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
+    return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
   },
   adduserHandler: function() {
       return <SC.LoginPage/>;
@@ -113,7 +114,7 @@ SC.App = React.createClass({
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
   announceHandler: function() {
-      return <SC.AnnouncePage ajax={this.ajax}/>;
+    return <SC.AnnouncePage ajax={this.ajax}/>;
   },
   editAnnHandler: function(ann_id, params) {
     return <SC.EditAnnPage ajax={this.ajax} current_user={this.state.current_user}/>;
@@ -121,13 +122,16 @@ SC.App = React.createClass({
   groupHandler: function() {
       return <SC.LoginPage/>;
   },
-  groupListHandler: function() {
+  userIndexHandler: function() {
       return <SC.LoginPage/>;
   },
 
+  errorHandler: function(status) {
+      return <div className="not-found">Error: {status}</div>;
+  },
   notFound: function(path) {
       return <div className="not-found">Page Not Found: {path}</div>;
-  }
+  },
 });
 
 

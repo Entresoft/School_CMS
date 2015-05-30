@@ -9,7 +9,7 @@ SC.NavbarInstance = React.createClass({
           <RB.MenuItem eventKey='2'>Another action</RB.MenuItem>
           <RB.MenuItem eventKey='3'>Something else here</RB.MenuItem>
           <RB.MenuItem divider />
-          <RB.MenuItem eventKey='4' href="/logout">Logout</RB.MenuItem>
+          <SC.MenuItem eventKey='4' href="/logout">Logout</SC.MenuItem>
         </RB.DropdownButton>
       )
     }else if(window.location.pathname.substr(0,6)!='/login'){
@@ -20,7 +20,7 @@ SC.NavbarInstance = React.createClass({
   },
   render: function(){
     return (
-      <RB.Navbar brand={<a href="/">School Cms</a>} inverse toggleNavKey={0}
+      <RB.Navbar brand={<SC.A href="/">School Cms</SC.A>} inverse toggleNavKey={0}
         className='navbar-material-brown' >
         <RB.Nav right eventKey={0}> {/* This is the eventKey referenced */}
           { this.userSign() }

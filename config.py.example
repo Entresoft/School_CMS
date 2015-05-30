@@ -19,3 +19,6 @@ database_debug = False
 
 # Server debug
 server_debug = False
+
+# For moving.py.
+ann_url = ''
