@@ -82,8 +82,12 @@ class AttachmentList(Base):
         return q.filter(cls.ann_id == ann_id)
 
     def to_dict(self):
-        _filetype = mimetypes.guess_extension(self.content_type)
-        _filetype = _filetype if _filetype else ''
+        _filetype_mime, encoding = mimetypes.guess_type(self.path)
+        _filetype = mimetypes.guess_extension(_filetype_mime)
+        print("\n\n\nGG  %s \n\n\n"%_filetype)
+        if not _filetype:
+            _filetype = mimetypes.guess_extension(self.content_type)
+            _filetype = _filetype if _filetype else ''
         return {
             'key' : self.key,
             'filename' : self.path[33:],

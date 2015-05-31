@@ -18,15 +18,18 @@ import os
 import uuid
 import shutil
 import subprocess
+import mimetypes
 
 import tornado
 from tornado import gen
 from tornado.web import stream_request_body, StaticFileHandler
 
 
-def _get_content_type(filename):
-    _content_type = subprocess.check_output('file -b --mime-type %s' % filename, shell=True)
-    _content_type = re.search(r'([\S]+)', _content_type).group()
+def _get_content_type(filename, real_filename=''):
+    _content_type, encoding = mimetypes.guess_type(real_filename)
+    if not _content_type:
+        _content_type = subprocess.check_output('file -b --mime-type %s' % filename, shell=True)
+        _content_type = re.search(r'([\S]+)', _content_type).group()
     return _content_type
 
 class TempUploadHandler(BaseHandler):
@@ -57,7 +60,7 @@ class TempUploadHandler(BaseHandler):
             with open('file/tmp/%s' % self.tmp_file_name, 'wb') as f:
                 f.write(body)
 
-            _content_type = _get_content_type('file/tmp/%s' % self.tmp_file_name)
+            _content_type = _get_content_type('file/tmp/%s' % self.tmp_file_name, filename)
             content_type = _content_type if _content_type else content_type
             
             new_file = TempFileList(self.tmp_file_name, filename, content_type, self.current_user.key)
