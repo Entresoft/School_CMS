@@ -25,7 +25,7 @@ class TempFileList(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     filename = Column(VARCHAR(100, collation='utf8_unicode_ci'), nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
     created = Column(TIMESTAMP, default=datetime.now())
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
     
@@ -58,7 +58,7 @@ class AttachmentList(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     ann_id = Column(INTEGER, nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
     path = Column(TEXT(charset='utf8'), nullable=False)
     
     def __init__(self, key, ann_id, content_type, path, **kwargs):
@@ -84,7 +84,6 @@ class AttachmentList(Base):
     def to_dict(self):
         _filetype_mime, encoding = mimetypes.guess_type(self.path)
         _filetype = mimetypes.guess_extension(_filetype_mime)
-        print("\n\n\nGG  %s \n\n\n"%_filetype)
         if not _filetype:
             _filetype = mimetypes.guess_extension(self.content_type)
             _filetype = _filetype if _filetype else ''
