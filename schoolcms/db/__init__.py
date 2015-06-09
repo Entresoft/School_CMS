@@ -43,9 +43,10 @@ class SessionGen(object):
         self.session.close()
 
 
-from .user import User
+from .user import User, Group, GroupList
 from .announce import Announce
 from .filelist import TempFileList, AttachmentList
+from .record import Record
 
 if options.rbdb:
     Base.metadata.drop_all(engine)
@@ -54,6 +55,11 @@ Base.metadata.create_all(engine)
 
 if options.rbdb:
     with SessionGen() as session:
-        user = User('root', 'root', 'root', '教師', True)
-        session.add(user)
+        session.add_all([
+                User('root', 'root', 'root', '教師', True),
+                Group(1, '行政人員'),
+                Group(2, '系統師'),
+                Group(1000, 'END'),
+            ])
+
         session.commit()

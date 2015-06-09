@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{#
+  Group Tag.
+#}
+
+
+{% block Body %}
+  <div id="group"></div>
+  <script type="text/jsx">
+    var json = {% raw json_encode({'groups':[{'name':i.name,'system':i.system} for i in groups]}) %};
+    React.render(<SC.GroupPage groups={json.groups} />, document.getElementById('group'));
+  </script>
+{% end %}

@@ -14,8 +14,6 @@ from tornado.ioloop import IOLoop
 
 class IndexHandler(BaseHandler):
     def get(self):
-        if self.get_argument('restart', ''):
-            IOLoop.current().stop()
-
-        greeting = self.get_argument('greeting', 'Hello')
-        self.render('index.html', greeting=greeting)
+        self.write({
+                'current_user': self.current_user.to_dict() if self.current_user else None,
+            })

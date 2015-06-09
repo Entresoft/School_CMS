@@ -8,7 +8,7 @@
 {% block Body %}
 <h1>Add User</h1>
 <p style="color:red;">{{error_msg}}</p>
-<form action="/adduser" method="POST">
+<form action="/admin/adduser" method="POST">
   {% module xsrf_form_html() %}
   <table>
     <tr>

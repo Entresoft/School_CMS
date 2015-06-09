@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS db model Announcement.
+"""SchoolCMS db model filelist.
 
 File list.
 """
@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
+import mimetypes
 
 from . import Base
 from datetime import datetime
@@ -24,7 +25,7 @@ class TempFileList(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     filename = Column(VARCHAR(100, collation='utf8_unicode_ci'), nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
     created = Column(TIMESTAMP, default=datetime.now())
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
     
@@ -57,7 +58,7 @@ class AttachmentList(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     ann_id = Column(INTEGER, nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
     path = Column(TEXT(charset='utf8'), nullable=False)
     
     def __init__(self, key, ann_id, content_type, path, **kwargs):
@@ -81,11 +82,14 @@ class AttachmentList(Base):
         return q.filter(cls.ann_id == ann_id)
 
     def to_dict(self):
-        match = re.search('[a-zA-Z0-9]+$', self.path)
-        _filetype = match and match.group() or 'file'
+        _filetype_mime, encoding = mimetypes.guess_type(self.path)
+        _filetype = mimetypes.guess_extension(_filetype_mime)
+        if not _filetype:
+            _filetype = mimetypes.guess_extension(self.content_type)
+            _filetype = _filetype if _filetype else ''
         return {
             'key' : self.key,
             'filename' : self.path[33:],
             'path' : self.path,
-            'filetype' : _filetype,
+            'filetype' : _filetype[1:],
         }

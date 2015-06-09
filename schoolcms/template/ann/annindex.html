@@ -6,13 +6,4 @@
 
 
 {% block Body %}
-  <div id="annlist"></div>
-  <script type="text/jsx">
-    var annlist = [
-      {% for i in anns %}
-        { title: '{{i.title}}', id: {{i.id}}, created: '{{i.created}}' },
-      {% end %}
-    ];
-    React.render(<SC.AnnIndexPage annlist={annlist} search={ '{{search}}' } start={ {{start}} } totle={ {{totle}} } />, document.getElementById('annlist'));
-  </script>
 {% end %}

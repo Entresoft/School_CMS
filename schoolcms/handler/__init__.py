@@ -12,15 +12,33 @@ from __future__ import unicode_literals
 
 import functools
 import os
-import markdown
 
 import tornado.web
 from tornado.escape import json_encode
 
-from schoolcms.db import Session, User
+from schoolcms.db import Session, User, GroupList
+from webassets import Environment, Bundle
+from schoolcms.util  import webassets_react
 
 
 class BaseHandler(tornado.web.RequestHandler):
+    def initialize(self):
+        self.assets = Environment(
+                os.path.join(os.path.dirname(__file__), '../static'),'/static')
+        jsx = Bundle('schoolcms/init.jsx','schoolcms/import/*.jsx',filters=('react','jsmin'),output='js/jsx.js')
+        all_js = Bundle(
+                'js/jquery-2.1.3.min.js',
+                'bootstrap-3.3.4-dist/js/bootstrap.min.js',
+                'react-0.13.2/react-with-addons.js',
+                'react-0.13.2/JSXTransformer.js',
+                'js/react-bootstrap.min.js',
+                'js/react-mini-router.min.js',
+                'js/marked.min.js',
+                'bootstrap-material/js/material.min.js',
+                output='js/plugin.js')
+        self.assets.register('js_all', all_js)
+        self.assets.register('jsx', jsx)
+
     def prepare(self):
         """This method is executed at the beginning of each request.
 
@@ -45,8 +63,9 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
-        _['markdown'] = markdown.markdown
-        _['xsrf_token'] = self.xsrf_token
+        _['xsrf'] = self.xsrf_token
+        _['js_urls'] = self.assets['js_all'].urls()
+        _['jsx_urls'] = self.assets['jsx'].urls()
         return _
 
     @property
@@ -69,22 +88,52 @@ class BaseHandler(tornado.web.RequestHandler):
             return method(self, *args, **kwargs)
         return wrapper
 
+    @staticmethod
+    def is_group_user(groupid):
+        def decorator(method):
+            @BaseHandler.authenticated
+            def wrapper(self, *args, **kwargs):
+                if not self.current_user.admin:
+                    group = GroupList.check(self.current_user.key,
+                                            groupid, self.sql_session)
+                    if not group:
+                        raise self.HTTPError(403)
+                return method(self, *args, **kwargs)
+            return wrapper
+        return decorator
+
+
+class AppHandler(BaseHandler):
+    def get(self,  *a, **kwargs):
+        self.render('app.html')
+
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
+from .grouphandler import GroupHandler, UserListHandler
+from .recordhandler import RecordHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
-    (r'/', IndexHandler),
-    (r'/login/?', LoginHandler),
-    (r'/logout/?', LogoutHandler),
+    (r'/', AppHandler),
+    (r'/login/?', AppHandler),
+    (r'/logout/?', AppHandler),
     (r'/admin/adduser/?', AddUserHandler),
-    (r'/announce(?:/([0-9]+))?/?', AnnounceHandler),
-    (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
+    (r'/announce(?:/([0-9]+))?/?', AppHandler),
+    (r'/announce/edit(?:/([0-9]+))?/?', AppHandler),
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
+    (r'/group/?', GroupHandler),
+    (r'/userlist/?', UserListHandler),
+    # API
+    (r'/api/?', IndexHandler),
+    (r'/api/login/?', LoginHandler),
+    (r'/api/logout/?', LogoutHandler),
+    (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
+    (r'/api/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
+    (r'/api/record/?', RecordHandler),
 ]
