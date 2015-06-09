@@ -59,7 +59,7 @@ SC.EditAnnPage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>編輯公告</RB.PageHeader>
-        <SC.Form ref='form' onSubmit={this.handlePost}>
+        <SC.Form ref='form' onSubmit={function(){}}>
           <RB.Row>
             <RB.Col md={12}>{getAlert()}</RB.Col>
           </RB.Row>

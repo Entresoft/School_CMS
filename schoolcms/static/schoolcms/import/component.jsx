@@ -1,20 +1,20 @@
 /** @jsx React.DOM */
 
 SC.ResizeTextArea = React.createClass({
-  getInitialState: function(){
-    return {
-      'value': this.props.value,
+  handleChange: function(){
+    if(this.props.onChange){
+      this.props.onChange();
+    }else if(this.props.valueLink){
+      this.props.valueLink.requestChange(this.refs.textarea.getValue());
     }
   },
   textareaResize: function(){
     var textarea = React.findDOMNode(this.refs.textarea).getElementsByTagName('textarea')[0];
     textarea.style.height = '0px'
     textarea.style.height = textarea.scrollHeight+20 + 'px';
-    if(this.props.onChange){
-      this.props.onChange();
-    }else if(this.props.valueLink){
-      this.props.valueLink.requestChange(this.refs.textarea.getValue());
-    }
+  },
+  componentWillReceiveProps: function(nextprops) {
+    this.textareaResize();
   },
   getValue: function(){
     return this.refs.textarea.getValue();
@@ -27,10 +27,11 @@ SC.ResizeTextArea = React.createClass({
         other[key]=this.props[key];
       }
     }
-    other.className = (other.className?other.className:'')+'resizetextarea';
+    if(!other.style)other.style={};
+    other.style.resize='None';
     return (
-      <RB.Input {...other} type='textarea' ref='textarea' onChange={this.textareaResize}
-        value={this.props.valueLink?this.props.valueLink.value:this.state.value}/>
+      <RB.Input {...other} type='textarea' ref='textarea' onChange={this.handleChange}
+        value={this.props.valueLink?this.props.valueLink.value:this.props.value}/>
     );
   }
 });

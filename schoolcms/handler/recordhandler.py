@@ -26,10 +26,10 @@ class RecordHandler(BaseHandler):
         try:
             time_ob = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S')
             q = Record.by_time(time_ob, self.sql_session)
-            q = q.order_by(Record.created)
+            q = q.order_by(Record.time)
             q = q.limit(20)
             records = q.all()
-            last_time_s = records[-1].created.strftime('%Y-%m-%d %H:%M:%S')
+            last_time_s = records[-1].time.strftime('%Y-%m-%d %H:%M:%S')
         except (ValueError, IndexError):
             records = []
             last_time_s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

@@ -24,26 +24,32 @@ class Record(Base):
 
     id = Column(INTEGER, primary_key=True)
     method = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
-    ann_id = Column(INTEGER, nullable=True)
-    created = Column(TIMESTAMP, default=datetime.now())
+    time = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
     
     def __init__(self, method, ann_id, **kwargs):
+        self.id = ann_id
         self.method = method
-        self.ann_id = ann_id
 
     def __repr__(self):
         return 'Record(%s ,%s)' %\
-        (self.method,self.ann_id)
+        (self.method,self.id)
 
     @classmethod
     def by_time(cls, time_ob, sql_session):
         q = sql_session.query(cls)
-        return q.filter(cls.created > time_ob)
+        return q.filter(cls.time > time_ob)
+
+    @classmethod
+    def add(cls, method, ann_id, sql_session):
+        q = sql_session.query(cls).filter(cls.id == ann_id)
+        if q.count():
+            q.update({'method':method})
+        else:
+            sql_session.add(cls(method, ann_id))
 
     def to_dict(self):
         return {
             'id' : self.id,
             'method' : self.method,
-            'ann_id' : self.ann_id,
-            'time' : self.created.strftime('%Y-%m-%d %H:%M:%S'),
+            'time' : self.time.strftime('%Y-%m-%d %H:%M:%S'),
         }

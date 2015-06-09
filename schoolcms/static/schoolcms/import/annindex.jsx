@@ -13,7 +13,7 @@ SC.AnnIndexPage = React.createClass({
       this.setState({anns:json.anns,total:json.total});
     }.bind(this));
   },
-  componentWillMount: function(){
+  componentDidMount: function(){
     this.ajax();
   },
   componentWillReceiveProps: function(nextprops) {

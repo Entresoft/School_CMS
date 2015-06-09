@@ -111,14 +111,14 @@ class EditAnnHandler(BaseHandler):
                     'title' : self._['title'],
                     'content' : self._['content'],
                 })
-            self.sql_session.add(Record('update', self.ann_id))
+            Record.add('update', self.ann_id, self.sql_session)
         else:
             new_ann = Announce(**self._)
             self.sql_session.add(new_ann)
             self.sql_session.flush()
             self.sql_session.refresh(new_ann)
             self.ann_id = new_ann.id
-            self.sql_session.add(Record('new', self.ann_id))
+            Record.add('new', self.ann_id, self.sql_session)
 
         self.parse_att()
 
