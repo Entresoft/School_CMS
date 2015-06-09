@@ -30,7 +30,7 @@ class RecordHandler(BaseHandler):
             q = q.limit(20)
             records = q.all()
             last_time_s = records[-1].created.strftime('%Y-%m-%d %H:%M:%S')
-        except ValueError:
+        except (ValueError, IndexError):
             records = []
             last_time_s = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
