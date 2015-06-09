@@ -13,7 +13,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = -100
+version = -101
 
 
 # creat engine

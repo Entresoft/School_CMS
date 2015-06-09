@@ -36,13 +36,14 @@ class Record(Base):
         (self.method,self.ann_id)
 
     @classmethod
-    def by_time(cls, time, sql_session):
-        return sql_session.query(cls)
+    def by_time(cls, time_ob, sql_session):
+        q = sql_session.query(cls)
+        return q.filter(cls.created > time_ob)
 
     def to_dict(self):
         return {
             'id' : self.id,
             'method' : self.method,
             'ann_id' : self.ann_id,
-            'time' : self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            'time' : self.created.strftime('%Y-%m-%d %H:%M:%S'),
         }
