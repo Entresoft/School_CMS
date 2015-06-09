@@ -44,7 +44,7 @@ class LoginHandler(BaseHandler):
             self.write(self._)
         else:
             self.set_secure_cookie('uid', unicode(user.key))
-            self.write({'login':True,'next':self._['next']})
+            self.write({'success':True,'next':self._['next']})
 
     def login(self):
         if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):

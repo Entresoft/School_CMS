@@ -8,7 +8,7 @@ SC.EditAnnPage = React.createClass({
       content: '',
       tmpatts: [],
       atts: [],
-      ann_id: '',
+      id: '',
       _xsrf: '',
       submitLock: 0,
     };
@@ -26,8 +26,8 @@ SC.EditAnnPage = React.createClass({
     var url = '/api'+window.location.pathname;
     var data = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',data,function(json){
-      if(json.posted){
-        RMR.navigate('/announce/'+json.ann_id);
+      if(json.success){
+        RMR.navigate('/announce/'+json.id);
       }else{
         this.setState(json);
       }
@@ -91,7 +91,7 @@ SC.EditAnnPage = React.createClass({
                 onClick={this.handlePost}>確定</RB.Button>
             </RB.Col>
             <RB.Col xs={12} md={2}>
-              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.state.ann_id}>返回</a>
+              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.state.id}>返回</a>
             </RB.Col>
           </RB.Row>
         </SC.Form>

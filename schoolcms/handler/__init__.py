@@ -12,7 +12,6 @@ from __future__ import unicode_literals
 
 import functools
 import os
-import markdown
 
 import tornado.web
 from tornado.escape import json_encode
@@ -64,7 +63,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
-        _['markdown'] = markdown.markdown
         _['xsrf'] = self.xsrf_token
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()
@@ -115,7 +113,8 @@ from .announcehandler import AnnounceHandler, EditAnnHandler
 from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
-from .grouphandler import GroupHandler, GroupListHandler
+from .grouphandler import GroupHandler, UserListHandler
+from .recordhandler import RecordHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
@@ -129,11 +128,12 @@ route = [
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
     (r'/group/?', GroupHandler),
-    (r'/grouplist/?', GroupListHandler),
+    (r'/userlist/?', UserListHandler),
     # API
     (r'/api/?', IndexHandler),
     (r'/api/login/?', LoginHandler),
     (r'/api/logout/?', LogoutHandler),
     (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/api/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
+    (r'/api/record/?', RecordHandler),
 ]

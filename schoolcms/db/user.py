@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS db model Announcement.
+"""SchoolCMS db model User.
 
 A model.
 """

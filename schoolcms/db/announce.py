@@ -33,14 +33,12 @@ class Announce(FullText, Base):
     created = Column(TIMESTAMP, default=datetime.now)
     updated = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
-    visible = Column(BOOLEAN, nullable=False)
     search = Column(TEXT(charset='utf8'), nullable=False)
     
-    def __init__(self, title, content, author_key, visible, **kwargs):
+    def __init__(self, title, content, author_key, **kwargs):
         self.title = title
         self.content = content
         self.author_key = author_key
-        self.visible = visible
         self.search = ' '.join(jieba.cut_for_search('%s %s' % (title,content)))
 
     def __repr__(self):

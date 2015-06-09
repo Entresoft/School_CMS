@@ -19,6 +19,6 @@ class GroupHandler(BaseHandler):
         self.render('group.html', groups=groups)
 
 
-class GroupListHandler(BaseHandler):
+class UserListHandler(BaseHandler):
     def get(self):
         pass

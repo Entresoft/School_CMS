@@ -4,13 +4,13 @@ SC.AnnIndexPage = React.createClass({
   getInitialState: function() {
     return {
       anns: [],
-      totle: 0,
+      total: 0,
     };
   },
   ajax: function(){
     var url = '/api'+window.location.pathname+window.location.search;
     this.props.ajax(url,'GET',null,function(json){
-      this.setState({anns:json.anns,totle:json.totle});
+      this.setState({anns:json.anns,total:json.total});
     }.bind(this));
   },
   componentWillMount: function(){
@@ -32,8 +32,8 @@ SC.AnnIndexPage = React.createClass({
     var annItems = this.state.anns.map(function (ann) {
       return (
         <tr key={ann.id}>
-          <td><a href={'/announce/'+ann.id}>{ann.title}</a></td>
-          <td>{ann.created}</td>
+            <td className='col-md-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
+            <td className='col-md-4'>{ann.created}</td>
         </tr>
       );
     });
@@ -56,7 +56,7 @@ SC.AnnIndexPage = React.createClass({
                 <tbody>{annItems}</tbody>
               </RB.Table>
             </RB.Well>
-            <SC.Pager start={this.props.start} totle={this.state.totle} />
+            <SC.Pager start={this.props.start} total={this.state.total} />
           </RB.Col></RB.Row>
         </RB.Grid>
       </div>
@@ -105,7 +105,7 @@ SC.Pager = React.createClass({
     return (  
       <RB.Pager>
         <RB.PageItem previous href={this.pageUrl(max(0,this.props.start-10))} disabled={this.props.start<=0} >&larr; Previous Page</RB.PageItem>
-        <RB.PageItem next href={this.pageUrl(this.props.start+10)} disabled={this.props.start+10>=this.props.totle} >Next Page &rarr;</RB.PageItem>
+        <RB.PageItem next href={this.pageUrl(this.props.start+10)} disabled={this.props.start+10>=this.props.total} >Next Page &rarr;</RB.PageItem>
       </RB.Pager>
     );
   }

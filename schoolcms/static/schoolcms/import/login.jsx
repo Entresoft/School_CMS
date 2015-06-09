@@ -22,7 +22,7 @@ SC.LoginForm = React.createClass({
     var url = '/api'+window.location.pathname;
     var form = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',form,function(json){
-      if(json.login){
+      if(json.success){
         this.props.getCurrentUser();
         RMR.navigate(this.props.next);
       }else{

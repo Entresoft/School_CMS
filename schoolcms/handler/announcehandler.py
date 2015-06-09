@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 
-from schoolcms.db import Announce, TempFileList, AttachmentList
+from schoolcms.db import Announce, TempFileList, AttachmentList, Record
 from sqlalchemy import desc
 
 try:
@@ -42,12 +42,12 @@ class AnnounceHandler(BaseHandler):
                 start = 0
             start = int(start)
 
-            totle = 0
+            total = 0
             if search:
                 q = Announce.by_full_text(search, self.sql_session)
-                totle = q.count()
+                total = q.count()
             else:
-                totle = self.sql_session.query(Announce.id).count()
+                total = self.sql_session.query(Announce.id).count()
                 q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
             q = q.offset(start).limit(10)
@@ -60,7 +60,7 @@ class AnnounceHandler(BaseHandler):
                         'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),} for ann in anns],
                     'search' : search,
                     'start' : start,
-                    'totle' : totle,
+                    'total' : total,
                 })
 
 
@@ -70,7 +70,7 @@ class EditAnnHandler(BaseHandler):
         self._ = {
             'title': '',
             'content': '',
-            'ann_id': '',
+            'id': '',
             'tmpatts': [],
             'atts': [],
             '_xsrf': self.xsrf_token,
@@ -95,7 +95,7 @@ class EditAnnHandler(BaseHandler):
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
-        self._['ann_id'] = self.ann_id
+        self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
         self.attkeys = self.get_arguments('attachment')
@@ -105,25 +105,25 @@ class EditAnnHandler(BaseHandler):
             return self.write(self._)
 
         self._['author_key'] = self.current_user.key
-        self._['visible'] = True
 
         if self.ann_id:
             Announce.by_id(self.ann_id, self.sql_session).update({
                     'title' : self._['title'],
                     'content' : self._['content'],
-                    'visible' : self._['visible'],
                 })
+            self.sql_session.add(Record('update', self.ann_id))
         else:
             new_ann = Announce(**self._)
             self.sql_session.add(new_ann)
             self.sql_session.flush()
             self.sql_session.refresh(new_ann)
             self.ann_id = new_ann.id
+            self.sql_session.add(Record('new', self.ann_id))
 
         self.parse_att()
 
         self.sql_session.commit()
-        self.write({'posted': True,'ann_id': self.ann_id})
+        self.write({'success': True,'id': self.ann_id})
 
     def check_ann(self):
         for i in xrange(len(self.attkeys)):
