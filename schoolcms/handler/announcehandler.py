@@ -74,7 +74,7 @@ class EditAnnHandler(BaseHandler):
             'tmpatts': [],
             'atts': [],
             '_xsrf': self.xsrf_token,
-            'alert': None,
+            'alert': '',
         }
 
     @BaseHandler.is_group_user(1)

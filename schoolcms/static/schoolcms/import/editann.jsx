@@ -22,7 +22,7 @@ SC.EditAnnPage = React.createClass({
   },
   handlePost: function(){
     if(this.state.submitLock)return false;
-    this.setState({submitLock:true});
+    this.lock(1);
     var url = '/api'+window.location.pathname;
     var data = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',data,function(json){
@@ -30,6 +30,7 @@ SC.EditAnnPage = React.createClass({
         RMR.navigate('/announce/'+json.id);
       }else{
         this.setState(json);
+        this.lock(-1);
       }
     }.bind(this));
   },
@@ -58,7 +59,7 @@ SC.EditAnnPage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>編輯公告</RB.PageHeader>
-        <SC.Form ref='form'>
+        <SC.Form ref='form' onSubmit={this.handlePost}>
           <RB.Row>
             <RB.Col md={12}>{getAlert()}</RB.Col>
           </RB.Row>
