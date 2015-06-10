@@ -4,11 +4,13 @@ SC.EditAnnPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
   getInitialState: function() {
     return {
+      id: '',
       title: '',
       content: '',
+      user_groups: {},
+      is_private: false,
       tmpatts: [],
       atts: [],
-      id: '',
       _xsrf: '',
       submitLock: 0,
     };
@@ -19,10 +21,11 @@ SC.EditAnnPage = React.createClass({
       this.setState(json);
       callback();
     }.bind(this));
+    $.material.init();
   },
   handlePost: function(){
     if(this.state.submitLock)return false;
-    this.setState({submitLock:true});
+    this.lock(1);
     var url = '/api'+window.location.pathname;
     var data = new FormData(React.findDOMNode(this.refs.form));
     this.props.ajax(url,'POST',data,function(json){
@@ -30,6 +33,7 @@ SC.EditAnnPage = React.createClass({
         RMR.navigate('/announce/'+json.id);
       }else{
         this.setState(json);
+        this.lock(-1);
       }
     }.bind(this));
   },
@@ -58,16 +62,19 @@ SC.EditAnnPage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>編輯公告</RB.PageHeader>
-        <SC.Form ref='form'>
+        <SC.Form ref='form' onSubmit={function(){}}>
           <RB.Row>
             <RB.Col md={12}>{getAlert()}</RB.Col>
           </RB.Row>
           <RB.Row>
             <RB.Col xs={12} md={6}>
               <RB.Well>
-                <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf}/>
-                <RB.Input type='text' name="title" valueLink={this.linkState('title')} label="公告標題" placeholder='輸入公告標題' disabled={!this.state.ready}/>
-                <SC.ResizeTextArea name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' disabled={!this.state.ready}/>
+                <RB.Input type='hidden' name='_xsrf' value={this.state._xsrf}/>
+                <RB.Input type='text' name='title' valueLink={this.linkState('title')} label='公告標題' placeholder='輸入公告標題' disabled={!this.state.ready}/>
+                <SC.ResizeTextArea name='content' valueLink={this.linkState('content')} label='公告內容' placeholder='輸入公告內容' disabled={!this.state.ready}/>
+                <hr/>
+                <SC.SelectInput name='group_id' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
+                <SC.ToggleButton  name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>

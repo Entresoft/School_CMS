@@ -1,36 +1,31 @@
 /** @jsx React.DOM */
 
 SC.ResizeTextArea = React.createClass({
-  getInitialState: function(){
-    return {
-      'value': this.props.value,
-    }
-  },
-  textareaResize: function(){
-    var textarea = React.findDOMNode(this.refs.textarea).getElementsByTagName('textarea')[0];
-    textarea.style.height = '0px'
-    textarea.style.height = textarea.scrollHeight+20 + 'px';
+  handleChange: function(){
     if(this.props.onChange){
       this.props.onChange();
     }else if(this.props.valueLink){
       this.props.valueLink.requestChange(this.refs.textarea.getValue());
     }
   },
+  textareaResize: function(){
+    var textarea = React.findDOMNode(this.refs.textarea).getElementsByTagName('textarea')[0];
+    textarea.style.height = '0px'
+    textarea.style.height = textarea.scrollHeight+20 + 'px';
+  },
+  componentWillReceiveProps: function(nextprops) {
+    this.textareaResize();
+  },
   getValue: function(){
     return this.refs.textarea.getValue();
   },
   render: function() {
-    var out = ['valueLink', 'onChange', 'type', 'ref'];
-    var other = {};
-    for(var key in this.props){
-      if(out.indexOf(key) === -1){
-        other[key]=this.props[key];
-      }
-    }
-    other.className = (other.className?other.className:'')+'resizetextarea';
+    var other = SC.makeOtherArray(['valueLink', 'onChange', 'type', 'ref'],this.props);
+    if(!other.style)other.style={};
+    other.style.resize='None';
     return (
-      <RB.Input {...other} type='textarea' ref='textarea' onChange={this.textareaResize}
-        value={this.props.valueLink?this.props.valueLink.value:this.state.value}/>
+      <RB.Input {...other} type='textarea' ref='textarea' onChange={this.handleChange}
+        value={this.props.valueLink?this.props.valueLink.value:this.props.value}/>
     );
   }
 });
@@ -44,15 +39,12 @@ SC.Form = React.createClass({
     this.props.onSubmit();
   },
   render: function() {
-    var out = ['onSubmit'];
-    var other = {};
-    for(var key in this.props){
-      if(out.indexOf(key) === -1){
-        other[key]=this.props[key];
-      }
-    }
+    var other = SC.makeOtherArray(['onSubmit'],this.props);
     return (
-      <form {...other} onSubmit={this.handleSubmit}>{this.props.children}</form>
+      <form {...other} onSubmit={this.handleSubmit}>
+        {this.props.children}
+        <input type='submit' style={{display:'none'}}/>
+      </form>
     );
   }
 });
@@ -68,13 +60,7 @@ SC.A = React.createClass({
     console.log('nave to '+this.props.href);
   },
   render: function() {
-    var out = ['onClick', 'href'];
-    var other = {};
-    for(var key in this.props){
-      if(out.indexOf(key) === -1){
-        other[key]=this.props[key];
-      }
-    }
+    var other = SC.makeOtherArray(['onClick', 'href'],this.props);
     return (
       <a {...other} href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
     );
@@ -95,6 +81,59 @@ SC.MenuItem = React.createClass({
       <RB.MenuItem eventKey={this.props.eventKey}>
         <SC.A href={this.props.href}>{this.props.children}</SC.A>
       </RB.MenuItem>
+    );
+  }
+});
+
+SC.ToggleButton = React.createClass({
+  getInitialState: function(){
+    return {
+      'checked': this.props.checked,
+    }
+  },
+  componentWillReceiveProps: function(nextprops) {
+    if(nextprops.checked!=this.props.checked){
+      this.setState({checked:nextprops.checked});
+    }
+  },
+  componentDidMount: function(){
+    var input = React.findDOMNode(this.refs.input).getElementsByTagName('div')[0];
+    input.classList.add('togglebutton');
+    input.classList.remove('checkbox');
+  },
+  handleChange: function(){
+    this.setState({checked: this.ref.getValue()});
+  },
+  render: function() {
+    var other = SC.makeOtherArray(['checked'],this.props);
+    return (
+      <RB.Input type='checkbox' ref='input' {...other} checked={this.state.checked} onChange={this.handleChange} />
+    );
+  }
+});
+
+SC.SelectInput = React.createClass({
+  componentDidMount: function(){
+    $(".selectinput").dropdown({
+                      "autoinit" : ".selectinput",
+                      "dropdownClass": "selectinput-dropdown",
+                      "optionClass": "selectinput-option",
+                    });
+  },
+  render: function() {
+    var options = [];
+    for(var key in this.props.options){
+      options.push(
+        <option key={key} value={this.props.options[key]}>{key}</option>
+      );
+    }
+    return (
+      <div>
+        <label>{this.props.label}</label>
+        <select name={this.props.name} placeholder={this.props.placeholder} className='form-control selectinput'>
+          {options}
+        </select>
+      </div>
     );
   }
 });

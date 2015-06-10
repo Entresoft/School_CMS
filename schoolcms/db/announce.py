@@ -30,15 +30,19 @@ class Announce(FullText, Base):
     id = Column(INTEGER, primary_key=True)
     title = Column(TEXT(charset='utf8'), nullable=False)
     content = Column(TEXT(charset='utf8'), nullable=False)
+    author_group_name = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
+    author_name = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
+    is_private = Column(BOOLEAN, nullable=False)
     created = Column(TIMESTAMP, default=datetime.now)
     updated = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
-    author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
     search = Column(TEXT(charset='utf8'), nullable=False)
     
-    def __init__(self, title, content, author_key, **kwargs):
+    def __init__(self, title, content, author_group_name, author_name, is_private, **kwargs):
         self.title = title
         self.content = content
-        self.author_key = author_key
+        self.author_group_name = author_group_name
+        self.author_name = author_name
+        self.is_private = is_private
         self.search = ' '.join(jieba.cut_for_search('%s %s' % (title,content)))
 
     def __repr__(self):
@@ -65,6 +69,9 @@ class Announce(FullText, Base):
             'id' : self.id,
             'title' : self.title,
             'content' : self.content,
-            'created' : self.created.strftime("%Y-%m-%d %H:%M:%S"),
-            'updated' : self.updated.strftime("%Y-%m-%d %H:%M:%S"),
+            'author_name' : self.author_name,
+            'author_group_name' : self.author_group_name,
+            'is_private' : self.is_private,
+            'created' : self.created.strftime('%Y-%m-%d %H:%M:%S'),
+            'updated' : self.updated.strftime('%Y-%m-%d %H:%M:%S'),
         }

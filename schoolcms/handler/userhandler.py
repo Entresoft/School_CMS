@@ -25,7 +25,7 @@ class LoginHandler(BaseHandler):
         next_page = self.get_argument('next', '/')
         self.write({
                 '_xsrf': self.xsrf_token,
-                'alert': None,
+                'alert': '',
                 'next': next_page,
             })
 
@@ -83,11 +83,11 @@ class AddUserHandler(BaseHandler):
             'error_msg' : '',
         }
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_admin_user
     def get(self):
         self.render('user/adduser.html', **self._)
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_admin_user
     def post(self):
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')

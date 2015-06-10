@@ -10,18 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ static_url('css/material-fullpalette.min.css') }}">
-    <style>
-      .resizetextarea{
-        resize: none;
-      };
-    </style>
+    <link rel="stylesheet" href="{{ static_url('css/dropdown.css') }}">
     {% for url in js_urls %}
       <script src="{{ url }}"></script>
     {% end %}
     {% for url in jsx_urls %}
       <script src="{{ url }}"></script>
     {% end %}
-
   </head>
   <body>
     <div id="app"></div>
@@ -34,6 +29,7 @@
       body{
         background-image: url("{{ static_url('background.jpg') }}");
         background-repeat: repeat;
+        word-break: break-all;
       }
     </style>
   </body>

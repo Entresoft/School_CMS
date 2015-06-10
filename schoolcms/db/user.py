@@ -33,7 +33,7 @@ class User(Base):
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     account = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
     passwd = Column(VARCHAR(90, collation='utf8_unicode_ci'))
-    name = Column(VARCHAR(20, collation='utf8_unicode_ci'))
+    name = Column(VARCHAR(20, collation='utf8_unicode_ci'), nullable=False)
     identity = Column(ENUM('學生','教師', charset='utf8'), nullable=False)
     admin = Column(BOOLEAN, nullable=False)
 
@@ -86,7 +86,7 @@ class Group(Base):
     __tablename__ = 'groups'
 
     id = Column(INTEGER, primary_key=True)
-    name = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
+    name = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
 
     def __init__(self, id, name):
         self.id = id if id else None
@@ -108,21 +108,33 @@ class GroupList(Base):
     __tablename__ = 'grouplist'
 
     userkey = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
-    groupid = Column(INTEGER, nullable=False)
+    group_id = Column(INTEGER, nullable=False)
 
-    def __init__(self, userkey, groupid):
+    def __init__(self, userkey, group_id):
         self.userkey = userkey
-        self.groupid = groupid
+        self.group_id = group_id
 
     @classmethod
-    def check(cls, userkey, groupid, sql_session):
+    def check(cls, userkey, group_id, sql_session):
         q = sql_session.query(cls)
         q = q.filter(cls.userkey == userkey)
-        q = q.filter(cls.groupid == groupid)
+        q = q.filter(cls.group_id == group_id)
         return q.scalar()
+
+    @classmethod
+    def get_user_groups(cls, userkey, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.userkey == userkey)
+        group_lists = q.all()
+        groups = []
+        for i in group_lists:
+            group = Group.by_id(i.group_id, sql_session).scalar()
+            groups.append(group)
+        
+        return groups
 
     def to_dict(self):
         return {
             'userkey' : self.userkey,
-            'groupid' : self.groupid,
+            'group_id' : self.group_id,
         }
