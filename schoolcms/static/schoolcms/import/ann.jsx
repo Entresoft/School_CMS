@@ -5,6 +5,8 @@ SC.AnnouncePage = React.createClass({
     return {
       title: '',
       content: '',
+      author_name: '',
+      author_group_name: '',
       created: '',
       updated: '',
       atts: [],
@@ -21,7 +23,7 @@ SC.AnnouncePage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}
-          <small> by 設備組‧組長</small>
+          <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
         </RB.PageHeader>
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
           <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />

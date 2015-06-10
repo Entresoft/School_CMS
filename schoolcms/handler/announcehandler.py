@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
+from schoolcms.db import Announce, TempFileList, AttachmentList, Record, Group, GroupList
 from sqlalchemy import desc
 
 try:
@@ -75,8 +75,6 @@ class EditAnnHandler(BaseHandler):
             'id': '',
             'title': '',
             'content': '',
-            'author_name': '',
-            'author_group_name': '',
             'is_private': False,
             'tmpatts': [],
             'atts': [],
@@ -97,8 +95,10 @@ class EditAnnHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['atts'] = [att.to_dict() for att in atts]
 
-        GroupList
-        self._['user_groups'] = q.all()
+        user_groups = GroupList.get_user_groups(self.current_user.key, self.sql_session)
+        self._['user_groups'] = {}
+        for i in user_groups:
+            self._['user_groups'][i.name] = i.id
 
         self.write(self._)
 
@@ -124,6 +124,8 @@ class EditAnnHandler(BaseHandler):
             Announce.by_id(self.ann_id, self.sql_session).update({
                     'title' : self._['title'],
                     'content' : self._['content'],
+                    'author_group_name' : self._['author_group_name'],
+                    'author_name' : self._['author_name'],
                     'is_private' : self._['is_private'],
                 })
             Record.add('update', self.ann_id, self.sql_session)
@@ -161,11 +163,11 @@ class EditAnnHandler(BaseHandler):
         elif not self._['content']:
             self._['alert'] = '內容不能空白'
             return False
-        # elif self.group_id == -1:
-        #     self._['alert'] = '沒有選擇群組或群組不存在'
-        #     return False
+        elif self.group_id == -1:
+            self._['alert'] = '沒有選擇群組或群組不存在'
+            return False
 
-        self._['author_group_name'] = 'DEBUG'
+        self._['author_group_name'] = Group.by_id(self.group_id, self.sql_session).scalar().name
 
         return True
 

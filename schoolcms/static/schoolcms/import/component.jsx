@@ -130,7 +130,7 @@ SC.SelectInput = React.createClass({
     return (
       <div>
         <label>{this.props.label}</label>
-        <select name={this.props.name} className='form-control selectinput'>
+        <select name={this.props.name} placeholder={this.props.placeholder} className='form-control selectinput'>
           {options}
         </select>
       </div>
