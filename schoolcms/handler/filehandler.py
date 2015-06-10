@@ -44,7 +44,7 @@ class TempUploadHandler(BaseHandler):
             raise self.HTTPError(404)
         self.render('file.html')
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_group_user(1)
     def post(self, path):
         if path:
             raise self.HTTPError(404)
@@ -72,7 +72,7 @@ class TempUploadHandler(BaseHandler):
         self.sql_session.commit()
         self.write({'file_name':filename,'key':self.tmp_file_name})
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_group_user(1)
     def delete(self, path):
         deletefile = TempFileList.by_key(path, self.sql_session).scalar()
         if not deletefile:
@@ -84,10 +84,6 @@ class TempUploadHandler(BaseHandler):
 
         self.write('delete!')
 
-    # def check_xsrf_cookie(self):
-    #     """Testing!!!!!"""
-    #     return True
-
 
 class FileHandler(StaticFileHandler, BaseHandler):
     @gen.coroutine
@@ -95,7 +91,7 @@ class FileHandler(StaticFileHandler, BaseHandler):
         self.download = bool(self.get_argument('download', False))
         yield super(FileHandler, self).get(*arg, **kargs)
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_group_user(1)
     def delete(self, path):
         if not re.match(r'^[a-zA-Z0-9]+$', path):
             raise self.HTTPError(403)

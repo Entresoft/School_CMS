@@ -80,27 +80,31 @@ class BaseHandler(tornado.web.RequestHandler):
         return tornado.web.authenticated(method)
 
     @staticmethod
-    def is_admin_user(method):
-        @BaseHandler.authenticated
+    def check_is_admin_user(method):
         def wrapper(self, *args, **kwargs):
-            if not self.current_user.admin:
+            if not self.current_user or not self.current_user.admin:
                 raise self.HTTPError(403)
             return method(self, *args, **kwargs)
         return wrapper
 
     @staticmethod
-    def is_group_user(groupid):
+    def check_is_group_user(group_id):
         def decorator(method):
-            @BaseHandler.authenticated
             def wrapper(self, *args, **kwargs):
-                if not self.current_user.admin:
-                    group = GroupList.check(self.current_user.key,
-                                            groupid, self.sql_session)
-                    if not group:
-                        raise self.HTTPError(403)
+                if not self.is_group_user(group_id):
+                    raise self.HTTPError(403)
                 return method(self, *args, **kwargs)
             return wrapper
         return decorator
+
+    def is_group_user(self, group_id):
+        if not self.current_user:
+            return False
+        if self.current_user.admin:
+            return True
+        group = GroupList.check(self.current_user.key,
+                                group_id, self.sql_session)
+        return bool(group)
 
 
 class AppHandler(BaseHandler):

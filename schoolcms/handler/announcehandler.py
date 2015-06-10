@@ -77,7 +77,7 @@ class EditAnnHandler(BaseHandler):
             'alert': '',
         }
 
-    @BaseHandler.is_group_user(1)
+    @BaseHandler.check_is_group_user(1)
     def get(self, ann_id):
         if ann_id:
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
@@ -91,7 +91,7 @@ class EditAnnHandler(BaseHandler):
 
         self.write(self._)
 
-    @BaseHandler.is_group_user(1)
+    @BaseHandler.check_is_group_user(1)
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id

@@ -86,7 +86,7 @@ class Group(Base):
     __tablename__ = 'groups'
 
     id = Column(INTEGER, primary_key=True)
-    name = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
+    name = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
 
     def __init__(self, id, name):
         self.id = id if id else None

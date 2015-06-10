@@ -7,6 +7,7 @@ Move old_ann_system to SchoolCMS.
 Terminal Tool.
 
 For version 0.0.0.1
+DB version -100
 """
 
 from __future__ import absolute_import
