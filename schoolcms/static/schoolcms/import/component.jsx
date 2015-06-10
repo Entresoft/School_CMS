@@ -53,7 +53,10 @@ SC.Form = React.createClass({
       }
     }
     return (
-      <form {...other} onSubmit={this.handleSubmit}>{this.props.children}</form>
+      <form {...other} onSubmit={this.handleSubmit}>
+        {this.props.children}
+        <input type='submit' style={{display:'none'}}/>
+      </form>
     );
   }
 });

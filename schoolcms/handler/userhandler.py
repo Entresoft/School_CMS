@@ -25,7 +25,7 @@ class LoginHandler(BaseHandler):
         next_page = self.get_argument('next', '/')
         self.write({
                 '_xsrf': self.xsrf_token,
-                'alert': None,
+                'alert': '',
                 'next': next_page,
             })
 
