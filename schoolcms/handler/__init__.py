@@ -139,5 +139,5 @@ route = [
     (r'/api/logout/?', LogoutHandler),
     (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/api/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
-    (r'/api/record/?', RecordHandler),
+    (r'/api/announce/record/?', RecordHandler),
 ]
