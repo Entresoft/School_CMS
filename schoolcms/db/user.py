@@ -33,7 +33,7 @@ class User(Base):
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     account = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
     passwd = Column(VARCHAR(90, collation='utf8_unicode_ci'))
-    name = Column(VARCHAR(20, collation='utf8_unicode_ci'))
+    name = Column(VARCHAR(20, collation='utf8_unicode_ci'), nullable=False)
     identity = Column(ENUM('學生','教師', charset='utf8'), nullable=False)
     admin = Column(BOOLEAN, nullable=False)
 

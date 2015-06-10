@@ -72,6 +72,6 @@ class Announce(FullText, Base):
             'author_name' : self.author_name,
             'author_group_name' : self.author_group_name,
             'private' : self.private,
-            'created' : self.created.strftime("%Y-%m-%d %H:%M:%S"),
-            'updated' : self.updated.strftime("%Y-%m-%d %H:%M:%S"),
+            'created' : self.created.strftime('%Y-%m-%d %H:%M:%S'),
+            'updated' : self.updated.strftime('%Y-%m-%d %H:%M:%S'),
         }

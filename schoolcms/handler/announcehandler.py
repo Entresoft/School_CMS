@@ -22,6 +22,12 @@ except NameError:
     xrange = range
 
 
+def _to_int(s, default):
+    if not s.isdigit():
+        return default
+    return int(s)
+
+
 class AnnounceHandler(BaseHandler):
     def get(self, ann_id):
         if ann_id:
@@ -38,9 +44,7 @@ class AnnounceHandler(BaseHandler):
         else:
             start = self.get_argument('start', '')
             search = self.get_argument('search', '')
-            if not start.isdigit():
-                start = 0
-            start = int(start)
+            start = _to_int(start, 0)
 
             total = 0
             if search:
@@ -68,9 +72,12 @@ class EditAnnHandler(BaseHandler):
     def prepare(self):
         super(EditAnnHandler, self).prepare()
         self._ = {
+            'id': '',
             'title': '',
             'content': '',
-            'id': '',
+            'author_name': '',
+            'author_group_name': '',
+            'private': False,
             'tmpatts': [],
             'atts': [],
             '_xsrf': self.xsrf_token,
@@ -83,9 +90,12 @@ class EditAnnHandler(BaseHandler):
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
                 raise self.HTTPError(404)
+            self._['ann_id'] = ann_id
             self._['title'] = ann.title
             self._['content'] = ann.content
-            self._['ann_id'] = ann_id
+            self._['author_name'] = ann.author_name
+            self._['author_group_name'] = ann.author_group_name
+            self._['private'] = ann.private
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['atts'] = [att.to_dict() for att in atts]
 
@@ -98,13 +108,15 @@ class EditAnnHandler(BaseHandler):
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
+        self.group_id = _to_int(self.get_argument('group_id', ''), -1)
+        self._['private'] = bool(self.get_argument('private', False))
         self.attkeys = self.get_arguments('attachment')
 
         # check ann and att
         if not self.check_ann():
             return self.write(self._)
 
-        self._['author_key'] = self.current_user.key
+        self._['author_name'] = self.current_user.name
 
         if self.ann_id:
             Announce.by_id(self.ann_id, self.sql_session).update({
@@ -146,7 +158,12 @@ class EditAnnHandler(BaseHandler):
         elif not self._['content']:
             self._['alert'] = '內容不能空白'
             return False
-            
+        # elif self.group_id == -1:
+        #     self._['alert'] = '沒有選擇群組或群組不存在'
+        #     return False
+
+        self._['author_group_name'] = 'DEBUG'
+
         return True
 
     def parse_att(self):
