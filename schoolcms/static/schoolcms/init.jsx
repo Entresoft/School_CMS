@@ -12,3 +12,13 @@ SC.makeURL = function(path,query){
     }
     return path+'?'+(q.join('&'));
 }
+
+SC.makeOtherArray = function(out, list){
+    var other = {};
+    for(var key in list){
+      if(out.indexOf(key) === -1){
+        other[key]=list[key];
+      }
+    }
+    return other;
+}

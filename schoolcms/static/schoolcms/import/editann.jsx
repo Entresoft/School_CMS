@@ -4,11 +4,12 @@ SC.EditAnnPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
   getInitialState: function() {
     return {
+      id: '',
       title: '',
       content: '',
+      is_private: false,
       tmpatts: [],
       atts: [],
-      id: '',
       _xsrf: '',
       submitLock: 0,
     };
@@ -19,6 +20,7 @@ SC.EditAnnPage = React.createClass({
       this.setState(json);
       callback();
     }.bind(this));
+    $.material.init();
   },
   handlePost: function(){
     if(this.state.submitLock)return false;
@@ -66,9 +68,12 @@ SC.EditAnnPage = React.createClass({
           <RB.Row>
             <RB.Col xs={12} md={6}>
               <RB.Well>
-                <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf}/>
-                <RB.Input type='text' name="title" valueLink={this.linkState('title')} label="公告標題" placeholder='輸入公告標題' disabled={!this.state.ready}/>
-                <SC.ResizeTextArea name="content" valueLink={this.linkState('content')} label="公告內容" placeholder='輸入公告內容' disabled={!this.state.ready}/>
+                <RB.Input type='hidden' name='_xsrf' value={this.state._xsrf}/>
+                <RB.Input type='text' name='title' valueLink={this.linkState('title')} label='公告標題' placeholder='輸入公告標題' disabled={!this.state.ready}/>
+                <SC.ResizeTextArea name='content' valueLink={this.linkState('content')} label='公告內容' placeholder='輸入公告內容' disabled={!this.state.ready}/>
+                <hr/>
+                <SC.SelectInput name='group_id' options={{'G':'1','F':'2'}} label='發佈公告群組' /><br/>
+                <SC.ToggleButton  name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>

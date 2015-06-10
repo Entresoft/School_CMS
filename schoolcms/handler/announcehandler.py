@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record
+from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -77,7 +77,7 @@ class EditAnnHandler(BaseHandler):
             'content': '',
             'author_name': '',
             'author_group_name': '',
-            'private': False,
+            'is_private': False,
             'tmpatts': [],
             'atts': [],
             '_xsrf': self.xsrf_token,
@@ -93,11 +93,12 @@ class EditAnnHandler(BaseHandler):
             self._['ann_id'] = ann_id
             self._['title'] = ann.title
             self._['content'] = ann.content
-            self._['author_name'] = ann.author_name
-            self._['author_group_name'] = ann.author_group_name
-            self._['private'] = ann.private
+            self._['is_private'] = ann.is_private
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['atts'] = [att.to_dict() for att in atts]
+
+        GroupList
+        self._['user_groups'] = q.all()
 
         self.write(self._)
 
@@ -109,7 +110,8 @@ class EditAnnHandler(BaseHandler):
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
         self.group_id = _to_int(self.get_argument('group_id', ''), -1)
-        self._['private'] = bool(self.get_argument('private', False))
+        print(self.get_argument('is_private', ''))
+        self._['is_private'] = bool(self.get_argument('is_private', ''))
         self.attkeys = self.get_arguments('attachment')
 
         # check ann and att
@@ -122,6 +124,7 @@ class EditAnnHandler(BaseHandler):
             Announce.by_id(self.ann_id, self.sql_session).update({
                     'title' : self._['title'],
                     'content' : self._['content'],
+                    'is_private' : self._['is_private'],
                 })
             Record.add('update', self.ann_id, self.sql_session)
         else:
