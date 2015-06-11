@@ -32,8 +32,8 @@ SC.AnnIndexPage = React.createClass({
     var annItems = this.state.anns.map(function (ann) {
       return (
         <tr key={ann.id}>
-            <td className='col-md-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
-            <td className='col-md-4'>{ann.created}</td>
+          <td className='col-md-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
+          <td className='col-md-4'>{ann.created}</td>
         </tr>
       );
     });
@@ -49,7 +49,7 @@ SC.AnnIndexPage = React.createClass({
           </RB.Row>
           <RB.Row><RB.Col xs={12} md={12}>
             <RB.Well>
-              <RB.Table striped bordered hover>
+              <RB.Table striped hover>
                 <thead>
                   <tr><th>標題</th><th>公告時間</th></tr>
                 </thead>

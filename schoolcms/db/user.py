@@ -68,6 +68,7 @@ class User(Base):
 
     def to_dict(self):
         return {
+            'key' : self.key,
             'name' : self.name,
             'account' : self.account,
             'admin' : self.admin,
