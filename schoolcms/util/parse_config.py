@@ -23,6 +23,7 @@ define('server_debug', default=False, help='', type=bool)
 define('database_debug', default=False, help='', type=bool)
 define('rbdb', default=False, help='', type=bool)
 define('ann_url', default='', help='', type=unicode)
+define('mv_page', default=1, help='', type=int)
 
 
 def parse_config():
