@@ -7,6 +7,7 @@ SC.UserPage = React.createClass({
       users: [],
       groups: [],
       total: 0,
+      checkAll: false,
     };
   },
   ajax: function(callback){
@@ -34,10 +35,17 @@ SC.UserPage = React.createClass({
   //               });
   //   RMR.navigate(url);
   // },
+  handleCheckAll: function(){
+    var checkstate = !this.state.checkAll;
+    for(var i=0;i<this.state.users.length;i++){
+      this.refs['userItem_'+this.state.users[i].key].setState({check:checkstate});
+    }
+    this.setState({checkAll: checkstate});
+  },
   render: function() {
     var userItems = this.state.users.map(function (user) {
       return (
-        <SC.UserPageUserItem key={user.key} user={user}/>
+        <SC.UserPageUserItem key={user.key} ref={'userItem_'+user.key} user={user}/>
       );
     });
     var groupTags = this.state.groups.map(function (group) {
@@ -74,7 +82,8 @@ SC.UserPage = React.createClass({
               <RB.Table striped hover>
                 <thead>
                   <tr><th style={{padding:'0 8px 0 8px'}}>
-                    <RB.Input type='checkbox' label={<b> 使用者名稱</b>}/>
+                    <RB.Input type='checkbox' label={<b> 使用者名稱</b>}
+                      onChange={this.handleCheckAll}/>
                   </th><th style={{padding:'0 8px 0 8px',lineHeight:'53px'}}>群組</th></tr>
                 </thead>
                 <tbody>{userItems}</tbody>
@@ -90,11 +99,20 @@ SC.UserPage = React.createClass({
 
 
 SC.UserPageUserItem = React.createClass({
+  getInitialState: function(){
+    return {
+      'check': false,
+    }
+  },
+  handleCheck: function(){
+    this.setState({check:!this.state.check});
+  },
   render: function() {
     return (
       <tr>
         <td className='col-md-2'>
-          <RB.Input type='checkbox' label={' '+this.props.user.name}/>
+          <RB.Input checked={this.state.check} type='checkbox'
+            label={' '+this.props.user.name} onChange={this.handleCheck}/>
         </td>
         <td className='col-md-10'>
           {this.props.user.groups.map(function (group) {
