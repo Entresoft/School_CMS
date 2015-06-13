@@ -160,8 +160,14 @@ SC.Pagination = React.createClass({
     query.start = start;
     return SC.makeURL(this.props.path,query);
   },
-  handleSelect: function(){
-    ;
+  handleSelect: function(event, selectedEvent){
+    var page = selectedEvent.eventKey;
+    var now = Math.ceil(this.props.start/this.props.step)+1;
+    var all = Math.floor(this.props.total/this.props.step);
+    if(page>0&&page<=all&&page!=now){
+      console.log(this.pageURL(page*10-10));
+      setTimeout(function(){ RMR.navigate(this.pageURL(page*10-10)); }.bind(this), 1);
+    }
   },
   render: function() {
     var items = Math.floor(this.props.total/this.props.step);

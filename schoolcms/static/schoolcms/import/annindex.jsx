@@ -49,6 +49,8 @@ SC.AnnIndexPage = React.createClass({
             </RB.Col>
           </RB.Row>
           <RB.Row><RB.Col xs={12} md={12}>
+            <SC.Pagination path='/announce' start={this.props.start} total={this.state.total}
+              query={{search:this.props.search}}/>
             <RB.Well>
               <RB.Table striped hover>
                 <thead>
@@ -58,7 +60,7 @@ SC.AnnIndexPage = React.createClass({
               </RB.Table>
             </RB.Well>
             <SC.Pagination path='/announce' start={this.props.start} total={this.state.total}
-              query={{search:this.state.search}}/>
+              query={{search:this.props.search}}/>
           </RB.Col></RB.Row>
         </RB.Grid>
       </div>
