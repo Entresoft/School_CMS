@@ -96,6 +96,10 @@ SC.App = React.createClass({
     );
   },
 
+  toInt: function(s, df){
+    return parseInt(s)?parseInt(s):df;
+  },
+
   indexHandler: function() {
     return <SC.A href='/announce'>Announce</SC.A>;
   },
@@ -108,10 +112,7 @@ SC.App = React.createClass({
 
   // Ann Page
   annIndexHandler: function(params) {
-    var toInt=function(i){
-      return parseInt(i)?parseInt(i):0;
-    }
-    params.start = toInt(params.start);
+    params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
@@ -130,7 +131,9 @@ SC.App = React.createClass({
       return <SC.LoginPage/>;
   },
   userHandler: function(params) {
-      return <SC.UserPage ajax={this.ajax} start={params.start} search={params.search} current_user={this.state.current_user} />;
+    params.start = this.toInt(params.start, 0);
+    if(!params.search)params.search = '';
+    return <SC.UserPage ajax={this.ajax} start={params.start} search={params.search} current_user={this.state.current_user} />;
   },
 
   // Else

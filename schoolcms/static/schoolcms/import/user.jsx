@@ -89,7 +89,8 @@ SC.UserPage = React.createClass({
                 <tbody>{userItems}</tbody>
               </RB.Table>
             </RB.Well>
-            <SC.Pager start={this.props.start} total={this.state.total} />
+            <SC.Pagination path='/admin/user' start={this.props.start} total={this.state.total}
+              query={{search:this.props.search}}/>
           </RB.Col></RB.Row>
         </RB.Grid>
       </div>
