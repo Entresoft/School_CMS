@@ -6,7 +6,6 @@
 Move old_ann_system to SchoolCMS.
 Terminal Tool.
 
-For version 0.0.0.4
 DB version -102
 """
 
