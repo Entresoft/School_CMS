@@ -44,7 +44,7 @@ SC.AnnouncePage = React.createClass({
             <a className="btn btn-warning btn-xs btn-block" href={'/announce/edit/'+this.state.id}>編輯</a>
           </RB.Col>
           <RB.Col xs={12} md={2}>
-            <a className="btn btn-primary btn-xs btn-block" href="/announce/">返回</a>
+            <a className="btn btn-primary btn-xs btn-block" href="/announce/">返回公告首頁</a>
           </RB.Col>
         </RB.Row>
       </RB.Grid>
