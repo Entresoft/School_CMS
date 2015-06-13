@@ -22,19 +22,16 @@ SC.AnnIndexPage = React.createClass({
     }
   },
   handleSearch: function(search){
-    var url = SC.makeURL(window.location.pathname,{
-                  'start': this.props.start,
-                  'search': search,
-                });
+    var url = SC.makeURL(window.location.pathname,{search: search});
     RMR.navigate(url);
   },
   render: function() {
     var annItems = this.state.anns.map(function (ann) {
       return (
         <tr key={ann.id}>
-          <td className='col-md-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
-          <td className='col-md-2'>{ann.created.substr(0,10)}</td>
-          <td className='col-md-2'>{ann.author_group_name}</td>
+          <td className='col-md-8 col-xs-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
+          <td className='col-md-2 col-xs-2'>{ann.created.substr(0,10)}</td>
+          <td className='col-md-2 col-xs-2'>{ann.author_group_name}</td>
         </tr>
       );
     });
@@ -52,7 +49,7 @@ SC.AnnIndexPage = React.createClass({
             <SC.Pagination path='/announce' start={this.props.start} total={this.state.total}
               query={{search:this.props.search}}/>
             <RB.Well>
-              <RB.Table striped hover>
+              <RB.Table striped hover responsive>
                 <thead>
                   <tr><th>標題</th><th>公告日期</th><th>單位</th></tr>
                 </thead>

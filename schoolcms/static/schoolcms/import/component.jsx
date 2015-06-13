@@ -163,20 +163,20 @@ SC.Pagination = React.createClass({
   handleSelect: function(event, selectedEvent){
     var page = selectedEvent.eventKey;
     var now = Math.ceil(this.props.start/this.props.step)+1;
-    var all = Math.floor(this.props.total/this.props.step);
+    var all = Math.ceil(this.props.total/this.props.step);
     if(page>0&&page<=all&&page!==now){
-      console.log(this.pageURL(page*10-10));
       setTimeout(function(){ RMR.navigate(this.pageURL(page*10-10)); }.bind(this), 1);
     }
   },
   render: function() {
-    var items = Math.floor(this.props.total/this.props.step);
+    var items = Math.ceil(this.props.total/this.props.step);
     if(items===0)items=1;
+    var now = Math.ceil(this.props.start/this.props.step)+1;
     return (
        <RB.Pagination prev next first last ellipsis
           items={items}
           maxButtons={items>10?10:items}
-          activePage={Math.ceil(this.props.start/this.props.step)+1}
+          activePage={now}
           onSelect={this.handleSelect} />
     );
   }
