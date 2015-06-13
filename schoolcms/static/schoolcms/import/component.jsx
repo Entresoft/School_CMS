@@ -137,3 +137,40 @@ SC.SelectInput = React.createClass({
     );
   }
 });
+
+SC.Pagination = React.createClass({
+  propTypes: {
+    path: React.PropTypes.string,
+    step: React.PropTypes.number,
+    start: React.PropTypes.number,
+    total: React.PropTypes.number,
+    query: React.PropTypes.object,
+  },
+  getDefaultProps: function() {
+    return {
+      path: '/',
+      step: 10,
+      start: 0,
+      total: 0,
+      query: {},
+    };
+  },
+  pageURL: function(start){
+    var query = Object.create(this.props.query);
+    query.start = start;
+    return SC.makeURL(this.props.path,query);
+  },
+  handleSelect: function(){
+    ;
+  },
+  render: function() {
+    var items = Math.floor(this.props.total/this.props.step);
+    return (
+       <RB.Pagination prev next first last ellipsis
+          items={items}
+          maxButtons={items>10?10:items}
+          activePage={Math.ceil(this.props.start/this.props.step)+1}
+          onSelect={this.handleSelect} />
+    );
+  }
+});
