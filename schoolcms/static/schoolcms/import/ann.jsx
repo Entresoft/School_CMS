@@ -26,7 +26,7 @@ SC.AnnouncePage = React.createClass({
           <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
         </RB.PageHeader>
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
+          <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={6}><RB.Well>

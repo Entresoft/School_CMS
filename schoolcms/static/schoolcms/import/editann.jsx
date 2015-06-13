@@ -87,7 +87,7 @@ SC.EditAnnPage = React.createClass({
             </RB.Col>
             <RB.Col xs={12} md={6}><RB.Well>
               <h4>預覽內容</h4><hr/>
-              <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
+              <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
             </RB.Well></RB.Col>
           </RB.Row>
           <RB.Row>
