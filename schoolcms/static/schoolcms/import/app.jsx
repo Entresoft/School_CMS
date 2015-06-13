@@ -6,14 +6,17 @@ SC.App = React.createClass({
     '/': 'indexHandler',
     '/login': 'loginHandler',
     '/logout': 'logoutHandler',
-    '/admin/adduser': 'adduserHandler',
+
+    // Ann Page
     '/announce': 'annIndexHandler',
     '/announce/edit': 'editAnnHandler',
     '/announce/edit/:ann_id': 'editAnnHandler',
     '/announce/:ann_id': 'announceHandler',
-    '/group': 'groupHandler',
-    '/userindex': 'userIndexHandler',
-    '/error/:status': 'errorHandler',
+
+    // Admin Page
+    '/admin/adduser': 'adduserHandler',
+    '/admin/group': 'groupHandler',
+    '/admin/user': 'userHandler',
   },
   ajax: function(url,method,data,callback){
     console.log('AJAX TO URL:'+url);
@@ -93,6 +96,10 @@ SC.App = React.createClass({
     );
   },
 
+  toInt: function(s, df){
+    return parseInt(s)?parseInt(s):df;
+  },
+
   indexHandler: function() {
     return <SC.A href='/announce'>Announce</SC.A>;
   },
@@ -102,14 +109,10 @@ SC.App = React.createClass({
   logoutHandler: function() {
     return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
   },
-  adduserHandler: function() {
-      return <SC.LoginPage/>;
-  },
+
+  // Ann Page
   annIndexHandler: function(params) {
-    var toInt=function(i){
-      return parseInt(i)?parseInt(i):0;
-    }
-    params.start = toInt(params.start);
+    params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
@@ -119,16 +122,21 @@ SC.App = React.createClass({
   editAnnHandler: function(ann_id, params) {
     return <SC.EditAnnPage ajax={this.ajax} current_user={this.state.current_user}/>;
   },
+
+  // Admin Page
+  adduserHandler: function() {
+      return <SC.LoginPage/>;
+  },
   groupHandler: function() {
       return <SC.LoginPage/>;
   },
-  userIndexHandler: function() {
-      return <SC.LoginPage/>;
+  userHandler: function(params) {
+    params.start = this.toInt(params.start, 0);
+    if(!params.search)params.search = '';
+    return <SC.UserPage ajax={this.ajax} start={params.start} search={params.search} current_user={this.state.current_user} />;
   },
 
-  errorHandler: function(status) {
-      return <div className="not-found">Error: {status}</div>;
-  },
+  // Else
   notFound: function(path) {
       return <div className="not-found">Page Not Found: {path}</div>;
   },

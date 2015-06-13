@@ -61,7 +61,8 @@ class AnnounceHandler(BaseHandler):
                     'anns' : [{
                         'title': ann.title,
                         'id' : ann.id,
-                        'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),} for ann in anns],
+                        'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),
+                        'author_group_name' : ann.author_group_name,} for ann in anns],
                     'search' : search,
                     'start' : start,
                     'total' : total,

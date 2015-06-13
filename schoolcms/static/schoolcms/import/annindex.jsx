@@ -22,18 +22,16 @@ SC.AnnIndexPage = React.createClass({
     }
   },
   handleSearch: function(search){
-    var url = SC.makeURL(window.location.pathname,{
-                  'start': this.props.start,
-                  'search': search,
-                });
+    var url = SC.makeURL(window.location.pathname,{search: search});
     RMR.navigate(url);
   },
   render: function() {
     var annItems = this.state.anns.map(function (ann) {
       return (
         <tr key={ann.id}>
-            <td className='col-md-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
-            <td className='col-md-4'>{ann.created}</td>
+          <td className='col-md-8 col-xs-8'><a href={'/announce/'+ann.id}>{ann.title}</a></td>
+          <td className='col-md-2 col-xs-2'>{ann.created.substr(0,10)}</td>
+          <td className='col-md-2 col-xs-2'>{ann.author_group_name}</td>
         </tr>
       );
     });
@@ -48,15 +46,18 @@ SC.AnnIndexPage = React.createClass({
             </RB.Col>
           </RB.Row>
           <RB.Row><RB.Col xs={12} md={12}>
+            <SC.Pagination path='/announce' start={this.props.start} total={this.state.total}
+              query={{search:this.props.search}}/>
             <RB.Well>
-              <RB.Table striped bordered hover>
+              <RB.Table striped hover responsive>
                 <thead>
-                  <tr><th>標題</th><th>公告時間</th></tr>
+                  <tr><th>標題</th><th>公告日期</th><th>單位</th></tr>
                 </thead>
                 <tbody>{annItems}</tbody>
               </RB.Table>
             </RB.Well>
-            <SC.Pager start={this.props.start} total={this.state.total} />
+            <SC.Pagination path='/announce' start={this.props.start} total={this.state.total}
+              query={{search:this.props.search}}/>
           </RB.Col></RB.Row>
         </RB.Grid>
       </div>
@@ -93,20 +94,3 @@ SC.SearchAnnForm = React.createClass({
     );
   }
 })
-
-
-SC.Pager = React.createClass({
-  pageUrl: function(start){
-    return '/announce?start='+start;
-  },
-  render: function() {
-    var max = function(a,b){return a>b?a:b;};
-    var min = function(a,b){return a<b?a:b;};
-    return (  
-      <RB.Pager>
-        <RB.PageItem previous href={this.pageUrl(max(0,this.props.start-10))} disabled={this.props.start<=0} >&larr; Previous Page</RB.PageItem>
-        <RB.PageItem next href={this.pageUrl(this.props.start+10)} disabled={this.props.start+10>=this.props.total} >Next Page &rarr;</RB.PageItem>
-      </RB.Pager>
-    );
-  }
-});

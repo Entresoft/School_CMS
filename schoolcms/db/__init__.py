@@ -55,14 +55,16 @@ Base.metadata.create_all(engine)
 
 if options.rbdb:
     with SessionGen() as session:
-        new_user = User('root', 'root', 'root', '教師', True)
-        new_user_grouplist = GroupList(new_user.key, 1)
+        user1 = User('root', 'root', 'root', '教師', True)
+        user2 = User('anner', 'anner', '組長', '教師', False)
         session.add_all([
-                new_user,
+                user1,
+                GroupList(user1.key, 1),
+                user2,
+                GroupList(user2.key, 1),
                 Group(1, '公告發佈者'),
                 Group(2, '系統師'),
                 Group(1000, 'END'),
-                new_user_grouplist,
             ])
 
         session.commit()

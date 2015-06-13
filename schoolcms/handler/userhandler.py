@@ -1,74 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS user login handlers.
-
-handlers.
-"""
+"""SchoolCMS-schoolcms-group."""
 
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import re
-
 from . import BaseHandler
 
-from schoolcms.db import User
+from schoolcms.db import Group, GroupList, User
 
 
-class LoginHandler(BaseHandler):
+class GroupHandler(BaseHandler):
     def get(self):
-        if self.current_user:
-            raise self.HTTPError(404)
+        q = self.sql_session.query(Group)
+        groups = q.all()
+        self.render('group.html', groups=groups)
 
-        next_page = self.get_argument('next', '/')
-        self.write({
-                '_xsrf': self.xsrf_token,
-                'alert': '',
-                'next': next_page,
-            })
 
-    def post(self):
-        if self.current_user:
-            raise self.HTTPError(404)
-
-        self._ = dict()
-        self._['account'] = self.get_argument('account', '')
-        self._['passwd'] = self.get_argument('passwd', '')
-        self._['next'] = self.get_argument('next', '/')
-
-        user = self.login()
-        if not user:
-            del self._['passwd']
-            self.write(self._)
-        else:
-            self.set_secure_cookie('uid', unicode(user.key))
-            self.write({'success':True,'next':self._['next']})
-
-    def login(self):
-        if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):
-            self._['alert'] = '無效的帳號或密碼'
-            return None
-        elif not re.match(r'^.{4,20}$', self._['passwd']):
-            self._['alert'] = '帳號或密碼錯誤'
-            return None
-        
+class UserHandler(BaseHandler):
+    def get(self):
         q = self.sql_session.query(User)
-        q = q.filter(User.account == self._['account'])
-        user = q.first()
+        total = q.count()
+        q = q.limit(10)
+        users = q.all()
+        users_list = [user.to_dict() for user in users]
+        for user_d in users_list:
+            user_groups = GroupList.get_user_groups(user_d['key'], self.sql_session)
+            user_d['groups'] = [group.to_dict() for group in user_groups]
 
-        if not user or not user.check_passwd(self._['passwd']):
-            self._['alert'] = '帳號或密碼錯誤'
-            return None
-        else:
-            return user
+        q = self.sql_session.query(Group)
+        groups = q.all()
 
-
-class LogoutHandler(BaseHandler):
-    def get(self):
-        self.clear_cookie('uid')
-        self.write({'logout':True})
+        self.write({
+                'users': users_list,
+                'groups': [group.to_dict() for group in groups if not group.id==1000],
+                'total': total,
+            })
 
 
 class AddUserHandler(BaseHandler):

@@ -44,6 +44,10 @@ class Announce(FullText, Base):
         self.author_name = author_name
         self.is_private = is_private
         self.search = ' '.join(jieba.cut_for_search('%s %s' % (title,content)))
+        if kwargs.get('created'):
+            self.created = kwargs['created']
+        if kwargs.get('updated'):
+            self.updated = kwargs['updated']
 
     def __repr__(self):
         return 'Announce(%s ,%s)' % \

@@ -115,10 +115,10 @@ class AppHandler(BaseHandler):
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
-from .userhandler import LoginHandler, LogoutHandler, AddUserHandler
+from .signhandler import LoginHandler, LogoutHandler
+from .userhandler import GroupHandler, UserHandler, AddUserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
-from .grouphandler import GroupHandler, UserListHandler
 from .recordhandler import RecordHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
@@ -127,13 +127,18 @@ route = [
     (r'/', AppHandler),
     (r'/login/?', AppHandler),
     (r'/logout/?', AppHandler),
-    (r'/admin/adduser/?', AddUserHandler),
     (r'/announce(?:/([0-9]+))?/?', AppHandler),
     (r'/announce/edit(?:/([0-9]+))?/?', AppHandler),
+
+    # Att and File
     (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
-    (r'/group/?', GroupHandler),
-    (r'/userlist/?', UserListHandler),
+
+    # Admin
+    (r'/admin/adduser/?', AppHandler),
+    (r'/admin/group/?', AppHandler),
+    (r'/admin/user/?', AppHandler),
+
     # API
     (r'/api/?', IndexHandler),
     (r'/api/login/?', LoginHandler),
@@ -141,4 +146,9 @@ route = [
     (r'/api/announce(?:/([0-9]+))?/?', AnnounceHandler),
     (r'/api/announce/edit(?:/([0-9]+))?/?', EditAnnHandler),
     (r'/api/announce/record/?', RecordHandler),
+
+    # Admin API
+    (r'/api/admin/adduser/?', AddUserHandler),
+    (r'/api/admin/group/?', GroupHandler),
+    (r'/api/admin/user/?', UserHandler),
 ]
