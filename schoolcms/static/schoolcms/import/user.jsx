@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 SC.UserPage = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
+  mixins: [SC.LoginPageMixin, React.addons.LinkedStateMixin],
   getInitialState: function() {
     return {
       users: [],
@@ -19,8 +19,8 @@ SC.UserPage = React.createClass({
   },
   pageInit: function(callback){
     this.ajax(function(){
-      $.material.init();
       callback();
+      $.material.init();
     });
   },
   componentWillReceiveProps: function(nextprops) {
