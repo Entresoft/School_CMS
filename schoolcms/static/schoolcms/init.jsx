@@ -25,7 +25,6 @@ SC.makeOtherArray = function(out, list){
 
 SC.LoginPageMixin = {
   getInitialState: function() {
-    console.log('get Ready state!!');
     return {
       ready: false,
     };

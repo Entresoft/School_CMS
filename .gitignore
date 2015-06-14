@@ -4,3 +4,6 @@ file/
 config.py
 schoolcms/static/.webassets-cache/
 logging.txt
+
+schoolcms/static/js/jsx.js
+schoolcms/static/js/plugin.js
