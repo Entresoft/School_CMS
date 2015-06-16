@@ -124,7 +124,7 @@ SC.SelectInput = React.createClass({
     var options = [];
     for(var key in this.props.options){
       options.push(
-        <option key={key} value={this.props.options[key]}>{key}</option>
+        <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
       );
     }
     return (

@@ -9,35 +9,69 @@ from __future__ import unicode_literals
 
 from . import BaseHandler
 
-from schoolcms.db import Group, GroupList, User
+from schoolcms.db import GroupList, User
 
 
 class GroupHandler(BaseHandler):
-    def get(self):
-        q = self.sql_session.query(Group)
-        groups = q.all()
-        self.render('group.html', groups=groups)
+    @BaseHandler.check_is_admin_user
+    def post(self):
+        userkeys = self.get_arguments('userkey')
+        group = self.get_argument('group')
+
+        for userkey in userkeys:
+            if not User.by_key(userkey, self.sql_session).scalar():
+                raise self.HTTPError(400)
+            if not GroupList.check(userkey, group, self.sql_session):
+                self.sql_session.add(GroupList(userkey, group))
+
+        self.sql_session.commit()
+        self.write({
+                'success': True,
+            })
+
+    @BaseHandler.check_is_admin_user
+    def delete(self):
+        userkeys = self.get_arguments('userkey')
+        group = self.get_argument('group')
+
+        for userkey in userkeys:
+            if not User.by_key(userkey, self.sql_session).scalar():
+                raise self.HTTPError(400)
+            if GroupList.check(userkey, group, self.sql_session):
+                q = self.sql_session.query(GroupList)
+                q = q.filter(GroupList.userkey == userkey).filter(GroupList.group == group)
+                q.delete()
+
+        self.sql_session.commit()
+        self.write({
+                'success': True,
+            })
 
 
 class UserHandler(BaseHandler):
+    @BaseHandler.check_is_admin_user
     def get(self):
         q = self.sql_session.query(User)
         total = q.count()
+        q = q.order_by(User.name)
         q = q.limit(10)
         users = q.all()
         users_list = [user.to_dict() for user in users]
         for user_d in users_list:
-            user_groups = GroupList.get_user_groups(user_d['key'], self.sql_session)
-            user_d['groups'] = [group.to_dict() for group in user_groups]
+            user_d['groups'] = GroupList.get_user_groups(user_d['key'], self.sql_session)
 
-        q = self.sql_session.query(Group)
-        groups = q.all()
+        groups = GroupList.get_all_groups(self.sql_session)
 
         self.write({
+                '_xsrf': self.xsrf_token,
                 'users': users_list,
-                'groups': [group.to_dict() for group in groups if not group.id==1000],
+                'groups': groups,
                 'total': total,
             })
+
+    @BaseHandler.check_is_admin_user
+    def post(self):
+        pass
 
 
 class AddUserHandler(BaseHandler):

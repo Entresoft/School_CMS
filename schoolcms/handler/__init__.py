@@ -89,22 +89,22 @@ class BaseHandler(tornado.web.RequestHandler):
         return wrapper
 
     @staticmethod
-    def check_is_group_user(group_id):
+    def check_is_group_user(group):
         def decorator(method):
             def wrapper(self, *args, **kwargs):
-                if not self.is_group_user(group_id):
+                if not self.is_group_user(group):
                     raise self.HTTPError(403)
                 return method(self, *args, **kwargs)
             return wrapper
         return decorator
 
-    def is_group_user(self, group_id):
+    def is_group_user(self, group):
         if not self.current_user:
             return False
         if self.current_user.admin:
             return True
         group = GroupList.check(self.current_user.key,
-                                group_id, self.sql_session)
+                                group, self.sql_session)
         return bool(group)
 
 
@@ -136,7 +136,6 @@ route = [
 
     # Admin
     (r'/admin/adduser/?', AppHandler),
-    (r'/admin/group/?', AppHandler),
     (r'/admin/user/?', AppHandler),
 
     # API

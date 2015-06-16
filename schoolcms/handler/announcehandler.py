@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record, Group, GroupList
+from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -83,7 +83,7 @@ class EditAnnHandler(BaseHandler):
             'alert': '',
         }
 
-    @BaseHandler.check_is_group_user(1)
+    @BaseHandler.check_is_group_user('Announcement administrator')
     def get(self, ann_id):
         if ann_id:
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
@@ -96,22 +96,18 @@ class EditAnnHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['atts'] = [att.to_dict() for att in atts]
 
-        user_groups = GroupList.get_user_groups(self.current_user.key, self.sql_session)
-        self._['user_groups'] = {}
-        for i in user_groups:
-            self._['user_groups'][i.name] = i.id
+        self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
         self.write(self._)
 
-    @BaseHandler.check_is_group_user(1)
+    @BaseHandler.check_is_group_user('Announcement administrator')
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
-        self.group_id = _to_int(self.get_argument('group_id', ''), -1)
-        print(self.get_argument('is_private', ''))
+        self.group = self.get_argument('group', '')
         self._['is_private'] = bool(self.get_argument('is_private', ''))
         self.attkeys = self.get_arguments('attachment')
 
@@ -164,11 +160,11 @@ class EditAnnHandler(BaseHandler):
         elif not self._['content']:
             self._['alert'] = '內容不能空白'
             return False
-        elif self.group_id == -1:
+        elif not self.group or not GroupList.check(self.current_user.key, self.group, self.sql_session):
             self._['alert'] = '沒有選擇群組或群組不存在'
             return False
 
-        self._['author_group_name'] = Group.by_id(self.group_id, self.sql_session).scalar().name
+        self._['author_group_name'] = self.group
 
         return True
 
