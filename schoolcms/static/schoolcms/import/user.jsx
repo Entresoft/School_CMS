@@ -30,11 +30,14 @@ SC.UserPage = React.createClass({
       $.material.init();
     });
   },
-  // componentWillReceiveProps: function(nextprops) {
-  //   if(false){
-  //     this.ajax(function(){});
-  //   }
-  // },
+  componentWillReceiveProps: function(nextprops) {
+    if(this.props.start!==nextprops.start||this.props.search!==nextprops.search){
+      this.ajax(function(){
+        this.setState({checkAll:false});
+        $.material.init();
+      }.bind(this));
+    }
+  },
   adduserModal: function(){
     var handleSubmin = function(){
       var form = new FormData(React.findDOMNode(this.refs.au_form));
@@ -156,7 +159,7 @@ SC.UserPage = React.createClass({
               <RB.ModalTrigger
                 modal={<SC.UserPageGroupModal
                   groups={this.state.groups} toggleGroup={this.toggleGroup}/>}>
-                <RB.Button className='mdi-social-people'></RB.Button>
+                <RB.Button className='mdi-social-group-add'></RB.Button>
               </RB.ModalTrigger>
             </RB.Col>
           </RB.Row>
@@ -166,7 +169,7 @@ SC.UserPage = React.createClass({
                 <thead><tr>
                   <th style={{padding:'0 8px 0 8px'}}>
                     <RB.Input type='checkbox' label={<b> 使用者帳號</b>}
-                      onChange={this.handleCheckAll}/>
+                      onChange={this.handleCheckAll} checked={this.state.checkAll}/>
                   </th>
                   <th style={{padding:'0 8px 0 8px',lineHeight:'53px'}}>使用者名稱</th>
                   <th style={{padding:'0 8px 0 8px',lineHeight:'53px'}}>群組</th>  

@@ -124,12 +124,6 @@ SC.App = React.createClass({
   },
 
   // Admin Page
-  adduserHandler: function() {
-      return <SC.LoginPage/>;
-  },
-  groupHandler: function() {
-      return <SC.LoginPage/>;
-  },
   userHandler: function(params) {
     params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';

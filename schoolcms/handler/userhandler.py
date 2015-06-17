@@ -14,6 +14,12 @@ import re
 from schoolcms.db import GroupList, User
 
 
+def _to_int(s, default):
+    if not s.isdigit():
+        return default
+    return int(s)
+
+
 class GroupHandler(BaseHandler):
     @BaseHandler.check_is_admin_user
     def post(self):
@@ -53,10 +59,12 @@ class GroupHandler(BaseHandler):
 class UserHandler(BaseHandler):
     @BaseHandler.check_is_admin_user
     def get(self):
+        start = _to_int(self.get_argument('start', ''),0)
+        
         q = self.sql_session.query(User)
         total = q.count()
-        q = q.order_by(User.name)
-        q = q.limit(10)
+        q = q.order_by(User.account)
+        q = q.offset(start).limit(10)
         users = q.all()
         users_list = [user.to_dict() for user in users]
         for user_d in users_list:
