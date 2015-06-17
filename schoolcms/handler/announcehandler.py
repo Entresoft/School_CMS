@@ -113,6 +113,7 @@ class EditAnnHandler(BaseHandler):
 
         # check ann and att
         if not self.check_ann():
+            self._['tmpatts'] = [att.to_dict() for att in self._['tmpatts']]
             return self.write(self._)
 
         self._['author_name'] = self.current_user.name
@@ -145,14 +146,14 @@ class EditAnnHandler(BaseHandler):
                 q = self.sql_session.query(TempFileList)
                 q = q.filter(TempFileList.key == self.attkeys[i])
                 try:
-                    new_att = q.one()
-                    assert new_att.author_key == self.current_user.key
-                    assert os.path.exists('file/tmp/%s' % new_att.key)
-                    self._['tmpatts'].append(new_att)
-
+                    new_tmpatt = q.one()
+                    assert new_tmpatt.author_key == self.current_user.key
+                    assert os.path.exists('file/tmp/%s' % new_tmpatt.key)
+                    self._['tmpatts'].append(new_tmpatt)
                 except:
                     self._['alert'] = '遺失附件!'
-                    return False
+        if self._['alert']:
+            return False
 
         if not self._['title']:
             self._['alert'] = '標題不能空白'

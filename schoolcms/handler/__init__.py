@@ -116,7 +116,7 @@ class AppHandler(BaseHandler):
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .signhandler import LoginHandler, LogoutHandler
-from .userhandler import GroupHandler, UserHandler, AddUserHandler
+from .userhandler import GroupHandler, UserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
 from .recordhandler import RecordHandler
@@ -147,7 +147,6 @@ route = [
     (r'/api/announce/record/?', RecordHandler),
 
     # Admin API
-    (r'/api/admin/adduser/?', AddUserHandler),
     (r'/api/admin/group/?', GroupHandler),
     (r'/api/admin/user/?', UserHandler),
 ]

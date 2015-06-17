@@ -83,7 +83,9 @@ class AttachmentList(Base):
 
     def to_dict(self):
         _filetype_mime, encoding = mimetypes.guess_type(self.path)
-        _filetype = mimetypes.guess_extension(_filetype_mime)
+        _filetype = ''
+        if _filetype_mime:
+            _filetype = mimetypes.guess_extension(_filetype_mime)
         if not _filetype:
             _filetype = mimetypes.guess_extension(self.content_type)
             _filetype = _filetype if _filetype else ''

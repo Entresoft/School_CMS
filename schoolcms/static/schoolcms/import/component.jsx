@@ -113,12 +113,23 @@ SC.ToggleButton = React.createClass({
 });
 
 SC.SelectInput = React.createClass({
+  getInitialState: function(){
+    return {
+      ready: false,
+      value: '',
+    }
+  },
   componentDidMount: function(){
     $(".selectinput").dropdown({
                       "autoinit" : ".selectinput",
-                      "dropdownClass": "selectinput-dropdown",
-                      "optionClass": "selectinput-option",
+                      // "dropdownClass": "selectinput-dropdown",
+                      // "optionClass": "selectinput-option",
                     });
+    $(".selectinput").change(function(event){
+      this.setState({value: event.currentTarget.value});
+      if(this.props.onChange)this.props.onChange(event.currentTarget.value);
+    }.bind(this));
+    this.setState({ready:true});
   },
   render: function() {
     var options = [];
@@ -127,10 +138,12 @@ SC.SelectInput = React.createClass({
         <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
       );
     }
+    if(!this.state.ready)options = [];
     return (
       <div>
         <label>{this.props.label}</label>
-        <select name={this.props.name} placeholder={this.props.placeholder} className='form-control selectinput'>
+        <input type='hidden' name={this.props.name} value={this.state.value}/>
+        <select placeholder={this.props.placeholder} className='form-control selectinput'>
           {options}
         </select>
       </div>
@@ -178,6 +191,17 @@ SC.Pagination = React.createClass({
           maxButtons={items>10?10:items}
           activePage={now}
           onSelect={this.handleSelect} />
+    );
+  }
+});
+
+SC.MaterialInit = React.createClass({
+  componentDidMount: function(){
+    $.material.init();
+  },
+  render: function() {
+    return (
+      <div />
     );
   }
 });
