@@ -25,7 +25,18 @@ class BaseHandler(tornado.web.RequestHandler):
     def initialize(self):
         self.assets = Environment(
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
-        jsx = Bundle('schoolcms/init.jsx','schoolcms/import/*.jsx',filters=('react','jsmin'),output='js/jsx.js')
+        all_css = Bundle(
+                'css/bootstrap.min.css',
+                'css/material-fullpalette.min.css',
+                Bundle(
+                    'css/dropdown.css',
+                    'css/schoolcms.css',
+                    filters=('cssmin',)),
+                output='dict/plugin.min.css')
+        jsx = Bundle(
+            'schoolcms/init.jsx',
+            'schoolcms/import/*.jsx',
+            filters=('react','jsmin'),output='dict/jsx.min.js')
         all_js = Bundle(
                 'js/jquery-2.1.3.min.js',
                 'bootstrap-3.3.4-dist/js/bootstrap.min.js',
@@ -36,7 +47,8 @@ class BaseHandler(tornado.web.RequestHandler):
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
-                output='js/plugin.js')
+                output='dict/plugin.min.js')
+        self.assets.register('css_all', all_css)
         self.assets.register('js_all', all_js)
         self.assets.register('jsx', jsx)
 
@@ -65,6 +77,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
         _['xsrf'] = self.xsrf_token
+        _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()
         return _
