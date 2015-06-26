@@ -190,7 +190,8 @@ SC.Pagination = React.createClass({
           items={items}
           maxButtons={items>10?10:items}
           activePage={now}
-          onSelect={this.handleSelect} />
+          onSelect={this.handleSelect} 
+          className='shadow-z-2' />
     );
   }
 });
