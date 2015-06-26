@@ -56,13 +56,13 @@ SC.A = React.createClass({
   },
   handleClick: function(e){
     e.preventDefault();
-    RMR.navigate(this.props.href);
+    setTimeout(function(){ RMR.navigate(this.props.href); }.bind(this), 1);
     console.log('nave to '+this.props.href);
   },
   render: function() {
     var other = SC.makeOtherArray(['onClick', 'href'],this.props);
     return (
-      <a {...other} href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
+      <a {...other} href='#' onClick={this.handleClick}>{this.props.children}</a>
     );
   }
 });
@@ -186,11 +186,11 @@ SC.Pagination = React.createClass({
     if(items===0)items=1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
     return (
-       <RB.Pagination prev next first last ellipsis
+       <RB.Pagination prev next first last
           items={items}
-          maxButtons={items>10?10:items}
+          maxButtons={items>8?8:items}
           activePage={now}
-          onSelect={this.handleSelect} 
+          onSelect={this.handleSelect}
           className='shadow-z-2' />
     );
   }

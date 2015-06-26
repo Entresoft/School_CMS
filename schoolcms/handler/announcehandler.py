@@ -58,11 +58,7 @@ class AnnounceHandler(BaseHandler):
             anns = q.all()
 
             self.write({
-                    'anns' : [{
-                        'title': ann.title,
-                        'id' : ann.id,
-                        'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),
-                        'author_group_name' : ann.author_group_name,} for ann in anns],
+                    'anns' : [ann.to_dict() for ann in anns],
                     'search' : search,
                     'start' : start,
                     'total' : total,

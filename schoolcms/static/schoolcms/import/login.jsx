@@ -49,8 +49,8 @@ SC.LoginForm = React.createClass({
         <RB.Input type='password' name="passwd" placeholder='密碼' />
         <hr/>
         <div className="btn-group btn-group-justified">
-          <a className='btn btn-danger btn-flat' onClick={function(){window.history.go(this.props.redirect?-2:-1);}.bind(this)}>返回</a>
           <a className='btn btn-primary' onClick={this.handleLogin} disabled={!this.state.ready}>登入</a>
+          <a className='btn btn-danger btn-flat' onClick={function(){window.history.go(this.props.redirect?-2:-1);}.bind(this)}>返回</a>
         </div>
       </SC.Form>
     );
