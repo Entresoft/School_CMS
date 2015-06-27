@@ -59,17 +59,17 @@ class AttachmentList(Base):
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     ann_id = Column(INTEGER, nullable=False)
     content_type = Column(TEXT(charset='utf8'), nullable=False)
-    path = Column(TEXT(charset='utf8'), nullable=False)
+    filename = Column(TEXT(charset='utf8'), nullable=False)
     
-    def __init__(self, key, ann_id, content_type, path, **kwargs):
+    def __init__(self, key, ann_id, content_type, filename, **kwargs):
         self.key = key
         self.ann_id = ann_id
         self.content_type = content_type
-        self.path = path
+        self.filename = filename
 
     def __repr__(self):
         return 'AttachmentList(%s ,%s)' % \
-        (self.ann_id,self.path)
+        (self.ann_id,self.filename)
 
     @classmethod
     def by_key(cls, key, sql_session):
@@ -80,16 +80,19 @@ class AttachmentList(Base):
     def by_ann_id(cls, ann_id, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.ann_id == ann_id)
+    
+    @classmethod
+    def count_by_ann_id(cls, ann_id, sql_session):
+        q = sql_session.query(cls.ann_id)
+        q = q.filter(cls.ann_id == ann_id)
+        return q.count()
 
     def to_dict(self):
-        _filetype_mime, encoding = mimetypes.guess_type(self.path)
-        _filetype = mimetypes.guess_extension(_filetype_mime)
-        if not _filetype:
-            _filetype = mimetypes.guess_extension(self.content_type)
-            _filetype = _filetype if _filetype else ''
+        _filetype = mimetypes.guess_extension(self.content_type)
+        _filetype = _filetype if _filetype else ''
         return {
             'key' : self.key,
-            'filename' : self.path[33:],
-            'path' : self.path,
+            'filename' : self.filename,
+            'path' : self.key+'/'+self.filename,
             'filetype' : _filetype[1:],
         }

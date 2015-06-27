@@ -17,6 +17,7 @@ python-pyReact 0.5.2
 python-webassets 0.10.1
 nodejs 0.12.4
 python-jsmin 2.1.1
+python-cssmin 0.2.0
 
 ###Client
 bootstrap-3.3.4

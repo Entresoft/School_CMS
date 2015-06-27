@@ -25,7 +25,18 @@ class BaseHandler(tornado.web.RequestHandler):
     def initialize(self):
         self.assets = Environment(
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
-        jsx = Bundle('schoolcms/init.jsx','schoolcms/import/*.jsx',filters=('react','jsmin'),output='js/jsx.js')
+        all_css = Bundle(
+                'css/bootstrap.min.css',
+                'css/material-fullpalette.min.css',
+                Bundle(
+                    'css/dropdown.css',
+                    'css/schoolcms.css',
+                    filters=('cssmin',)),
+                output='dict/plugin.min.css')
+        jsx = Bundle(
+            'schoolcms/init.jsx',
+            'schoolcms/import/*.jsx',
+            filters=('react','jsmin'),output='dict/jsx.min.js')
         all_js = Bundle(
                 'js/jquery-2.1.3.min.js',
                 'bootstrap-3.3.4-dist/js/bootstrap.min.js',
@@ -36,7 +47,8 @@ class BaseHandler(tornado.web.RequestHandler):
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
-                output='js/plugin.js')
+                output='dict/plugin.min.js')
+        self.assets.register('css_all', all_css)
         self.assets.register('js_all', all_js)
         self.assets.register('jsx', jsx)
 
@@ -64,7 +76,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
-        _['xsrf'] = self.xsrf_token
+        _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()
         return _
@@ -89,22 +101,22 @@ class BaseHandler(tornado.web.RequestHandler):
         return wrapper
 
     @staticmethod
-    def check_is_group_user(group_id):
+    def check_is_group_user(group):
         def decorator(method):
             def wrapper(self, *args, **kwargs):
-                if not self.is_group_user(group_id):
+                if not self.is_group_user(group):
                     raise self.HTTPError(403)
                 return method(self, *args, **kwargs)
             return wrapper
         return decorator
 
-    def is_group_user(self, group_id):
+    def is_group_user(self, group):
         if not self.current_user:
             return False
         if self.current_user.admin:
             return True
         group = GroupList.check(self.current_user.key,
-                                group_id, self.sql_session)
+                                group, self.sql_session)
         return bool(group)
 
 
@@ -116,7 +128,7 @@ class AppHandler(BaseHandler):
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .signhandler import LoginHandler, LogoutHandler
-from .userhandler import GroupHandler, UserHandler, AddUserHandler
+from .userhandler import GroupHandler, UserHandler
 from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
 from .recordhandler import RecordHandler
@@ -136,7 +148,6 @@ route = [
 
     # Admin
     (r'/admin/adduser/?', AppHandler),
-    (r'/admin/group/?', AppHandler),
     (r'/admin/user/?', AppHandler),
 
     # API
@@ -148,7 +159,6 @@ route = [
     (r'/api/announce/record/?', RecordHandler),
 
     # Admin API
-    (r'/api/admin/adduser/?', AddUserHandler),
     (r'/api/admin/group/?', GroupHandler),
     (r'/api/admin/user/?', UserHandler),
 ]

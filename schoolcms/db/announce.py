@@ -21,6 +21,9 @@ import jieba
 
 jieba.set_dictionary('schoolcms/util/sqlalchemy_fulltext/dict.txt.big')
 
+def _search_update(context):
+    return ' '.join(jieba.cut_for_search(
+        '%s %s' % (context.current_parameters['title'],context.current_parameters['content'])))
 
 class Announce(FullText, Base):
     __tablename__ = 'announcements'
@@ -35,7 +38,7 @@ class Announce(FullText, Base):
     is_private = Column(BOOLEAN, nullable=False)
     created = Column(TIMESTAMP, default=datetime.now)
     updated = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
-    search = Column(TEXT(charset='utf8'), nullable=False)
+    search = Column(TEXT(charset='utf8'), nullable=False, onupdate=_search_update)
     
     def __init__(self, title, content, author_group_name, author_name, is_private, **kwargs):
         self.title = title

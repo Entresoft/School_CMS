@@ -1,6 +1,6 @@
 *.json
 *.pyc
-file/
 config.py
 schoolcms/static/.webassets-cache/
+file/
 logging.txt

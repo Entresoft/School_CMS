@@ -83,59 +83,46 @@ class User(Base):
         return '{%s}' % ','.join(_l)
 
 
-class Group(Base):
-    __tablename__ = 'groups'
-
-    id = Column(INTEGER, primary_key=True)
-    name = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
-
-    def __init__(self, id, name):
-        self.id = id if id else None
-        self.name = name
-
-    @classmethod
-    def by_id(cls, id, sql_session):
-        q = sql_session.query(cls)
-        return q.filter(cls.id == id)
-
-    def to_dict(self):
-        return {
-            'id' : self.id,
-            'name' : self.name,
-        }
-
-
 class GroupList(Base):
     __tablename__ = 'grouplist'
 
-    userkey = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
-    group_id = Column(INTEGER, nullable=False)
+    id = Column(INTEGER, primary_key=True)
+    userkey = Column(CHAR(40, collation='utf8_unicode_ci'))
+    group = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
 
-    def __init__(self, userkey, group_id):
+    def __init__(self, userkey, group):
         self.userkey = userkey
-        self.group_id = group_id
+        self.group = group
 
     @classmethod
-    def check(cls, userkey, group_id, sql_session):
+    def check(cls, userkey, group, sql_session):
         q = sql_session.query(cls)
         q = q.filter(cls.userkey == userkey)
-        q = q.filter(cls.group_id == group_id)
+        q = q.filter(cls.group == group)
         return q.scalar()
 
     @classmethod
     def get_user_groups(cls, userkey, sql_session):
         q = sql_session.query(cls)
         q = q.filter(cls.userkey == userkey)
+        q = q.order_by(cls.group)
         group_lists = q.all()
-        groups = []
-        for i in group_lists:
-            group = Group.by_id(i.group_id, sql_session).scalar()
-            groups.append(group)
-        
+        groups = [i.group for i in group_lists]
+
+        return groups
+
+    @classmethod
+    def get_all_groups(cls, sql_session):
+        q = sql_session.query(cls)
+        q = q.group_by(cls.group)
+        q = q.order_by(cls.group)
+        group_lists = q.all()
+        groups = [i.group for i in group_lists]
+
         return groups
 
     def to_dict(self):
         return {
             'userkey' : self.userkey,
-            'group_id' : self.group_id,
+            'group' : self.group,
         }

@@ -51,6 +51,8 @@ SC.App = React.createClass({
       loading: -1,
       status: 200,
       current_user: null,
+      current_groups: [],
+      _xsrf: '',
       ready: false,
     };
   },
@@ -66,7 +68,7 @@ SC.App = React.createClass({
   getCurrentUser: function(){
     this.setState({ready: false});
     this.ajax('/api','GET',null,function(json){
-      this.setState({current_user:json.current_user,ready:true});
+      this.setState({current_user:json.current_user,_xsrf:json._xsrf,ready:true});
     }.bind(this));
   },
   render: function() {
@@ -104,7 +106,7 @@ SC.App = React.createClass({
     return <SC.A href='/announce'>Announce</SC.A>;
   },
   loginHandler: function(params) {
-    return <SC.LoginPage ajax={this.ajax} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
+    return <SC.LoginPage ajax={this.ajax} _xsrf={this.state._xsrf} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
     return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
@@ -116,20 +118,19 @@ SC.App = React.createClass({
     if(!params.search)params.search = '';
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
-  announceHandler: function() {
-    return <SC.AnnouncePage ajax={this.ajax}/>;
+  announceHandler: function(ann_id, params) {
+    var manager = (this.state.current_user&&this.state.current_user.admin||this.state.current_groups.indexOf('Announcement Manager')>=0);
+    return <SC.AnnouncePage ajax={this.ajax} _xsrf={this.state._xsrf} manager={manager} id={ann_id} params={params}/>;
   },
   editAnnHandler: function(ann_id, params) {
-    return <SC.EditAnnPage ajax={this.ajax} current_user={this.state.current_user}/>;
+    if(!params){
+      params = ann_id;
+      ann_id = '';
+    }
+    return <SC.EditAnnPage ajax={this.ajax} _xsrf={this.state._xsrf} id={ann_id} params={params} current_user={this.state.current_user}/>;
   },
 
   // Admin Page
-  adduserHandler: function() {
-      return <SC.LoginPage/>;
-  },
-  groupHandler: function() {
-      return <SC.LoginPage/>;
-  },
   userHandler: function(params) {
     params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';

@@ -10,21 +10,53 @@ SC.AnnouncePage = React.createClass({
       created: '',
       updated: '',
       atts: [],
-      id: '',
+      ready: false,
     };
   },
   componentDidMount: function(){
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
+      json.ready = true;
       this.setState(json);
     }.bind(this));
   },
+  handleDelete: function(){
+    this.setState({ready: false});
+    var url = '/api'+window.location.pathname
+    var data = new FormData();
+    data.append('_xsrf',this.props._xsrf);
+    this.props.ajax(url,'DELETE',data,function(){});
+    setTimeout(function(){ RMR.navigate(SC.makeURL('/announce',this.props.params)) }.bind(this), 1);
+  },
   render: function() {
+    var buttonGroup = (
+      <RB.Row><RB.Col xs={12} md={12}>
+        <SC.A
+          href={SC.makeURL('/announce',this.props.params)}
+          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></SC.A>
+        &nbsp;&nbsp;
+        {function(){
+          if(this.props.manager)return (
+            <span>
+              <SC.A
+              href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
+              className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
+              &nbsp;&nbsp;
+              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-communication-no-sim'
+                disabled={!this.state.ready}
+                onClick={this.handleDelete}></RB.Button>
+            </span>
+          );
+        }.bind(this)()}
+        <br/><br/>
+      </RB.Col></RB.Row>
+    );
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}
           <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
         </RB.PageHeader>
+        {buttonGroup}
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
           <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
@@ -39,14 +71,7 @@ SC.AnnouncePage = React.createClass({
             <p>最後更新：{this.state.updated}</p>
           </RB.Well></RB.Col>
         </RB.Row>
-        <RB.Row>
-          <RB.Col xs={12} md={2}>
-            <a className="btn btn-warning btn-xs btn-block" href={'/announce/edit/'+this.state.id}>編輯</a>
-          </RB.Col>
-          <RB.Col xs={12} md={2}>
-            <a className="btn btn-primary btn-xs btn-block" href="/announce/">返回公告首頁</a>
-          </RB.Col>
-        </RB.Row>
+        {buttonGroup}
       </RB.Grid>
     );
   }
@@ -54,13 +79,14 @@ SC.AnnouncePage = React.createClass({
 
 
 {/*ICON: http://www.webiconset.com/file-type-icons/*/}
+{/*xls will turn to xlb*/}
 SC.AttachmentPanel = React.createClass({
   _icon: ['aac','ai','aiff','asp','avi','bmp','c','cpp','css','dat','dmg','doc','docx',
       'dot','dotx','dwg','dxf','eps','exe','flv','gif','h','html','ics','iso','java',
       'jpg','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
       'ott','pdf','php','png','pps','ppt','pptx','psd','py','qt','rar','rb','rtf','sql',
-      'tga','tgz','tiff','txt','wav','xls','xlsx','xml','yml','zip'],
-  _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xls','xlsm','pptx','ppsx','ppt',
+      'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
+  _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){

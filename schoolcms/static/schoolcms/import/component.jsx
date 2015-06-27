@@ -56,13 +56,13 @@ SC.A = React.createClass({
   },
   handleClick: function(e){
     e.preventDefault();
-    RMR.navigate(this.props.href);
+    setTimeout(function(){ RMR.navigate(this.props.href); }.bind(this), 1);
     console.log('nave to '+this.props.href);
   },
   render: function() {
     var other = SC.makeOtherArray(['onClick', 'href'],this.props);
     return (
-      <a {...other} href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
+      <a {...other} href='#' onClick={this.handleClick}>{this.props.children}</a>
     );
   }
 });
@@ -113,24 +113,37 @@ SC.ToggleButton = React.createClass({
 });
 
 SC.SelectInput = React.createClass({
+  getInitialState: function(){
+    return {
+      ready: false,
+      value: '',
+    }
+  },
   componentDidMount: function(){
     $(".selectinput").dropdown({
                       "autoinit" : ".selectinput",
-                      "dropdownClass": "selectinput-dropdown",
-                      "optionClass": "selectinput-option",
+                      // "dropdownClass": "selectinput-dropdown",
+                      // "optionClass": "selectinput-option",
                     });
+    $(".selectinput").change(function(event){
+      this.setState({value: event.currentTarget.value});
+      if(this.props.onChange)this.props.onChange(event.currentTarget.value);
+    }.bind(this));
+    this.setState({ready:true});
   },
   render: function() {
     var options = [];
     for(var key in this.props.options){
       options.push(
-        <option key={key} value={this.props.options[key]}>{key}</option>
+        <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
       );
     }
+    if(!this.state.ready)options = [];
     return (
       <div>
         <label>{this.props.label}</label>
-        <select name={this.props.name} placeholder={this.props.placeholder} className='form-control selectinput'>
+        <input type='hidden' name={this.props.name} value={this.state.value}/>
+        <select placeholder={this.props.placeholder} className='form-control selectinput'>
           {options}
         </select>
       </div>
@@ -145,6 +158,7 @@ SC.Pagination = React.createClass({
     start: React.PropTypes.number,
     total: React.PropTypes.number,
     query: React.PropTypes.object,
+    resetWindow: React.PropTypes.bool,
   },
   getDefaultProps: function() {
     return {
@@ -153,6 +167,7 @@ SC.Pagination = React.createClass({
       start: 0,
       total: 0,
       query: {},
+      resetWindow: false,
     };
   },
   pageURL: function(start){
@@ -165,7 +180,8 @@ SC.Pagination = React.createClass({
     var now = Math.ceil(this.props.start/this.props.step)+1;
     var all = Math.ceil(this.props.total/this.props.step);
     if(page>0&&page<=all&&page!==now){
-      setTimeout(function(){ RMR.navigate(this.pageURL(page*10-10)); }.bind(this), 1);
+      setTimeout(function(){ RMR.navigate(this.pageURL((page-1)*this.props.step)); }.bind(this), 1);
+      if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
     }
   },
   render: function() {
@@ -173,11 +189,23 @@ SC.Pagination = React.createClass({
     if(items===0)items=1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
     return (
-       <RB.Pagination prev next first last ellipsis
+       <RB.Pagination prev next first last ellipsis={false}
           items={items}
-          maxButtons={items>10?10:items}
+          maxButtons={items>8?8:items}
           activePage={now}
-          onSelect={this.handleSelect} />
+          onSelect={this.handleSelect}
+          className='shadow-z-2' />
+    );
+  }
+});
+
+SC.MaterialInit = React.createClass({
+  componentDidMount: function(){
+    $.material.init();
+  },
+  render: function() {
+    return (
+      <div />
     );
   }
 });

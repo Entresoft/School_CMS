@@ -88,6 +88,7 @@ select[data-dropdownjs][disabled] + .dropdownjs > input[readonly] {
 }
 .selectinput-dropdown{
   width: 100%;
+  background-color: #000;
 }
 .selectinput-option{
   width: 100%;

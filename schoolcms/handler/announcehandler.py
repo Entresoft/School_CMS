@@ -12,8 +12,9 @@ from __future__ import unicode_literals
 
 from . import BaseHandler
 import os
+import shutil
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record, Group, GroupList
+from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -22,10 +23,15 @@ except NameError:
     xrange = range
 
 
-def _to_int(s, default):
+def _to_int(s, default, mi=None, mx=None):
     if not s.isdigit():
         return default
-    return int(s)
+    _n = int(s)
+    if mi != None and _n < mi:
+        return default
+    if mx != None and _n > mx:
+        return default
+    return _n
 
 
 class AnnounceHandler(BaseHandler):
@@ -42,9 +48,9 @@ class AnnounceHandler(BaseHandler):
             self.write(self._)
 
         else:
-            start = self.get_argument('start', '')
+            start = _to_int(self.get_argument('start', ''), 0, 0)
+            step = _to_int(self.get_argument('step', ''), 12, 1, 20)
             search = self.get_argument('search', '')
-            start = _to_int(start, 0)
 
             total = 0
             if search:
@@ -54,19 +60,35 @@ class AnnounceHandler(BaseHandler):
                 total = self.sql_session.query(Announce.id).count()
                 q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
-            q = q.offset(start).limit(10)
+            q = q.offset(start).limit(step)
             anns = q.all()
 
+            def _make_ann(ann):
+                _d = ann.to_dict()
+                _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
+                return _d
             self.write({
-                    'anns' : [{
-                        'title': ann.title,
-                        'id' : ann.id,
-                        'created' : ann.created.strftime("%Y-%m-%d %H:%M:%S"),
-                        'author_group_name' : ann.author_group_name,} for ann in anns],
+                    'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
                     'total' : total,
                 })
+
+    @BaseHandler.check_is_group_user('Announcement Manager')
+    def delete(self, ann_id):
+        if not ann_id:
+            raise self.HTTPError(404)
+        if not Announce.by_id(ann_id, self.sql_session).scalar():
+            raise self.HTTPError(404)
+
+        q = AttachmentList.by_ann_id(ann_id, self.sql_session)
+        old_atts = q.all()
+        for old_att in old_atts:
+            shutil.rmtree('file/%s' % old_att.key)
+        q.delete()
+        Announce.by_id(ann_id, self.sql_session).delete()
+
+        self.write({'success':True})
 
 
 class EditAnnHandler(BaseHandler):
@@ -83,7 +105,7 @@ class EditAnnHandler(BaseHandler):
             'alert': '',
         }
 
-    @BaseHandler.check_is_group_user(1)
+    @BaseHandler.check_is_group_user('Announcement Manager')
     def get(self, ann_id):
         if ann_id:
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
@@ -96,27 +118,24 @@ class EditAnnHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['atts'] = [att.to_dict() for att in atts]
 
-        user_groups = GroupList.get_user_groups(self.current_user.key, self.sql_session)
-        self._['user_groups'] = {}
-        for i in user_groups:
-            self._['user_groups'][i.name] = i.id
+        self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
         self.write(self._)
 
-    @BaseHandler.check_is_group_user(1)
+    @BaseHandler.check_is_group_user('Announcement Manager')
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
-        self.group_id = _to_int(self.get_argument('group_id', ''), -1)
-        print(self.get_argument('is_private', ''))
+        self.group = self.get_argument('group', '')
         self._['is_private'] = bool(self.get_argument('is_private', ''))
         self.attkeys = self.get_arguments('attachment')
 
         # check ann and att
         if not self.check_ann():
+            self._['tmpatts'] = [att.to_dict() for att in self._['tmpatts']]
             return self.write(self._)
 
         self._['author_name'] = self.current_user.name
@@ -149,14 +168,14 @@ class EditAnnHandler(BaseHandler):
                 q = self.sql_session.query(TempFileList)
                 q = q.filter(TempFileList.key == self.attkeys[i])
                 try:
-                    new_att = q.one()
-                    assert new_att.author_key == self.current_user.key
-                    assert os.path.exists('file/tmp/%s' % new_att.key)
-                    self._['tmpatts'].append(new_att)
-
+                    new_tmpatt = q.one()
+                    assert new_tmpatt.author_key == self.current_user.key
+                    assert os.path.exists('file/tmp/%s' % new_tmpatt.key)
+                    self._['tmpatts'].append(new_tmpatt)
                 except:
                     self._['alert'] = '遺失附件!'
-                    return False
+        if self._['alert']:
+            return False
 
         if not self._['title']:
             self._['alert'] = '標題不能空白'
@@ -164,20 +183,19 @@ class EditAnnHandler(BaseHandler):
         elif not self._['content']:
             self._['alert'] = '內容不能空白'
             return False
-        elif self.group_id == -1:
+        elif not self.group or not GroupList.check(self.current_user.key, self.group, self.sql_session):
             self._['alert'] = '沒有選擇群組或群組不存在'
             return False
 
-        self._['author_group_name'] = Group.by_id(self.group_id, self.sql_session).scalar().name
+        self._['author_group_name'] = self.group
 
         return True
 
     def parse_att(self):
         for att in self._['tmpatts']:
-            if not os.path.exists('file/%s' % att.key):
-                os.makedirs('file/%s' % att.key)
+            os.makedirs('file/%s' % att.key)
             os.rename('file/tmp/%s' % att.key, 'file/%s/%s' % (att.key, att.filename))
             new_att = AttachmentList(key=att.key, ann_id=self.ann_id, 
-                                    content_type=att.content_type, path='%s/%s' % (att.key, att.filename))
+                                    content_type=att.content_type, filename=att.filename)
             self.sql_session.add(new_att)
             TempFileList.by_key(att.key, self.sql_session).delete()
