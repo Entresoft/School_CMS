@@ -47,7 +47,7 @@ SC.AnnIndexPage = React.createClass({
             <RB.Col xs={12} md={12}>
               <SC.A
                 href={SC.makeURL('/announce/'+ann.id,{start:this.props.start,search:this.props.search})}
-                className='btn btn-fab btn-primary btn-raised mdi-content-forward'></SC.A>
+                className='btn btn-fab btn-primary btn-raised mdi-content-send'></SC.A>
               &nbsp;
               {function(){
                 if(ann.att_count)return (
@@ -79,29 +79,25 @@ SC.AnnIndexPage = React.createClass({
       </RB.Col>
     );
     return (
-      <div>
-        <RB.Grid>
-          <RB.Row>
-            <RB.Col xs={12} md={6}>
-              <h1>Announcement</h1>
-              <a href="/announce/edit">New Announcement!</a>
-              <SC.SearchAnnForm search={this.props.search} onSearch={this.handleSearch} />
-            </RB.Col>
-          </RB.Row>
-        </RB.Grid>
-        <div className='container-fluid'>
-          <RB.Row>
-            <RB.Col xs={12} md={12}>
-              <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
-                query={{search:this.props.search}}/>
-            </RB.Col>
-            {annItems}
-            <RB.Col xs={12} md={12}>
-              <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
-                query={{search:this.props.search}} resetWindow/>
-            </RB.Col>
-          </RB.Row>
-        </div>
+      <div className='container-fluid'>
+        <RB.Row>
+          <RB.Col xs={12} md={6} lg={5} lgOffset={1}>
+            <h1>Announcement</h1>
+            <a href="/announce/edit">New Announcement!</a>
+            <SC.SearchAnnForm search={this.props.search} onSearch={this.handleSearch} />
+          </RB.Col>
+        </RB.Row>
+        <RB.Row>
+          <RB.Col xs={12} md={12}>
+            <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
+              query={{search:this.props.search}}/>
+          </RB.Col>
+          {annItems}
+          <RB.Col xs={12} md={12}>
+            <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
+              query={{search:this.props.search}} resetWindow/>
+          </RB.Col>
+        </RB.Row>
       </div>
     );
   }

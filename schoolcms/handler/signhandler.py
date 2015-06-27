@@ -18,17 +18,6 @@ from schoolcms.db import User
 
 
 class LoginHandler(BaseHandler):
-    def get(self):
-        if self.current_user:
-            raise self.HTTPError(404)
-
-        next_page = self.get_argument('next', '/')
-        self.write({
-                '_xsrf': self.xsrf_token,
-                'alert': '',
-                'next': next_page,
-            })
-
     def post(self):
         if self.current_user:
             raise self.HTTPError(404)

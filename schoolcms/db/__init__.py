@@ -61,12 +61,12 @@ if options.rbdb:
         user1 = User('root', 'root', 'root', '教師', True)
         user2 = User('anner', 'anner', '組長', '教師', False)
         session.add_all([
-                GroupList('system', 'Announcement administrator'),
+                GroupList('system', 'Announcement Manager'),
                 GroupList('system', '系統師'),
                 user1,
-                GroupList(user1.key, 'Announcement administrator'),
+                GroupList(user1.key, 'Announcement Manager'),
                 user2,
-                GroupList(user2.key, 'Announcement administrator'),
+                GroupList(user2.key, 'Announcement Manager'),
             ])
 
         session.commit()

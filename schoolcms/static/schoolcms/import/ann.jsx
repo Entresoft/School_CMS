@@ -10,21 +10,53 @@ SC.AnnouncePage = React.createClass({
       created: '',
       updated: '',
       atts: [],
-      id: '',
+      ready: false,
     };
   },
   componentDidMount: function(){
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
+      json.ready = true;
       this.setState(json);
     }.bind(this));
   },
+  handleDelete: function(){
+    this.setState({ready: false});
+    var url = '/api'+window.location.pathname
+    var data = new FormData();
+    data.append('_xsrf',this.props._xsrf);
+    this.props.ajax(url,'DELETE',data,function(){});
+    setTimeout(function(){ RMR.navigate(SC.makeURL('/announce',this.props.params)) }.bind(this), 1);
+  },
   render: function() {
+    var buttonGroup = (
+      <RB.Row><RB.Col xs={12} md={12}>
+        <SC.A
+          href={SC.makeURL('/announce',this.props.params)}
+          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></SC.A>
+        &nbsp;&nbsp;
+        {function(){
+          if(this.props.manager)return (
+            <span>
+              <SC.A
+              href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
+              className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
+              &nbsp;&nbsp;
+              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-communication-no-sim'
+                disabled={!this.state.ready}
+                onClick={this.handleDelete}></RB.Button>
+            </span>
+          );
+        }.bind(this)()}
+        <br/><br/>
+      </RB.Col></RB.Row>
+    );
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}
           <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
         </RB.PageHeader>
+        {buttonGroup}
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
           <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
@@ -39,14 +71,7 @@ SC.AnnouncePage = React.createClass({
             <p>最後更新：{this.state.updated}</p>
           </RB.Well></RB.Col>
         </RB.Row>
-        <RB.Row>
-          <RB.Col xs={12} md={2}>
-            <a className="btn btn-warning btn-xs btn-block" href={SC.makeURL('/announce/edit/'+this.state.id,this.props.params)}>編輯</a>
-          </RB.Col>
-          <RB.Col xs={12} md={2}>
-            <a className="btn btn-primary btn-xs btn-block" href={SC.makeURL('/announce',this.props.params)}>返回</a>
-          </RB.Col>
-        </RB.Row>
+        {buttonGroup}
       </RB.Grid>
     );
   }

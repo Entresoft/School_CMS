@@ -76,7 +76,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
-        _['xsrf'] = self.xsrf_token
         _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()

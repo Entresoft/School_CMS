@@ -11,7 +11,6 @@ SC.EditAnnPage = React.createClass({
       is_private: false,
       tmpatts: [],
       atts: [],
-      _xsrf: '',
       submitLock: 0,
     };
   },
@@ -59,49 +58,57 @@ SC.EditAnnPage = React.createClass({
         );
       }
     }.bind(this);
+    var buttonGroup = (
+      <RB.Row><RB.Col sm={12} md={12} lg={10} lgOffset={1}>
+        <SC.A
+          href={SC.makeURL('/announce/'+this.props.id,this.props.params)}
+          className='btn btn-fab btn-warning btn-raised mdi-navigation-arrow-back'></SC.A>
+        &nbsp;&nbsp;
+        <RB.Button bsStyle='success' className='btn-fab btn-raised mdi-content-send'
+          disabled={this.state.submitLock>0||this.state.title.length===0||this.state.content.length}
+          onClick={this.handlePost}></RB.Button>
+        <br/><br/>
+      </RB.Col></RB.Row>
+    );
     return (
-      <RB.Grid>
-        <RB.PageHeader>編輯公告</RB.PageHeader>
+      <div className='container-fluid'>
+        <RB.Row>
+          <RB.Col xs={12} md={12} lg={10} lgOffset={1}><RB.PageHeader>編輯公告</RB.PageHeader></RB.Col>
+        </RB.Row>
+        {buttonGroup}
         <SC.Form ref='form' onSubmit={function(){}}>
           <RB.Row>
-            <RB.Col md={12}>{getAlert()}</RB.Col>
+            <RB.Col sm={12} md={12} lg={10} lgOffset={1}>{getAlert()}</RB.Col>
           </RB.Row>
           <RB.Row>
-            <RB.Col xs={12} md={6}>
+            <RB.Col sm={12} md={6} lg={5} lgOffset={1}>
               <RB.Well>
-                <RB.Input type='hidden' name='_xsrf' value={this.state._xsrf}/>
+                <RB.Input type='hidden' name='_xsrf' value={this.props._xsrf}/>
                 <RB.Input type='text' name='title' valueLink={this.linkState('title')} label='公告標題' placeholder='輸入公告標題' disabled={!this.state.ready}/>
                 <SC.ResizeTextArea name='content' valueLink={this.linkState('content')} label='公告內容' placeholder='輸入公告內容' disabled={!this.state.ready}/>
+              </RB.Well>
+              <RB.Well>
                 <SC.SelectInput name='group' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
                 <SC.ToggleButton  name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
-                <SC.AttPanel atts={this.state.atts} _xsrf={this.state._xsrf} uploaded={true}
+                <SC.AttPanel atts={this.state.atts} _xsrf={this.props._xsrf} uploaded={true}
                   onChange={function(atts){this.setState({atts:atts})}.bind(this)} />
-                <SC.AttPanel atts={this.state.tmpatts} _xsrf={this.state._xsrf}
+                <SC.AttPanel atts={this.state.tmpatts} _xsrf={this.props._xsrf}
                   onChange={function(atts){this.setState({tmpatts:atts})}.bind(this)} />
-                <SC.UploadAttBox _xsrf={this.state._xsrf} onUpload={this.uploadAtt}
+                <SC.UploadAttBox _xsrf={this.props._xsrf} onUpload={this.uploadAtt}
                   disabled={!this.state.ready} alert={this.alert} lock={this.lock}/>
               </RB.Well>
             </RB.Col>
-            <RB.Col xs={12} md={6}><RB.Well>
+            <RB.Col sm={12} md={6} lg={5}><RB.Well>
               <h4>預覽內容</h4><hr/>
               <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
             </RB.Well></RB.Col>
           </RB.Row>
-          <RB.Row>
-            <RB.Col xs={12} md={2}>
-              <RB.Button bsStyle='success' bsSize='xsmall' block
-                disabled={this.state.submitLock>0||this.state.title.length===0}
-                onClick={this.handlePost}>確定</RB.Button>
-            </RB.Col>
-            <RB.Col xs={12} md={2}>
-              <a className="btn btn-primary btn-xs btn-block" href={'/announce/'+this.state.id}>返回</a>
-            </RB.Col>
-          </RB.Row>
+          {buttonGroup}
         </SC.Form>
-      </RB.Grid>
+      </div>
     );
   }
 });

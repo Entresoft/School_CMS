@@ -12,6 +12,7 @@ from __future__ import unicode_literals
 
 from . import BaseHandler
 import os
+import shutil
 
 from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
@@ -73,6 +74,22 @@ class AnnounceHandler(BaseHandler):
                     'total' : total,
                 })
 
+    @BaseHandler.check_is_group_user('Announcement Manager')
+    def delete(self, ann_id):
+        if not ann_id:
+            raise self.HTTPError(404)
+        if not Announce.by_id(ann_id, self.sql_session).scalar():
+            raise self.HTTPError(404)
+
+        q = AttachmentList.by_ann_id(ann_id, self.sql_session)
+        old_atts = q.all()
+        for old_att in old_atts:
+            shutil.rmtree('file/%s' % old_att.key)
+        q.delete()
+        Announce.by_id(ann_id, self.sql_session).delete()
+
+        self.write({'success':True})
+
 
 class EditAnnHandler(BaseHandler):
     def prepare(self):
@@ -88,7 +105,7 @@ class EditAnnHandler(BaseHandler):
             'alert': '',
         }
 
-    @BaseHandler.check_is_group_user('Announcement administrator')
+    @BaseHandler.check_is_group_user('Announcement Manager')
     def get(self, ann_id):
         if ann_id:
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
@@ -105,7 +122,7 @@ class EditAnnHandler(BaseHandler):
 
         self.write(self._)
 
-    @BaseHandler.check_is_group_user('Announcement administrator')
+    @BaseHandler.check_is_group_user('Announcement Manager')
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
