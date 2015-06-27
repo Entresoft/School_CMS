@@ -6,6 +6,8 @@
 Move old_ann_system to SchoolCMS.
 Terminal Tool.
 
+Add att.
+
 DB version -103
 """
 
@@ -51,7 +53,21 @@ import re
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from .db import SessionGen, Announce, Record
+import os
+import uuid
+import shutil
+import subprocess
+import mimetypes
+
+from .db import SessionGen, Announce, Record, AttachmentList
+
+
+def _get_content_type(filename, real_filename=''):
+    _content_type, encoding = mimetypes.guess_type(real_filename)
+    if not _content_type:
+        _content_type = subprocess.check_output('file -b --mime-type %s' % filename, shell=True)
+        _content_type = re.search(r'([\S]+)', _content_type).group()
+    return _content_type
 
 
 ann_url = options.ann_url
@@ -61,9 +77,10 @@ mv_update = options.mv_update
 show = 0
 mytid_re = re.compile(r'mytid=([0-9]+)')
 time_re = re.compile(r'([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})(?: \(最新編修時間 ([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})\))?')
+att_link_re = re.compile(r'^相關附件[0-9]：([\S]+) \(大小：[\S]+ 時間：([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})\)$')
 
 with SessionGen() as sql_session:
-    while show<mv_page*20:
+    while show < mv_page*20:
         rel = requests.get('%s?show=%d' % (ann_url, show))
         rel.encoding = 'utf8'
         soup = BeautifulSoup(rel.text, 'html.parser')
@@ -77,26 +94,35 @@ with SessionGen() as sql_session:
             soup = BeautifulSoup(rel.text, 'html.parser')
             ann_trs = soup.find_all('tr')
 
-            title = ann_trs[1].find_all('td')[0].find('font').text
-            content = ann_trs[3].find('td').find('font').text
-            author_group_name = ann_trs[0].find_all('td')[0].find('font').text
-            author_name = ann_trs[0].find_all('td')[1].find('font').text
-
-            addition_content = '  \n  \n  \n***\n這篇公告是由管理員從舊系統發出，並經過本系統自動同步至此。\n'
-            for tr in ann_trs[4:]:
-                addition_content += ' * '+unicode(tr.find('a'))+'\n'
-            if ann_trs[4:]:
-                addition_content += '\n以上連結如果包含附件，因為是從舊系統上傳的，所以無法提供自動預覽功能。如果無法下載請恰舊系統的管理人員。\n***'
-            content = content + addition_content
-
             mytid = int(mytid_re.search(post_url).group(1))
             movinglog = MovingLog.by_mytid(mytid, sql_session).scalar()
+            
             ann_time_s = ann_trs[2].find_all('td')[0].find('font').text
             m = time_re.match(ann_time_s)
             time_s = m.group(2) if m.group(2) else m.group(1)
             ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S')
-            if movinglog:
-                if movinglog.time < ann_time or mv_update:
+
+            if not movinglog or movinglog.time < ann_time or mv_update:
+                title = ann_trs[1].find_all('td')[0].find('font').text
+                content = ann_trs[3].find('td').find('font').text
+                author_group_name = ann_trs[0].find_all('td')[0].find('font').text
+                author_name = ann_trs[0].find_all('td')[1].find('font').text
+
+                addition_content = '''
+
+***
+這篇公告是這個系統從舊\"Ann公告系統\"自動同步。因為舊系統沒有排版功能，這篇公告可能會出現在奇怪的地方換行的狀況。
+原始公告網址： %s 
+
+''' % post_url
+                for tr in ann_trs[4:]:
+                    a = tr.find('a')
+                    if att_link_re.match(a.text):
+                        break
+                    content += '\n * '+unicode(a)
+                content += addition_content
+
+                if movinglog:
                     Announce.by_id(movinglog.id, sql_session).update({
                             'title': title,
                             'content': content,
@@ -107,15 +133,36 @@ with SessionGen() as sql_session:
                             'time': ann_time,
                         })
                     Record.add('update', movinglog.id, sql_session)
-            else:
-                new_ann = Announce(title, content, author_group_name, author_name, False, created=ann_time)
-                sql_session.add(new_ann)
-                sql_session.flush()
-                sql_session.refresh(new_ann)
-                new_movinglog = MovingLog(new_ann.id, mytid, ann_time)
-                sql_session.add(new_movinglog)
-                Record.add('new', new_ann.id, sql_session)
-            
+                else:
+                    new_ann = Announce(title, content, author_group_name, author_name, False, created=ann_time)
+                    sql_session.add(new_ann)
+                    sql_session.flush()
+                    sql_session.refresh(new_ann)
+                    movinglog = MovingLog(new_ann.id, mytid, ann_time)
+                    sql_session.add(movinglog)
+                    Record.add('new', new_ann.id, sql_session)
+
+                old_atts = AttachmentList.by_ann_id(movinglog.id, sql_session).all()
+                for old_att in old_atts:
+                    shutil.rmtree('file/%s' % old_att.key)
+                AttachmentList.by_ann_id(movinglog.id, sql_session).delete()
+                for tr in ann_trs[4:]:
+                    a = tr.find('a')
+                    m = att_link_re.match(a.text)
+                    if m:
+                        att_key = '%s' % uuid.uuid1().hex
+                        att_name = m.group(1)
+                        att_time = datetime.strptime(m.group(2), '%Y-%m-%d %H:%M:%S')
+
+                        os.makedirs('file/%s' % att_key)
+                        r = requests.get(a['href'], stream=True)
+                        with open('file/%s/%s' % (att_key, att_name), 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=1024): 
+                                if chunk: # filter out keep-alive new chunks
+                                    f.write(chunk)
+                                    f.flush()
+                        att_content_type = _get_content_type('file/%s/%s' % (att_key, att_name), att_name)
+                        sql_session.add(AttachmentList(att_key, movinglog.id, att_content_type, att_name))
             sql_session.commit()
 
         show +=20

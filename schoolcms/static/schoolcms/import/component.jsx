@@ -158,6 +158,7 @@ SC.Pagination = React.createClass({
     start: React.PropTypes.number,
     total: React.PropTypes.number,
     query: React.PropTypes.object,
+    resetWindow: React.PropTypes.bool,
   },
   getDefaultProps: function() {
     return {
@@ -166,6 +167,7 @@ SC.Pagination = React.createClass({
       start: 0,
       total: 0,
       query: {},
+      resetWindow: false,
     };
   },
   pageURL: function(start){
@@ -178,7 +180,8 @@ SC.Pagination = React.createClass({
     var now = Math.ceil(this.props.start/this.props.step)+1;
     var all = Math.ceil(this.props.total/this.props.step);
     if(page>0&&page<=all&&page!==now){
-      setTimeout(function(){ RMR.navigate(this.pageURL(page*10-10)); }.bind(this), 1);
+      setTimeout(function(){ RMR.navigate(this.pageURL((page-1)*this.props.step)); }.bind(this), 1);
+      if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
     }
   },
   render: function() {
@@ -186,7 +189,7 @@ SC.Pagination = React.createClass({
     if(items===0)items=1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
     return (
-       <RB.Pagination prev next first last
+       <RB.Pagination prev next first last ellipsis={false}
           items={items}
           maxButtons={items>8?8:items}
           activePage={now}

@@ -116,11 +116,11 @@ SC.App = React.createClass({
     if(!params.search)params.search = '';
     return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
   },
-  announceHandler: function() {
-    return <SC.AnnouncePage ajax={this.ajax}/>;
+  announceHandler: function(ann_id, params) {
+    return <SC.AnnouncePage ajax={this.ajax} params={params}/>;
   },
   editAnnHandler: function(ann_id, params) {
-    return <SC.EditAnnPage ajax={this.ajax} current_user={this.state.current_user}/>;
+    return <SC.EditAnnPage ajax={this.ajax} params={params} current_user={this.state.current_user}/>;
   },
 
   // Admin Page

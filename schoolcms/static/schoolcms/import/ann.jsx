@@ -41,10 +41,10 @@ SC.AnnouncePage = React.createClass({
         </RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={2}>
-            <a className="btn btn-warning btn-xs btn-block" href={'/announce/edit/'+this.state.id}>編輯</a>
+            <a className="btn btn-warning btn-xs btn-block" href={SC.makeURL('/announce/edit/'+this.state.id,this.props.params)}>編輯</a>
           </RB.Col>
           <RB.Col xs={12} md={2}>
-            <a className="btn btn-primary btn-xs btn-block" href="/announce/">返回公告首頁</a>
+            <a className="btn btn-primary btn-xs btn-block" href={SC.makeURL('/announce',this.props.params)}>返回</a>
           </RB.Col>
         </RB.Row>
       </RB.Grid>
@@ -54,13 +54,14 @@ SC.AnnouncePage = React.createClass({
 
 
 {/*ICON: http://www.webiconset.com/file-type-icons/*/}
+{/*xls will turn to xlb*/}
 SC.AttachmentPanel = React.createClass({
   _icon: ['aac','ai','aiff','asp','avi','bmp','c','cpp','css','dat','dmg','doc','docx',
       'dot','dotx','dwg','dxf','eps','exe','flv','gif','h','html','ics','iso','java',
       'jpg','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
       'ott','pdf','php','png','pps','ppt','pptx','psd','py','qt','rar','rb','rtf','sql',
-      'tga','tgz','tiff','txt','wav','xls','xlsx','xml','yml','zip'],
-  _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xls','xlsm','pptx','ppsx','ppt',
+      'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
+  _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){

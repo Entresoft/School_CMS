@@ -13,7 +13,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = -103
+version = -104
 
 
 # creat engine
@@ -49,7 +49,10 @@ from .filelist import TempFileList, AttachmentList
 from .record import Record
 
 if options.rbdb:
-    Base.metadata.drop_all(engine)
+    meta = sqlalchemy.MetaData(bind=engine)
+    meta.reflect()
+    for tb in reversed(meta.sorted_tables):
+        tb.drop(engine)
 
 Base.metadata.create_all(engine)
 

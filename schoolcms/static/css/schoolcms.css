@@ -1,8 +1,13 @@
-body{
+body,h1,h2,h3,h4,h5,h6{
   font-family: 
     Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro",
     "Meiryo", "微軟正黑體", "Microsoft JhengHei",
     sans-serif;
+}
+body{
+  background-image: url("/static/background.jpg");
+  background-repeat: repeat;
+  word-break: break-all;
 }
 a{
   color: #333;

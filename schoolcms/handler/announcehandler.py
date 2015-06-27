@@ -22,10 +22,15 @@ except NameError:
     xrange = range
 
 
-def _to_int(s, default):
+def _to_int(s, default, mi=None, mx=None):
     if not s.isdigit():
         return default
-    return int(s)
+    _n = int(s)
+    if mi != None and _n < mi:
+        return default
+    if mx != None and _n > mx:
+        return default
+    return _n
 
 
 class AnnounceHandler(BaseHandler):
@@ -42,9 +47,9 @@ class AnnounceHandler(BaseHandler):
             self.write(self._)
 
         else:
-            start = self.get_argument('start', '')
+            start = _to_int(self.get_argument('start', ''), 0, 0)
+            step = _to_int(self.get_argument('step', ''), 12, 1, 20)
             search = self.get_argument('search', '')
-            start = _to_int(start, 0)
 
             total = 0
             if search:
@@ -54,11 +59,15 @@ class AnnounceHandler(BaseHandler):
                 total = self.sql_session.query(Announce.id).count()
                 q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
-            q = q.offset(start).limit(10)
+            q = q.offset(start).limit(step)
             anns = q.all()
 
+            def _make_ann(ann):
+                _d = ann.to_dict()
+                _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
+                return _d
             self.write({
-                    'anns' : [ann.to_dict() for ann in anns],
+                    'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
                     'total' : total,
@@ -167,10 +176,9 @@ class EditAnnHandler(BaseHandler):
 
     def parse_att(self):
         for att in self._['tmpatts']:
-            if not os.path.exists('file/%s' % att.key):
-                os.makedirs('file/%s' % att.key)
+            os.makedirs('file/%s' % att.key)
             os.rename('file/tmp/%s' % att.key, 'file/%s/%s' % (att.key, att.filename))
             new_att = AttachmentList(key=att.key, ann_id=self.ann_id, 
-                                    content_type=att.content_type, path='%s/%s' % (att.key, att.filename))
+                                    content_type=att.content_type, filename=att.filename)
             self.sql_session.add(new_att)
             TempFileList.by_key(att.key, self.sql_session).delete()
