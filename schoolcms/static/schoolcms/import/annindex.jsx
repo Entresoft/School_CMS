@@ -18,9 +18,12 @@ SC.AnnIndexPage = React.createClass({
     this.ajax();
   },
   componentWillReceiveProps: function(nextprops) {
-    if(this.props.search!=nextprops.search||this.props.start!=nextprops.start){
-      this.setState({ready:false});
-      this.ajax();
+    for(var k in this.props.params){
+      if(this.props.params[k] != nextprops.params[k]){
+        this.setState({ready:false});
+        this.ajax();
+        break;
+      }
     }
   },
   handleSearch: function(search){
@@ -47,7 +50,7 @@ SC.AnnIndexPage = React.createClass({
             </RB.Col>
             <RB.Col xs={12} md={12}>
               <SC.A
-                href={SC.makeURL('/announce/'+ann.id,{start:this.props.start,search:this.props.search})}
+                href={SC.makeURL('/announce/'+ann.id,this.props.params)}
                 className='btn btn-fab btn-primary btn-raised mdi-content-send'></SC.A>
               &nbsp;
               {function(){
@@ -85,18 +88,18 @@ SC.AnnIndexPage = React.createClass({
           <RB.Col xs={12} md={6} lg={5} lgOffset={1}>
             <h1>Announcement</h1>
             <a href="/announce/edit">New Announcement!</a>
-            <SC.SearchAnnForm search={this.props.search} onSearch={this.handleSearch} />
+            <SC.SearchAnnForm search={this.props.params.search} onSearch={this.handleSearch} />
           </RB.Col>
         </RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={12}>
-            <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
-              query={{search:this.props.search}}/>
+            <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
+              query={this.props.params}/>
           </RB.Col>
           {annItems}
           <RB.Col xs={12} md={12}>
-            <SC.Pagination path='/announce' start={this.props.start} step={12} total={this.state.total}
-              query={{search:this.props.search}} resetWindow/>
+            <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
+              query={this.props.params} resetWindow/>
           </RB.Col>
         </RB.Row>
       </div>

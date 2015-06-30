@@ -106,6 +106,7 @@ SC.App = React.createClass({
     return <SC.A href='/announce'>Announce</SC.A>;
   },
   loginHandler: function(params) {
+    params = SC.makeOtherArray(['',], params);
     return <SC.LoginPage ajax={this.ajax} _xsrf={this.state._xsrf} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
@@ -114,15 +115,21 @@ SC.App = React.createClass({
 
   // Ann Page
   annIndexHandler: function(params) {
+    params = SC.makeOtherArray(['',], params);
     params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';
-    return <SC.AnnIndexPage ajax={this.ajax} start={params.start} search={params.search} />;
+    if(!params.auther)params.auther = '';
+    if(!params.group)params.group = '';
+    console.log(params);
+    return <SC.AnnIndexPage ajax={this.ajax} params={params} />;
   },
   announceHandler: function(ann_id, params) {
+    params = SC.makeOtherArray(['',], params);
     var manager = (this.state.current_user&&this.state.current_user.admin||this.state.current_groups.indexOf('Announcement Manager')>=0);
     return <SC.AnnouncePage ajax={this.ajax} _xsrf={this.state._xsrf} manager={manager} id={ann_id} params={params}/>;
   },
   editAnnHandler: function(ann_id, params) {
+    params = SC.makeOtherArray(['',], params);
     if(!params){
       params = ann_id;
       ann_id = '';
@@ -132,6 +139,7 @@ SC.App = React.createClass({
 
   // Admin Page
   userHandler: function(params) {
+    params = SC.makeOtherArray(['',], params);
     params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';
     return <SC.UserPage ajax={this.ajax} start={params.start} search={params.search} current_user={this.state.current_user} />;

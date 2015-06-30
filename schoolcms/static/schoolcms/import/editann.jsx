@@ -103,7 +103,7 @@ SC.EditAnnPage = React.createClass({
             </RB.Col>
             <RB.Col sm={12} md={6} lg={5}><RB.Well>
               <h4>預覽內容</h4><hr/>
-              <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
+              <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
             </RB.Well></RB.Col>
           </RB.Row>
           {buttonGroup}

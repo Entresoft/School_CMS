@@ -9,10 +9,11 @@ body{
   background-repeat: repeat;
   word-break: break-all;
 }
-a{
+.sc-border-a a{
   color: #333;
-  border-bottom: 1px dashed #22b;
+  border-bottom: 1px dashed #009688;
 }
-a:hover{
+.sc-border-a a:hover{
+  color: #009688;
   text-decoration: none;
 }
