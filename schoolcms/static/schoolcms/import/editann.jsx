@@ -65,7 +65,7 @@ SC.EditAnnPage = React.createClass({
           className='btn btn-fab btn-warning btn-raised mdi-navigation-arrow-back'></SC.A>
         &nbsp;&nbsp;
         <RB.Button bsStyle='success' className='btn-fab btn-raised mdi-content-send'
-          disabled={this.state.submitLock>0||this.state.title.length===0||this.state.content.length}
+          disabled={this.state.submitLock>0||this.state.title.length===0||this.state.content.length===0}
           onClick={this.handlePost}></RB.Button>
         <br/><br/>
       </RB.Col></RB.Row>

@@ -27,22 +27,23 @@ SC.AnnIndexPage = React.createClass({
     var url = SC.makeURL(window.location.pathname,{search: search});
     RMR.navigate(url);
   },
+  _getDateString: function(time_s){
+    var pass_time = new Date() - new Date(time_s)
+    if(pass_time <= 86400000)return '今天';
+    if(pass_time <= 172800000)return '昨天';
+    return time_s;
+  },
   _make_ann: function (ann) {
     return (
       <RB.Col xs={12} md={6} lg={4} key={ann.id}>
         <RB.Well>
           <RB.Row>
             <RB.Col xs={9} md={9}>
-              <h3>{ann.title}</h3>
+              <h3 style={{fontWeight:'500'}}>{ann.title}</h3>
               <small>—— by {ann.author_group_name} ‧ {ann.author_name}</small><br/><br/>
             </RB.Col>
-             <RB.Col xs={3} md={3}>
-              <p>{ann.created.substr(0,10)}</p>
-            </RB.Col>
-            <RB.Col xs={12} md={12}>
-              <div style={{maxHeight: '180px',overflow:'hidden'}}>
-                <span dangerouslySetInnerHTML={{__html: marked(''+ann.content, {sanitize: false,breaks:true})}} />
-              </div><br/>
+            <RB.Col xs={3} md={3}>
+              <p style={{textAlign:'right'}}>{this._getDateString(ann.created.substr(0,10))}</p>
             </RB.Col>
             <RB.Col xs={12} md={12}>
               <SC.A

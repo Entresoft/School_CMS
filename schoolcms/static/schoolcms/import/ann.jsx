@@ -53,7 +53,7 @@ SC.AnnouncePage = React.createClass({
     );
     return (
       <RB.Grid>
-        <RB.PageHeader>{this.state.title}
+        <RB.PageHeader>{this.state.title}<br/>
           <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
         </RB.PageHeader>
         {buttonGroup}
