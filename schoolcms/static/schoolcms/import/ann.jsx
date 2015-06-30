@@ -79,11 +79,12 @@ SC.AnnouncePage = React.createClass({
 
 
 {/*ICON: http://www.webiconset.com/file-type-icons/*/}
-{/*xls will turn to xlb*/}
+{/*xls will turn to xlb
+    JPEG will turn to JPE*/}
 SC.AttachmentPanel = React.createClass({
   _icon: ['aac','ai','aiff','asp','avi','bmp','c','cpp','css','dat','dmg','doc','docx',
       'dot','dotx','dwg','dxf','eps','exe','flv','gif','h','html','ics','iso','java',
-      'jpg','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
+      'jpe','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
       'ott','pdf','php','png','pps','ppt','pptx','psd','py','qt','rar','rb','rtf','sql',
       'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
