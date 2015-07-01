@@ -43,7 +43,11 @@ SC.AnnIndexPage = React.createClass({
           <RB.Row>
             <RB.Col xs={9} md={9}>
               <h3 style={{fontWeight:'500'}}>{ann.title}</h3>
-              <small>—— by {ann.author_group_name} ‧ {ann.author_name}</small><br/><br/>
+              <small>—— by&nbsp;
+                <SC.A href={SC.makeURL('/announce/',{group:ann.author_group_name})}>{ann.author_group_name}</SC.A>
+                &nbsp;‧&nbsp;
+                <SC.A href={SC.makeURL('/announce/',{author:ann.author_name})}>{ann.author_name}</SC.A>
+              </small><br/><br/>
             </RB.Col>
             <RB.Col xs={3} md={3}>
               <p style={{textAlign:'right'}}>{this._getDateString(ann.created.substr(0,10))}</p>

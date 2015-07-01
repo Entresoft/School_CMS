@@ -123,7 +123,7 @@ SC.SelectInput = React.createClass({
     $(".selectinput").dropdown({
                       "autoinit" : ".selectinput",
                       // "dropdownClass": "selectinput-dropdown",
-                      // "optionClass": "selectinput-option",
+                      // "optionClass": "selectinput-dropdown",
                     });
     $(".selectinput").change(function(event){
       this.setState({value: event.currentTarget.value});

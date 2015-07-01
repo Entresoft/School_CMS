@@ -118,9 +118,8 @@ SC.App = React.createClass({
     params = SC.makeOtherArray(['',], params);
     params.start = this.toInt(params.start, 0);
     if(!params.search)params.search = '';
-    if(!params.auther)params.auther = '';
+    if(!params.author)params.author = '';
     if(!params.group)params.group = '';
-    console.log(params);
     return <SC.AnnIndexPage ajax={this.ajax} params={params} />;
   },
   announceHandler: function(ann_id, params) {
@@ -129,11 +128,11 @@ SC.App = React.createClass({
     return <SC.AnnouncePage ajax={this.ajax} _xsrf={this.state._xsrf} manager={manager} id={ann_id} params={params}/>;
   },
   editAnnHandler: function(ann_id, params) {
-    params = SC.makeOtherArray(['',], params);
     if(!params){
       params = ann_id;
       ann_id = '';
     }
+    params = SC.makeOtherArray(['',], params);
     return <SC.EditAnnPage ajax={this.ajax} _xsrf={this.state._xsrf} id={ann_id} params={params} current_user={this.state.current_user}/>;
   },
 

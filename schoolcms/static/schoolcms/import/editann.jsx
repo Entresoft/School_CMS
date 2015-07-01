@@ -4,7 +4,6 @@ SC.EditAnnPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
   getInitialState: function() {
     return {
-      id: '',
       title: '',
       content: '',
       user_groups: [],

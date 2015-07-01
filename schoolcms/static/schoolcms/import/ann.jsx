@@ -54,7 +54,11 @@ SC.AnnouncePage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}<br/>
-          <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
+          <small> by &nbsp;
+            <SC.A href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</SC.A>
+            &nbsp; ‧ &nbsp;
+            <SC.A href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</SC.A>
+          </small>
         </RB.PageHeader>
         {buttonGroup}
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
