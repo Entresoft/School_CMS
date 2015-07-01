@@ -71,6 +71,9 @@ class AnnounceHandler(BaseHandler):
             q = q.offset(start).limit(step)
             anns = q.all()
 
+            groups = self.sql_session.query(Announce.author_group_name).group_by(Announce.author_group_name).all()
+            authors = self.sql_session.query(Announce.author_name).group_by(Announce.author_name).all()
+
             def _make_ann(ann):
                 _d = ann.to_dict()
                 del _d['content']
@@ -80,6 +83,8 @@ class AnnounceHandler(BaseHandler):
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
+                    'groups' : groups,
+                    'authors' : authors,
                     'total' : total,
                 })
 
