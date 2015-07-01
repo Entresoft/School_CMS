@@ -23,6 +23,13 @@ SC.makeOtherArray = function(out, list){
     return other;
 }
 
+SC.getWindowSize = function(xs, md, lg){
+  var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+  if(x<768)return xs;
+  if(x<1200)return md;
+  return lg;
+}
+
 SC.LoginPageMixin = {
   getInitialState: function() {
     return {

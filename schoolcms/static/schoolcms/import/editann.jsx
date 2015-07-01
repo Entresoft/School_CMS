@@ -4,7 +4,6 @@ SC.EditAnnPage = React.createClass({
   mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
   getInitialState: function() {
     return {
-      id: '',
       title: '',
       content: '',
       user_groups: [],
@@ -65,7 +64,7 @@ SC.EditAnnPage = React.createClass({
           className='btn btn-fab btn-warning btn-raised mdi-navigation-arrow-back'></SC.A>
         &nbsp;&nbsp;
         <RB.Button bsStyle='success' className='btn-fab btn-raised mdi-content-send'
-          disabled={this.state.submitLock>0||this.state.title.length===0||this.state.content.length}
+          disabled={this.state.submitLock>0||this.state.title.length===0||this.state.content.length===0}
           onClick={this.handlePost}></RB.Button>
         <br/><br/>
       </RB.Col></RB.Row>
@@ -89,7 +88,7 @@ SC.EditAnnPage = React.createClass({
               </RB.Well>
               <RB.Well>
                 <SC.SelectInput name='group' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
-                <SC.ToggleButton  name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
+                <SC.ToggleButton name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
@@ -103,7 +102,7 @@ SC.EditAnnPage = React.createClass({
             </RB.Col>
             <RB.Col sm={12} md={6} lg={5}><RB.Well>
               <h4>預覽內容</h4><hr/>
-              <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
+              <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
             </RB.Well></RB.Col>
           </RB.Row>
           {buttonGroup}

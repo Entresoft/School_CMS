@@ -36,6 +36,7 @@ def _to_int(s, default, mi=None, mx=None):
 
 class AnnounceHandler(BaseHandler):
     def get(self, ann_id):
+        # Ann Page
         if ann_id:
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
@@ -47,30 +48,43 @@ class AnnounceHandler(BaseHandler):
             self._['atts'] = [att.to_dict() for att in atts]
             self.write(self._)
 
+        # AnnIndex Page
         else:
             start = _to_int(self.get_argument('start', ''), 0, 0)
             step = _to_int(self.get_argument('step', ''), 12, 1, 20)
             search = self.get_argument('search', '')
+            group = self.get_argument('group', '')
+            author = self.get_argument('author', '')
 
-            total = 0
             if search:
                 q = Announce.by_full_text(search, self.sql_session)
-                total = q.count()
             else:
-                total = self.sql_session.query(Announce.id).count()
                 q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
+
+            if author:
+                q = q.filter(Announce.author_name == author)
+            if group:
+                q = q.filter(Announce.author_group_name == group)
+            
+            total = q.count()
             q = q.offset(start).limit(step)
             anns = q.all()
 
+            groups = self.sql_session.query(Announce.author_group_name).group_by(Announce.author_group_name).all()
+            authors = self.sql_session.query(Announce.author_name).group_by(Announce.author_name).all()
+
             def _make_ann(ann):
                 _d = ann.to_dict()
+                del _d['content']
                 _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
                 return _d
             self.write({
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
+                    'groups' : groups,
+                    'authors' : authors,
                     'total' : total,
                 })
 

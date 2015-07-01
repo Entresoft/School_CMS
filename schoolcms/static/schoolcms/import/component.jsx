@@ -56,13 +56,14 @@ SC.A = React.createClass({
   },
   handleClick: function(e){
     e.preventDefault();
+    e.stopPropagation();
     setTimeout(function(){ RMR.navigate(this.props.href); }.bind(this), 1);
     console.log('nave to '+this.props.href);
   },
   render: function() {
-    var other = SC.makeOtherArray(['onClick', 'href'],this.props);
+    var other = SC.makeOtherArray(['onClick'],this.props);
     return (
-      <a {...other} href='#' onClick={this.handleClick}>{this.props.children}</a>
+      <a {...other} onClick={this.handleClick}>{this.props.children}</a>
     );
   }
 });
@@ -112,38 +113,64 @@ SC.ToggleButton = React.createClass({
   }
 });
 
+{/*Use options={list objext} to set option*/}
 SC.SelectInput = React.createClass({
   getInitialState: function(){
     return {
-      ready: false,
-      value: '',
+      value: this.props.defaultValue?this.props.defaultValue:'',
     }
   },
   componentDidMount: function(){
-    $(".selectinput").dropdown({
-                      "autoinit" : ".selectinput",
-                      // "dropdownClass": "selectinput-dropdown",
-                      // "optionClass": "selectinput-option",
-                    });
-    $(".selectinput").change(function(event){
+    $(React.findDOMNode(this.refs.select)).dropdown({
+        autoinit : React.findDOMNode(this.refs.select),
+        callback : function(){
+          this._updateSelect(this.state.value);
+        }.bind(this),
+      });
+    $(React.findDOMNode(this.refs.select)).bind('change', function(event){
       this.setState({value: event.currentTarget.value});
       if(this.props.onChange)this.props.onChange(event.currentTarget.value);
     }.bind(this));
-    this.setState({ready:true});
+  },
+  getValue: function(){
+    return this.state.value;
+  },
+  setValue: function(value){
+    this.setState({value: value});
+    this._updateSelect(value);
+  },
+  _updateSelect: function(_value){
+    var dropdownjs = React.findDOMNode(this.refs.select).nextElementSibling;
+    var selected = dropdownjs.getElementsByClassName('selected');
+    for(var i=0;i<selected.length;i++){
+      selected[i].className = '';
+    }
+    var options = dropdownjs.getElementsByTagName('li');
+    for(var i=0;i<options.length;i++){
+      if(options[i].getAttribute('value')===_value){
+        options[i].className = 'selected';
+      }
+    }
+    var input = dropdownjs.getElementsByTagName('input')[0];
+    input.value = _value;
   },
   render: function() {
     var options = [];
+    if(this.props.emptyOption){
+      options.push(
+        <option key={-1} value={''}></option>
+      );
+    }
     for(var key in this.props.options){
       options.push(
         <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
       );
     }
-    if(!this.state.ready)options = [];
     return (
       <div>
         <label>{this.props.label}</label>
         <input type='hidden' name={this.props.name} value={this.state.value}/>
-        <select placeholder={this.props.placeholder} className='form-control selectinput'>
+        <select ref='select' placeholder={this.props.placeholder} className='form-control selectinput'>
           {options}
         </select>
       </div>
@@ -188,10 +215,11 @@ SC.Pagination = React.createClass({
     var items = Math.ceil(this.props.total/this.props.step);
     if(items===0)items=1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
+    var maxBtn = SC.getWindowSize(5, 8, 10);
     return (
        <RB.Pagination prev next first last ellipsis={false}
           items={items}
-          maxButtons={items>8?8:items}
+          maxButtons={items>maxBtn?maxBtn:items}
           activePage={now}
           onSelect={this.handleSelect}
           className='shadow-z-2' />

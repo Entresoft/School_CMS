@@ -9,10 +9,27 @@ body{
   background-repeat: repeat;
   word-break: break-all;
 }
-a{
+.sc-border-a a{
   color: #333;
-  border-bottom: 1px dashed #22b;
+  border-bottom: 1px dashed #009688;
 }
-a:hover{
+.sc-border-a a:hover{
+  color: #009688;
   text-decoration: none;
+}
+.sc-ann-search-form{
+  padding: 1px 12px 24px 12px;
+  border-radius: 2px;
+  background-color: rgba(80,80,80,.9);
+  color: #ececec;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,.12),0 1px 6px 0 rgba(0,0,0,.12);
+}
+.sc-ann-search-form .control-label{
+  color: #ececec;
+}
+.sc-ann-search-form .form-control{
+  color: #ececec;
+}
+.sc-ann-search-form .dropdownjs{
+  color: #333;
 }

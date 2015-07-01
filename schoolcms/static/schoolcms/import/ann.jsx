@@ -19,6 +19,7 @@ SC.AnnouncePage = React.createClass({
       json.ready = true;
       this.setState(json);
     }.bind(this));
+    $("html, body").animate({ scrollTop: 0 }, "slow");
   },
   handleDelete: function(){
     this.setState({ready: false});
@@ -53,12 +54,16 @@ SC.AnnouncePage = React.createClass({
     );
     return (
       <RB.Grid>
-        <RB.PageHeader>{this.state.title}
-          <small> by {this.state.author_group_name}‧{this.state.author_name}</small>
+        <RB.PageHeader>{this.state.title}<br/>
+          <small> by &nbsp;
+            <SC.A href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</SC.A>
+            &nbsp; ‧ &nbsp;
+            <SC.A href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</SC.A>
+          </small>
         </RB.PageHeader>
         {buttonGroup}
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <span dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
+          <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={6}><RB.Well>
@@ -79,20 +84,27 @@ SC.AnnouncePage = React.createClass({
 
 
 {/*ICON: http://www.webiconset.com/file-type-icons/*/}
-{/*xls will turn to xlb*/}
+{/*xls will turn to xlb
+    JPEG will turn to JPE*/}
 SC.AttachmentPanel = React.createClass({
   _icon: ['aac','ai','aiff','asp','avi','bmp','c','cpp','css','dat','dmg','doc','docx',
       'dot','dotx','dwg','dxf','eps','exe','flv','gif','h','html','ics','iso','java',
-      'jpg','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
+      'jpe','key','m4v','mid','mov','mp3','mp4','mpg','odp','ods','odt','otp','ots',
       'ott','pdf','php','png','pps','ppt','pptx','psd','py','qt','rar','rb','rtf','sql',
       'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
-      return <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}>開啟</a>
+      return (
+        <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+      );
     }else if(att.filetype!=='file'){
-      return <a target="_blank" href={'/file/'+att.path}>開啟</a>
+      return (
+        <a target="_blank" href={'/file/'+att.path}
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+      );
     }
   },
   render: function() {
@@ -102,13 +114,14 @@ SC.AttachmentPanel = React.createClass({
       }
       return (
         <div key={att.key} className="media">
-          <div className="media-left"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
-          <div className="media-body">
+          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
+          <div className="media-body media-middle">
             <div className="media-heading">{att.filename}</div>
-            <div>
-              {this.openlink(att)}
-              <a target="_blank" href={'/file/'+att.path+'?download=1'}>下載</a>
-            </div>
+          </div>
+          <div className="media-right media-middle">
+            {this.openlink(att)}
+            <a target="_blank" href={'/file/'+att.path+'?download=1'}
+              className='btn btn-danger btn-sm btn-raised mdi-file-file-download'></a>
           </div>
         </div>
       );
