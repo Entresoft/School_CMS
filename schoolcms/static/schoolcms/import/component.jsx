@@ -56,13 +56,14 @@ SC.A = React.createClass({
   },
   handleClick: function(e){
     e.preventDefault();
+    e.stopPropagation();
     setTimeout(function(){ RMR.navigate(this.props.href); }.bind(this), 1);
     console.log('nave to '+this.props.href);
   },
   render: function() {
-    var other = SC.makeOtherArray(['onClick', 'href'],this.props);
+    var other = SC.makeOtherArray(['onClick'],this.props);
     return (
-      <a {...other} href='#' onClick={this.handleClick}>{this.props.children}</a>
+      <a {...other} onClick={this.handleClick}>{this.props.children}</a>
     );
   }
 });

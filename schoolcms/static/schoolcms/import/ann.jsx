@@ -115,6 +115,9 @@ SC.AttachmentPanel = React.createClass({
               <a target="_blank" href={'/file/'+att.path+'?download=1'}>下載</a>
             </div>
           </div>
+          <div className="media-left">
+            
+          </div>
         </div>
       );
     }.bind(this));
