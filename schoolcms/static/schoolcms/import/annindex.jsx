@@ -19,6 +19,7 @@ SC.AnnIndexPage = React.createClass({
   },
   componentDidMount: function(){
     this.ajax();
+    $("html, body").animate({ scrollTop: 0 }, "slow");
   },
   componentWillReceiveProps: function(nextprops) {
     for(var k in this.props.params){

@@ -18,6 +18,7 @@ SC.AnnouncePage = React.createClass({
     this.props.ajax(url,'GET',null,function(json){
       json.ready = true;
       this.setState(json);
+      $("html, body").animate({ scrollTop: 0 }, "slow");
     }.bind(this));
   },
   handleDelete: function(){
@@ -95,9 +96,15 @@ SC.AttachmentPanel = React.createClass({
       'pps','pptm','potm','ppam','potx','ppsm'],
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
-      return <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}>開啟</a>
+      return (
+        <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+      );
     }else if(att.filetype!=='file'){
-      return <a target="_blank" href={'/file/'+att.path}>開啟</a>
+      return (
+        <a target="_blank" href={'/file/'+att.path}
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+      );
     }
   },
   render: function() {
@@ -107,16 +114,14 @@ SC.AttachmentPanel = React.createClass({
       }
       return (
         <div key={att.key} className="media">
-          <div className="media-left"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
-          <div className="media-body">
+          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
+          <div className="media-body media-middle">
             <div className="media-heading">{att.filename}</div>
-            <div>
-              {this.openlink(att)}
-              <a target="_blank" href={'/file/'+att.path+'?download=1'}>下載</a>
-            </div>
           </div>
-          <div className="media-left">
-            
+          <div className="media-right media-middle">
+            {this.openlink(att)}
+            <a target="_blank" href={'/file/'+att.path+'?download=1'}
+              className='btn btn-danger btn-sm btn-raised mdi-file-file-download'></a>
           </div>
         </div>
       );
