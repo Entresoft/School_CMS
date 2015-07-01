@@ -18,8 +18,8 @@ SC.AnnouncePage = React.createClass({
     this.props.ajax(url,'GET',null,function(json){
       json.ready = true;
       this.setState(json);
-      $("html, body").animate({ scrollTop: 0 }, "slow");
     }.bind(this));
+    $("html, body").animate({ scrollTop: 0 }, "slow");
   },
   handleDelete: function(){
     this.setState({ready: false});
