@@ -103,7 +103,7 @@ SC.ToggleButton = React.createClass({
     input.classList.remove('checkbox');
   },
   handleChange: function(){
-    this.setState({checked: this.ref.getValue()});
+    this.setState({checked: this.refs.input.getValue()});
   },
   render: function() {
     var other = SC.makeOtherArray(['checked'],this.props);

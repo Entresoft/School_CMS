@@ -42,6 +42,8 @@ class AnnounceHandler(BaseHandler):
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
                 raise self.HTTPError(404)
+            if ann.is_private and not self.is_group_user('Announcement Manager'):
+                raise self.HTTPError(404)
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
@@ -68,7 +70,10 @@ class AnnounceHandler(BaseHandler):
                 q = q.filter(Announce.author_name == author)
             if group:
                 q = q.filter(Announce.author_group_name == group)
-            
+
+            if not self.is_group_user('Announcement Manager'):
+                q = q.filter(Announce.is_private == False)
+
             total = q.count()
             q = q.offset(start).limit(step)
             anns = q.all()

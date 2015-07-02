@@ -68,12 +68,21 @@ SC.AnnIndexPage = React.createClass({
               <SC.A
                 href={SC.makeURL('/announce/'+ann.id,this.props.params)}
                 className='btn btn-fab btn-primary btn-raised mdi-content-send'></SC.A>
-              &nbsp;
+              <span>&nbsp;</span>
               {function(){
                 if(ann.att_count)return (
                   <RB.OverlayTrigger placement='top' overlay={<RB.Popover>這篇公告有{ann.att_count}個附件</RB.Popover>}>
                     <RB.Button bsStyle='warning'
                       className='btn-fab btn-raised mdi-editor-attach-file'></RB.Button>
+                  </RB.OverlayTrigger>
+                );
+              }()}
+              <span>&nbsp;</span>
+              {function(){
+                if(ann.is_private)return (
+                  <RB.OverlayTrigger placement='top' overlay={<RB.Popover>內部公告：只有管理員可以瀏覽</RB.Popover>}>
+                    <RB.Button bsStyle='default'
+                      className='btn-fab btn-raised mdi-action-visibility-off'></RB.Button>
                   </RB.OverlayTrigger>
                 );
               }()}

@@ -126,7 +126,7 @@ with SessionGen() as sql_session:
                     a = tr.find('a')
                     if att_link_re.match(a.text):
                         break
-                    content += '\n * '+unicode(a)
+                    content += '\n * [%s](%s)' % (a.text, a['href'])
                 content += addition_content
 
                 if movinglog:
