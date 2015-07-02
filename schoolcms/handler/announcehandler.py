@@ -13,8 +13,9 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 import shutil
+import re
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
+from schoolcms.db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -41,10 +42,13 @@ class AnnounceHandler(BaseHandler):
             ann = Announce.by_id(ann_id, self.sql_session).scalar()
             if not ann:
                 raise self.HTTPError(404)
+            if ann.is_private and not self.is_group_user('Announcement Manager'):
+                raise self.HTTPError(404)
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
             self._ = ann.to_dict()
+            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
             self._['atts'] = [att.to_dict() for att in atts]
             self.write(self._)
 
@@ -66,7 +70,10 @@ class AnnounceHandler(BaseHandler):
                 q = q.filter(Announce.author_name == author)
             if group:
                 q = q.filter(Announce.author_group_name == group)
-            
+
+            if not self.is_group_user('Announcement Manager'):
+                q = q.filter(Announce.is_private == False)
+
             total = q.count()
             q = q.offset(start).limit(step)
             anns = q.all()
@@ -78,6 +85,7 @@ class AnnounceHandler(BaseHandler):
                 _d = ann.to_dict()
                 del _d['content']
                 _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
+                _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
             self.write({
                     'anns' : [_make_ann(ann) for ann in anns],
@@ -105,6 +113,8 @@ class AnnounceHandler(BaseHandler):
         self.write({'success':True})
 
 
+tag_re = re.compile(r'^[^\s,][^,]*[^\s,]$')
+
 class EditAnnHandler(BaseHandler):
     def prepare(self):
         super(EditAnnHandler, self).prepare()
@@ -113,9 +123,10 @@ class EditAnnHandler(BaseHandler):
             'title': '',
             'content': '',
             'is_private': False,
+            'group': '',
             'tmpatts': [],
             'atts': [],
-            '_xsrf': self.xsrf_token,
+            'tags': [],
             'alert': '',
         }
 
@@ -130,7 +141,10 @@ class EditAnnHandler(BaseHandler):
             self._['content'] = ann.content
             self._['is_private'] = ann.is_private
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
+            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
             self._['atts'] = [att.to_dict() for att in atts]
+            if self.is_group_user(ann.author_group_name):
+                self._['group'] = ann.author_group_name
 
         self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
@@ -145,6 +159,7 @@ class EditAnnHandler(BaseHandler):
         self._['content'] = self.get_argument('content', '')
         self.group = self.get_argument('group', '')
         self._['is_private'] = bool(self.get_argument('is_private', ''))
+        self._['tags'] = self.get_arguments('tag')
         self.attkeys = self.get_arguments('attachment')
 
         # check ann and att
@@ -172,6 +187,7 @@ class EditAnnHandler(BaseHandler):
             Record.add('new', self.ann_id, self.sql_session)
 
         self.parse_att()
+        self.parse_tag()
 
         self.sql_session.commit()
         self.write({'success': True,'id': self.ann_id})
@@ -213,3 +229,21 @@ class EditAnnHandler(BaseHandler):
                                     content_type=att.content_type, filename=att.filename)
             self.sql_session.add(new_att)
             TempFileList.by_key(att.key, self.sql_session).delete()
+
+    def parse_tag(self):
+        for i in xrange(len(self._['tags'])):
+            self._['tags'][i] = self._['tags'][i][:40:]
+            if not tag_re.match(self._['tags'][i]):
+                del self._['tags'][i]
+
+        old_tags = AnnTag.get_ann_tags(self.ann_id, self.sql_session)
+        new_tag_set = set(self._['tags'])
+        old_tag_set = set(old_tags)
+
+        add_set = new_tag_set - old_tag_set
+        delete_set = old_tag_set - new_tag_set
+
+        for tag in add_set:
+            self.sql_session.add(AnnTag(self.ann_id, tag))
+        for tag in delete_set:
+            AnnTag.by_tag(self.ann_id, tag, self.sql_session).delete()

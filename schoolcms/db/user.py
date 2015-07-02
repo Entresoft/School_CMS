@@ -32,8 +32,8 @@ class User(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     account = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
-    passwd = Column(VARCHAR(90, collation='utf8_unicode_ci'))
-    name = Column(VARCHAR(20, collation='utf8_unicode_ci'), nullable=False)
+    passwd = Column(CHAR(90, collation='utf8_unicode_ci'))
+    name = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
     identity = Column(ENUM('學生','教師', charset='utf8'), nullable=False)
     admin = Column(BOOLEAN, nullable=False)
 
@@ -88,7 +88,7 @@ class GroupList(Base):
 
     id = Column(INTEGER, primary_key=True)
     userkey = Column(CHAR(40, collation='utf8_unicode_ci'))
-    group = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
+    group = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
 
     def __init__(self, userkey, group):
         self.userkey = userkey

@@ -11,7 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
-from schoolcms.db import TempFileList, AttachmentList
+from schoolcms.db import Announce, TempFileList, AttachmentList
 
 import re
 import os
@@ -19,6 +19,7 @@ import uuid
 import shutil
 import subprocess
 import mimetypes
+from datetime import datetime
 
 import tornado
 from tornado import gen
@@ -36,8 +37,8 @@ class TempUploadHandler(BaseHandler):
     def initialize(self):
         if not os.path.exists('file'):
             os.makedirs('file')
-            if not os.path.exists('file/tmp'):
-                os.makedirs('file/tmp')
+        if not os.path.exists('file/tmp'):
+            os.makedirs('file/tmp')
 
     @BaseHandler.check_is_group_user('Announcement administrator')
     def post(self, path):
@@ -57,7 +58,7 @@ class TempUploadHandler(BaseHandler):
 
             _content_type = _get_content_type('file/tmp/%s' % self.tmp_file_name, filename)
             content_type = _content_type if _content_type else content_type
-            
+
             new_file = TempFileList(self.tmp_file_name, filename, content_type, self.current_user.key)
             self.sql_session.add(new_file)
         except:
@@ -93,6 +94,11 @@ class FileHandler(StaticFileHandler, BaseHandler):
         file = AttachmentList.by_key(key, self.sql_session).scalar()
         if not file:
             raise self.HTTPError(404)
+
+        # Because onupdate must be call , or you need to give the value.
+        q = Announce.by_id(file.ann_id, self.sql_session)
+        ann = q.scalar()
+        q.update({'search' : ann.search})
 
         shutil.rmtree('file/%s' % file.key)
         AttachmentList.by_key(key, self.sql_session).delete()
