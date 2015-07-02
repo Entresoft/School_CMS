@@ -37,6 +37,15 @@ SC.AnnIndexPage = React.createClass({
     return time_s;
   },
   _make_ann: function (ann) {
+    var tags = function(ann){
+      if(ann.tags.length){
+        return ann.tags.map(function(tag){
+          return (<RB.Button key={tag} className='btn-primary' bsSize='small'>{tag}</RB.Button>);
+        });
+      }else{
+        return (<span>沒有分類標籤</span>);
+      }
+    }(ann);
     return (
       <RB.Col xs={12} md={6} lg={4} key={ann.id}>
         <RB.Well>
@@ -53,15 +62,27 @@ SC.AnnIndexPage = React.createClass({
               <p style={{textAlign:'right'}}>{this._getDateString(ann.created.substr(0,10))}</p>
             </RB.Col>
             <RB.Col xs={12} md={12}>
+              標籤：{tags}<br/><br/>
+            </RB.Col>
+            <RB.Col xs={12} md={12}>
               <SC.A
                 href={SC.makeURL('/announce/'+ann.id,this.props.params)}
                 className='btn btn-fab btn-primary btn-raised mdi-content-send'></SC.A>
-              &nbsp;
+              <span>&nbsp;</span>
               {function(){
                 if(ann.att_count)return (
                   <RB.OverlayTrigger placement='top' overlay={<RB.Popover>這篇公告有{ann.att_count}個附件</RB.Popover>}>
                     <RB.Button bsStyle='warning'
                       className='btn-fab btn-raised mdi-editor-attach-file'></RB.Button>
+                  </RB.OverlayTrigger>
+                );
+              }()}
+              <span>&nbsp;</span>
+              {function(){
+                if(ann.is_private)return (
+                  <RB.OverlayTrigger placement='top' overlay={<RB.Popover>內部公告：只有管理員可以瀏覽</RB.Popover>}>
+                    <RB.Button bsStyle='default'
+                      className='btn-fab btn-raised mdi-action-visibility-off'></RB.Button>
                   </RB.OverlayTrigger>
                 );
               }()}
