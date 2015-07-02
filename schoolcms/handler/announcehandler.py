@@ -14,7 +14,7 @@ from . import BaseHandler
 import os
 import shutil
 
-from schoolcms.db import Announce, TempFileList, AttachmentList, Record, GroupList
+from schoolcms.db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -115,7 +115,7 @@ class EditAnnHandler(BaseHandler):
             'is_private': False,
             'tmpatts': [],
             'atts': [],
-            '_xsrf': self.xsrf_token,
+            'tags': [],
             'alert': '',
         }
 
@@ -130,6 +130,7 @@ class EditAnnHandler(BaseHandler):
             self._['content'] = ann.content
             self._['is_private'] = ann.is_private
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
+            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
             self._['atts'] = [att.to_dict() for att in atts]
 
         self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
@@ -145,6 +146,7 @@ class EditAnnHandler(BaseHandler):
         self._['content'] = self.get_argument('content', '')
         self.group = self.get_argument('group', '')
         self._['is_private'] = bool(self.get_argument('is_private', ''))
+        self._['tags'] = self.get_arguments('tag')
         self.attkeys = self.get_arguments('attachment')
 
         # check ann and att
@@ -172,6 +174,7 @@ class EditAnnHandler(BaseHandler):
             Record.add('new', self.ann_id, self.sql_session)
 
         self.parse_att()
+        self.parse_tag()
 
         self.sql_session.commit()
         self.write({'success': True,'id': self.ann_id})
@@ -213,3 +216,16 @@ class EditAnnHandler(BaseHandler):
                                     content_type=att.content_type, filename=att.filename)
             self.sql_session.add(new_att)
             TempFileList.by_key(att.key, self.sql_session).delete()
+
+    def parse_tag(self):
+        old_tags = AnnTag.get_ann_tags(self.ann_id, self.sql_session)
+        new_tag_set = set(self._['tags'])
+        old_tag_set = set(old_tags)
+
+        add_set = new_tag_set - old_tag_set
+        delete_set = old_tag_set - new_tag_set
+
+        for tag in add_set:
+            self.sql_session.add(AnnTag(self.ann_id, tag))
+        for tag in delete_set:
+            AnnTag.by_tag(self.ann_id, tag, self.sql_session).delete()

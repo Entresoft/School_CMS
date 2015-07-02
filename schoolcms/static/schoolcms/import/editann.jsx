@@ -10,6 +10,7 @@ SC.EditAnnPage = React.createClass({
       is_private: false,
       tmpatts: [],
       atts: [],
+      tag_string: '',
       submitLock: 0,
     };
   },
@@ -88,7 +89,11 @@ SC.EditAnnPage = React.createClass({
               </RB.Well>
               <RB.Well>
                 <SC.SelectInput name='group' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
-                <SC.ToggleButton name='is_private' checked={this.state.is_private} label='不公開這篇公告' help='只有管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
+                <label>內部公告</label>
+                <SC.ToggleButton name='is_private' checked={this.state.is_private} label='只有公告管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
+                <SC.ResizeTextArea valueLink={this.linkState('tag_string')} label='分類標籤'
+                    placeholder='輸入分類標籤' help='當有多個標籤時，每個標籤請用英文半形逗號(,)隔開。'
+                    disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
@@ -102,7 +107,7 @@ SC.EditAnnPage = React.createClass({
             </RB.Col>
             <RB.Col sm={12} md={6} lg={5}><RB.Well>
               <h4>預覽內容</h4><hr/>
-              <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
+              <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
             </RB.Well></RB.Col>
           </RB.Row>
           {buttonGroup}

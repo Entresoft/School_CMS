@@ -13,7 +13,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = -104
+version = -105
 
 
 # creat engine
@@ -44,7 +44,7 @@ class SessionGen(object):
 
 
 from .user import User, GroupList
-from .announce import Announce
+from .announce import Announce, AnnTag
 from .filelist import TempFileList, AttachmentList
 from .record import Record
 

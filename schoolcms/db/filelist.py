@@ -24,7 +24,7 @@ class TempFileList(Base):
     __tablename__ = 'tempfilelist'
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
-    filename = Column(VARCHAR(100, collation='utf8_unicode_ci'), nullable=False)
+    filename = Column(TEXT(charset='utf8'), nullable=False)
     content_type = Column(TEXT(charset='utf8'), nullable=False)
     created = Column(TIMESTAMP, default=datetime.now())
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)

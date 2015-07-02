@@ -63,7 +63,7 @@ SC.AnnouncePage = React.createClass({
         </RB.PageHeader>
         {buttonGroup}
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: false,breaks:true})}} />
+          <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
         <RB.Row>
           <RB.Col xs={12} md={6}><RB.Well>
