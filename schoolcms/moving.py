@@ -8,7 +8,7 @@ Terminal Tool.
 
 Add att.
 
-DB version -103
+DB version -105
 """
 
 from __future__ import absolute_import
@@ -87,7 +87,11 @@ with SessionGen() as sql_session:
 
         post_trs = soup.find_all('table')[1].find_all('tr')[1:]
         for post_tr in post_trs:
-            post_url = post_tr.find_all('td')[1].find('a')['href']
+            link = post_tr.find_all('td')[1]
+            post_url = link.find('a')['href']
+            # private ann
+            ann_is_private = link.text[-4::] == '[內部]'
+
 
             rel = requests.get(post_url)
             rel.encoding = 'utf8'
@@ -111,8 +115,11 @@ with SessionGen() as sql_session:
                 addition_content = '''
 
 ***
-這篇公告是這個系統從舊\"Ann公告系統\"自動同步。因為舊系統沒有排版功能，這篇公告可能會出現在奇怪的地方換行的狀況。
-原始公告網址： %s 
+這篇公告從「Ann公告系統」讀取後自動同步。
+因為該系統沒有排版功能，這篇公告可能會：
+1.在奇怪的地方換行。
+2.超連結包含奇怪的文字。(請手動去除多餘的字元)
+本系統更新頻率為一小時一次，如有需要可以參考「[原系統公告連結](%s)」。
 
 ''' % post_url
                 for tr in ann_trs[4:]:
@@ -134,7 +141,7 @@ with SessionGen() as sql_session:
                         })
                     Record.add('update', movinglog.id, sql_session)
                 else:
-                    new_ann = Announce(title, content, author_group_name, author_name, False, created=ann_time)
+                    new_ann = Announce(title, content, author_group_name, author_name, ann_is_private, created=ann_time)
                     sql_session.add(new_ann)
                     sql_session.flush()
                     sql_session.refresh(new_ann)

@@ -80,6 +80,7 @@ class AnnounceHandler(BaseHandler):
                 _d = ann.to_dict()
                 del _d['content']
                 _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
+                _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
             self.write({
                     'anns' : [_make_ann(ann) for ann in anns],
@@ -222,10 +223,10 @@ class EditAnnHandler(BaseHandler):
             TempFileList.by_key(att.key, self.sql_session).delete()
 
     def parse_tag(self):
-        for tag in self._['tags']:
-            if not tag_re.match(tag):
-                print('GGG "'+tag+'"')
-                self._['tags'].remove(tag)
+        for i in xrange(len(self._['tags'])):
+            self._['tags'][i] = self._['tags'][i][:40:]
+            if not tag_re.match(self._['tags'][i]):
+                del self._['tags'][i]
 
         old_tags = AnnTag.get_ann_tags(self.ann_id, self.sql_session)
         new_tag_set = set(self._['tags'])

@@ -19,6 +19,8 @@ from schoolcms.db import Record
 from sqlalchemy import desc
 
 
+# TO DO: Change the way to do rss, so this will become a message system.
+# This is not working now.
 class RecordHandler(BaseHandler):
     def get(self):
         time_s = self.get_argument('time', '')

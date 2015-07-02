@@ -37,6 +37,15 @@ SC.AnnIndexPage = React.createClass({
     return time_s;
   },
   _make_ann: function (ann) {
+    var tags = function(ann){
+      if(ann.tags.length){
+        return ann.tags.map(function(tag){
+          return (<RB.Button key={tag} className='btn-primary' bsSize='small'>{tag}</RB.Button>);
+        });
+      }else{
+        return (<span>沒有分類標籤</span>);
+      }
+    }(ann);
     return (
       <RB.Col xs={12} md={6} lg={4} key={ann.id}>
         <RB.Well>
@@ -51,6 +60,9 @@ SC.AnnIndexPage = React.createClass({
             </RB.Col>
             <RB.Col xs={3} md={3}>
               <p style={{textAlign:'right'}}>{this._getDateString(ann.created.substr(0,10))}</p>
+            </RB.Col>
+            <RB.Col xs={12} md={12}>
+              標籤：{tags}<br/><br/>
             </RB.Col>
             <RB.Col xs={12} md={12}>
               <SC.A

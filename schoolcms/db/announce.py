@@ -21,6 +21,7 @@ import jieba
 
 jieba.set_dictionary('schoolcms/util/sqlalchemy_fulltext/dict.txt.big')
 
+
 def _search_update(context):
     return ' '.join(jieba.cut_for_search(
         '%s %s' % (context.current_parameters['title'],context.current_parameters['content'])))
