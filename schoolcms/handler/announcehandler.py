@@ -13,6 +13,7 @@ from __future__ import unicode_literals
 from . import BaseHandler
 import os
 import shutil
+import re
 
 from schoolcms.db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
@@ -45,6 +46,7 @@ class AnnounceHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
             self._ = ann.to_dict()
+            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
             self._['atts'] = [att.to_dict() for att in atts]
             self.write(self._)
 
@@ -104,6 +106,8 @@ class AnnounceHandler(BaseHandler):
 
         self.write({'success':True})
 
+
+tag_re = re.compile(r'^[^\s,][^,]*[^\s,]$')
 
 class EditAnnHandler(BaseHandler):
     def prepare(self):
@@ -218,6 +222,11 @@ class EditAnnHandler(BaseHandler):
             TempFileList.by_key(att.key, self.sql_session).delete()
 
     def parse_tag(self):
+        for tag in self._['tags']:
+            if not tag_re.match(tag):
+                print('GGG "'+tag+'"')
+                self._['tags'].remove(tag)
+
         old_tags = AnnTag.get_ann_tags(self.ann_id, self.sql_session)
         new_tag_set = set(self._['tags'])
         old_tag_set = set(old_tags)

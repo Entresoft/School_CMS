@@ -17,6 +17,7 @@ SC.EditAnnPage = React.createClass({
   pageInit: function(callback){
     var url = '/api'+window.location.pathname;
     this.props.ajax(url,'GET',null,function(json){
+      json.tag_string = json.tags.join(', ');
       this.setState(json);
       callback();
     }.bind(this));
@@ -26,7 +27,7 @@ SC.EditAnnPage = React.createClass({
     if(this.state.submitLock)return false;
     this.lock(1);
     var url = '/api'+window.location.pathname;
-    var data = new FormData(React.findDOMNode(this.refs.form));
+    var data = this._parse_data();
     this.props.ajax(url,'POST',data,function(json){
       if(json.success){
         RMR.navigate('/announce/'+json.id);
@@ -35,6 +36,16 @@ SC.EditAnnPage = React.createClass({
         this.lock(-1);
       }
     }.bind(this));
+  },
+  _parse_data: function(){
+    var data = new FormData(React.findDOMNode(this.refs.form));
+    var tags = this.state.tag_string.split(/\s*,(?:\s|,)*/);
+    for(var i=0;i<tags.length;i++){
+      if(tags[i].match(/\S/)){
+        data.append('tag', tags[i]);
+      }
+    }
+    return data;
   },
   alert: function(msg){
     this.setState({alert:msg});
@@ -92,8 +103,8 @@ SC.EditAnnPage = React.createClass({
                 <label>內部公告</label>
                 <SC.ToggleButton name='is_private' checked={this.state.is_private} label='只有公告管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
                 <SC.ResizeTextArea valueLink={this.linkState('tag_string')} label='分類標籤'
-                    placeholder='輸入分類標籤' help='當有多個標籤時，每個標籤請用英文半形逗號(,)隔開。'
-                    disabled={!this.state.ready}/>
+                    placeholder='輸入分類標籤' disabled={!this.state.ready}
+                    help='當有多個標籤時，每個標籤請用英文半形逗號(,)隔開，逗號前後的空白和換行都會被忽略。一個標籤最長30個字元，超過的部份會被忽略。'/>
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>

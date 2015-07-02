@@ -10,6 +10,7 @@ SC.AnnouncePage = React.createClass({
       created: '',
       updated: '',
       atts: [],
+      tags: [],
       ready: false,
     };
   },
@@ -52,6 +53,17 @@ SC.AnnouncePage = React.createClass({
         <br/><br/>
       </RB.Col></RB.Row>
     );
+    var tags = function(){
+      var tags = [];
+      if(this.state.tags.length){
+        tags.push(<span key={-1}><i className='mdi-maps-local-offer'/> </span>);
+        for(var i in this.state.tags){
+          tags.push(<RB.Button key={i} className='btn-primary' bsSize='small'>{this.state.tags[i]}</RB.Button>);
+        }
+        tags.push(<span key={-2}><br/><br/></span>);
+      }
+      return tags;
+    }.bind(this)();
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}<br/>
@@ -62,6 +74,9 @@ SC.AnnouncePage = React.createClass({
           </small>
         </RB.PageHeader>
         {buttonGroup}
+        <RB.Row><RB.Col xs={12} md={12}>
+          {tags}
+        </RB.Col></RB.Row>
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
           <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
