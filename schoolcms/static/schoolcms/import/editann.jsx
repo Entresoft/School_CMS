@@ -19,6 +19,7 @@ SC.EditAnnPage = React.createClass({
     this.props.ajax(url,'GET',null,function(json){
       json.tag_string = json.tags.join(', ');
       this.setState(json);
+      this.refs.groupSelect.setValue(json.group);
       callback();
     }.bind(this));
     $.material.init();
@@ -32,8 +33,10 @@ SC.EditAnnPage = React.createClass({
       if(json.success){
         RMR.navigate('/announce/'+json.id);
       }else{
+        delete json.att;
         this.setState(json);
         this.lock(-1);
+        $("html, body").animate({ scrollTop: 0 }, "slow");
       }
     }.bind(this));
   },
@@ -99,7 +102,7 @@ SC.EditAnnPage = React.createClass({
                 <SC.ResizeTextArea name='content' valueLink={this.linkState('content')} label='公告內容' placeholder='輸入公告內容' disabled={!this.state.ready}/>
               </RB.Well>
               <RB.Well>
-                <SC.SelectInput name='group' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
+                <SC.SelectInput ref='groupSelect' name='group' options={this.state.user_groups} label='發佈公告群組' placeholder='選擇發佈公告的群組'/><br/>
                 <label>內部公告</label>
                 <SC.ToggleButton name='is_private' checked={this.state.is_private} label='只有公告管理員可以瀏覽這篇公告' disabled={!this.state.ready}/>
                 <SC.ResizeTextArea valueLink={this.linkState('tag_string')} label='分類標籤'

@@ -123,6 +123,7 @@ class EditAnnHandler(BaseHandler):
             'title': '',
             'content': '',
             'is_private': False,
+            'group': '',
             'tmpatts': [],
             'atts': [],
             'tags': [],
@@ -142,6 +143,8 @@ class EditAnnHandler(BaseHandler):
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
             self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
             self._['atts'] = [att.to_dict() for att in atts]
+            if self.is_group_user(ann.author_group_name):
+                self._['group'] = ann.author_group_name
 
         self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
