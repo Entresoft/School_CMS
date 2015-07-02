@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS db model Announcement.
+"""SchoolCMS db model filelist.
 
 File list.
 """
@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
+import mimetypes
 
 from . import Base
 from datetime import datetime
@@ -23,8 +24,8 @@ class TempFileList(Base):
     __tablename__ = 'tempfilelist'
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
-    filename = Column(VARCHAR(100, collation='utf8_unicode_ci'), nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
+    filename = Column(TEXT(charset='utf8'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
     created = Column(TIMESTAMP, default=datetime.now())
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
     
@@ -57,18 +58,18 @@ class AttachmentList(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     ann_id = Column(INTEGER, nullable=False)
-    content_type = Column(VARCHAR(50, collation='utf8_unicode_ci'), nullable=False)
-    path = Column(TEXT(charset='utf8'), nullable=False)
+    content_type = Column(TEXT(charset='utf8'), nullable=False)
+    filename = Column(TEXT(charset='utf8'), nullable=False)
     
-    def __init__(self, key, ann_id, content_type, path, **kwargs):
+    def __init__(self, key, ann_id, content_type, filename, **kwargs):
         self.key = key
         self.ann_id = ann_id
         self.content_type = content_type
-        self.path = path
+        self.filename = filename
 
     def __repr__(self):
         return 'AttachmentList(%s ,%s)' % \
-        (self.ann_id,self.path)
+        (self.ann_id,self.filename)
 
     @classmethod
     def by_key(cls, key, sql_session):
@@ -79,13 +80,19 @@ class AttachmentList(Base):
     def by_ann_id(cls, ann_id, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.ann_id == ann_id)
+    
+    @classmethod
+    def count_by_ann_id(cls, ann_id, sql_session):
+        q = sql_session.query(cls.ann_id)
+        q = q.filter(cls.ann_id == ann_id)
+        return q.count()
 
     def to_dict(self):
-        match = re.search('[a-zA-Z0-9]+$', self.path)
-        _filetype = match and match.group() or 'file'
+        _filetype = mimetypes.guess_extension(self.content_type)
+        _filetype = _filetype if _filetype else ''
         return {
             'key' : self.key,
-            'filename' : self.path[33:],
-            'path' : self.path,
-            'filetype' : _filetype,
+            'filename' : self.filename,
+            'path' : self.key+'/'+self.filename,
+            'filetype' : _filetype[1:],
         }

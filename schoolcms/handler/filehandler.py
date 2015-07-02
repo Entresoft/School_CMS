@@ -11,36 +11,41 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
-from schoolcms.db import TempFileList, AttachmentList
+from schoolcms.db import Announce, TempFileList, AttachmentList
 
 import re
 import os
 import uuid
 import shutil
+import subprocess
+import mimetypes
+from datetime import datetime
 
 import tornado
 from tornado import gen
 from tornado.web import stream_request_body, StaticFileHandler
 
 
+def _get_content_type(filename, real_filename=''):
+    _content_type, encoding = mimetypes.guess_type(real_filename)
+    if not _content_type:
+        _content_type = subprocess.check_output('file -b --mime-type %s' % filename, shell=True)
+        _content_type = re.search(r'([\S]+)', _content_type).group()
+    return _content_type
+
 class TempUploadHandler(BaseHandler):
     def initialize(self):
         if not os.path.exists('file'):
             os.makedirs('file')
-            if not os.path.exists('file/tmp'):
-                os.makedirs('file/tmp')
+        if not os.path.exists('file/tmp'):
+            os.makedirs('file/tmp')
 
-    def get(self, path):
-        if path:
-            raise self.HTTPError(404)
-        self.render('file.html')
-
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_group_user('Announcement administrator')
     def post(self, path):
         if path:
             raise self.HTTPError(404)
         if not self.request.files.get('file'):
-            raise self.HTTPError(403)
+            raise self.HTTPError(400)
 
         filename = self.request.files['file'][0]['filename']
         body = self.request.files['file'][0]['body']
@@ -51,6 +56,9 @@ class TempUploadHandler(BaseHandler):
             with open('file/tmp/%s' % self.tmp_file_name, 'wb') as f:
                 f.write(body)
 
+            _content_type = _get_content_type('file/tmp/%s' % self.tmp_file_name, filename)
+            content_type = _content_type if _content_type else content_type
+
             new_file = TempFileList(self.tmp_file_name, filename, content_type, self.current_user.key)
             self.sql_session.add(new_file)
         except:
@@ -60,7 +68,7 @@ class TempUploadHandler(BaseHandler):
         self.sql_session.commit()
         self.write({'file_name':filename,'key':self.tmp_file_name})
 
-    @BaseHandler.is_admin_user
+    @BaseHandler.check_is_group_user('Announcement administrator')
     def delete(self, path):
         deletefile = TempFileList.by_key(path, self.sql_session).scalar()
         if not deletefile:
@@ -70,11 +78,7 @@ class TempUploadHandler(BaseHandler):
         if os.path.exists('file/tmp/%s' % deletefile.key):
             os.remove('file/tmp/%s' % deletefile.key)
 
-        self.write('delete!')
-
-    # def check_xsrf_cookie(self):
-    #     """Testing!!!!!"""
-    #     return True
+        self.write({'success':True})
 
 
 class FileHandler(StaticFileHandler, BaseHandler):
@@ -83,19 +87,24 @@ class FileHandler(StaticFileHandler, BaseHandler):
         self.download = bool(self.get_argument('download', False))
         yield super(FileHandler, self).get(*arg, **kargs)
 
-    @BaseHandler.is_admin_user
-    def delete(self, path):
-        if not re.match(r'^[a-zA-Z0-9]+$', path):
+    @BaseHandler.check_is_group_user('Announcement administrator')
+    def delete(self, key):
+        if not re.match(r'^[a-zA-Z0-9]+$', key):
             raise self.HTTPError(403)
-        file = AttachmentList.by_key(path, self.sql_session).scalar()
+        file = AttachmentList.by_key(key, self.sql_session).scalar()
         if not file:
             raise self.HTTPError(404)
 
-        shutil.rmtree('file/%s' % file.path[:32])
-        AttachmentList.by_key(path, self.sql_session).delete()
+        # Because onupdate must be call , or you need to give the value.
+        q = Announce.by_id(file.ann_id, self.sql_session)
+        ann = q.scalar()
+        q.update({'search' : ann.search})
+
+        shutil.rmtree('file/%s' % file.key)
+        AttachmentList.by_key(key, self.sql_session).delete()
         self.sql_session.commit()
 
-        self.write('delete!');
+        self.write({'success':True})
 
     def get_content_type(self):
         """Returns the ``Content-Type`` header to be used for this request.
@@ -106,4 +115,6 @@ class FileHandler(StaticFileHandler, BaseHandler):
             return 'application/octet-stream'
         else:
             mime_type = super(FileHandler, self).get_content_type()
+            if not mime_type:
+                mime_type = _get_content_type(self.absolute_path)
             return mime_type

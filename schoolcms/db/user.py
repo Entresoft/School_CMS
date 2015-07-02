@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""SchoolCMS db model Announcement.
+"""SchoolCMS db model User.
 
 A model.
 """
@@ -32,8 +32,8 @@ class User(Base):
 
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     account = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
-    passwd = Column(VARCHAR(90, collation='utf8_unicode_ci'))
-    name = Column(VARCHAR(20, collation='utf8_unicode_ci'))
+    passwd = Column(CHAR(90, collation='utf8_unicode_ci'))
+    name = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
     identity = Column(ENUM('學生','教師', charset='utf8'), nullable=False)
     admin = Column(BOOLEAN, nullable=False)
 
@@ -68,6 +68,7 @@ class User(Base):
 
     def to_dict(self):
         return {
+            'key' : self.key,
             'name' : self.name,
             'account' : self.account,
             'admin' : self.admin,
@@ -80,3 +81,48 @@ class User(Base):
         for i in _map:
             _l.append("'%s':'%s'" % (i, _map[i]))
         return '{%s}' % ','.join(_l)
+
+
+class GroupList(Base):
+    __tablename__ = 'grouplist'
+
+    id = Column(INTEGER, primary_key=True)
+    userkey = Column(CHAR(40, collation='utf8_unicode_ci'))
+    group = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
+
+    def __init__(self, userkey, group):
+        self.userkey = userkey
+        self.group = group
+
+    @classmethod
+    def check(cls, userkey, group, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.userkey == userkey)
+        q = q.filter(cls.group == group)
+        return q.scalar()
+
+    @classmethod
+    def get_user_groups(cls, userkey, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.userkey == userkey)
+        q = q.order_by(cls.group)
+        group_lists = q.all()
+        groups = [i.group for i in group_lists]
+
+        return groups
+
+    @classmethod
+    def get_all_groups(cls, sql_session):
+        q = sql_session.query(cls)
+        q = q.group_by(cls.group)
+        q = q.order_by(cls.group)
+        group_lists = q.all()
+        groups = [i.group for i in group_lists]
+
+        return groups
+
+    def to_dict(self):
+        return {
+            'userkey' : self.userkey,
+            'group' : self.group,
+        }
