@@ -13,7 +13,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = -105
+version = '-106'
 
 
 # creat engine
@@ -43,30 +43,8 @@ class SessionGen(object):
         self.session.close()
 
 
+from .system import System
 from .user import User, GroupList
 from .announce import Announce, AnnTag
 from .filelist import TempFileList, AttachmentList
 from .record import Record
-
-if options.rbdb:
-    meta = sqlalchemy.MetaData(bind=engine)
-    meta.reflect()
-    for tb in reversed(meta.sorted_tables):
-        tb.drop(engine)
-
-Base.metadata.create_all(engine)
-
-if options.rbdb:
-    with SessionGen() as session:
-        user1 = User('root', 'root', 'root', '教師', True)
-        user2 = User('anner', 'anner', '組長', '教師', False)
-        session.add_all([
-                GroupList('system', 'Announcement Manager'),
-                GroupList('system', '系統師'),
-                user1,
-                GroupList(user1.key, 'Announcement Manager'),
-                user2,
-                GroupList(user2.key, 'Announcement Manager'),
-            ])
-
-        session.commit()

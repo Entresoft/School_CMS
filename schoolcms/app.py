@@ -21,7 +21,28 @@ from tornado.options import options
 from .util.parse_config import parse_config
 parse_config()
 
+from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.orm.exc import NoResultFound
+
 from .handler import route, DefaultHandler
+from . import db
+from .db import SessionGen, System
+
+
+def check_db():
+    with SessionGen() as session:
+        try:
+            db_info = System.by_key('db_version', session).one()
+            if db_info.value != db.version:
+                raise ValueError('db version error')
+        except (ProgrammingError, NoResultFound) as e:
+            print(e)
+            print('資料庫未初始化。請先初始化資料庫後再啟動系統。')
+            exit()
+        except ValueError as e:
+            print(e)
+            print('資料庫版本不符合，請更新或是重新初始化。')
+            exit()
 
 
 def make_app():
@@ -39,6 +60,7 @@ def make_app():
 
 
 if __name__ == '__main__':
+    check_db()
     app = make_app()
     app.listen(options.port)
     IOLoop.current().start()
