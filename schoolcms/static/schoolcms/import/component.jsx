@@ -63,7 +63,7 @@ SC.A = React.createClass({
   render: function() {
     var other = SC.makeOtherArray(['onClick'],this.props);
     return (
-      <a {...other} onClick={this.handleClick}>{this.props.children}</a>
+      <a onClick={this.handleClick} {...other} >{this.props.children}</a>
     );
   }
 });

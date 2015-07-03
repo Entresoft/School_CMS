@@ -147,7 +147,6 @@ route = [
     (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
 
     # Admin
-    (r'/admin/adduser/?', AppHandler),
     (r'/admin/user/?', AppHandler),
 
     # API
