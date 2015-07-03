@@ -54,6 +54,9 @@ SC.A = React.createClass({
   propTypes: {
     href: React.PropTypes.string,
   },
+  componentDidMount: function(){
+    React.findDOMNode(this.refs.a).addEventListener('click', this.handleClick);
+  },
   handleClick: function(e){
     e.preventDefault();
     e.stopPropagation();
@@ -63,7 +66,7 @@ SC.A = React.createClass({
   render: function() {
     var other = SC.makeOtherArray(['onClick'],this.props);
     return (
-      <a onClick={this.handleClick} {...other} >{this.props.children}</a>
+      <a ref='a' {...other} >{this.props.children}</a>
     );
   }
 });
