@@ -33,7 +33,6 @@ SC.EditAnnPage = React.createClass({
       if(json.success){
         RMR.navigate('/announce/'+json.id);
       }else{
-        delete json.att;
         this.setState(json);
         this.lock(-1);
         $("html, body").animate({ scrollTop: 0 }, "slow");

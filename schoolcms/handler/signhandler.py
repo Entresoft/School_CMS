@@ -14,13 +14,13 @@ import re
 
 from . import BaseHandler
 
-from schoolcms.db import User
+from schoolcms.db import User, Login_Session
 
 
 class LoginHandler(BaseHandler):
     def post(self):
         if self.current_user:
-            raise self.HTTPError(404)
+            raise self.HTTPError(403)
 
         self._ = dict()
         self._['account'] = self.get_argument('account', '')
@@ -32,7 +32,12 @@ class LoginHandler(BaseHandler):
             del self._['passwd']
             self.write(self._)
         else:
-            self.set_secure_cookie('uid', unicode(user.key))
+            login_session = Login_Session(user.key)
+            self.sql_session.add(login_session)
+            Login_Session.clear_old(self.sql_session)
+            self.sql_session.commit()
+
+            self.set_secure_cookie('session_key', login_session.key)
             self.write({'success':True,'next':self._['next']})
 
     def login(self):
@@ -56,5 +61,11 @@ class LoginHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
     def get(self):
-        self.clear_cookie('uid')
+        session_key = self.get_secure_cookie('session_key')
+        if session_key:
+            Login_Session.delete_by_key(session_key, self.sql_session)
+            Login_Session.clear_old(self.sql_session)
+            self.sql_session.commit()
+
+        self.clear_cookie('session_key')
         self.write({'logout':True})

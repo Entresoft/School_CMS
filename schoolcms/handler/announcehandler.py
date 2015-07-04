@@ -154,6 +154,7 @@ class EditAnnHandler(BaseHandler):
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
+        del self_['atts']
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
@@ -199,10 +200,12 @@ class EditAnnHandler(BaseHandler):
                 q = q.filter(TempFileList.key == self.attkeys[i])
                 try:
                     new_tmpatt = q.one()
-                    assert new_tmpatt.author_key == self.current_user.key
-                    assert os.path.exists('file/tmp/%s' % new_tmpatt.key)
+                    if new_tmpatt.author_key != self.current_user.key:
+                        raise ValueError('user key error!')
+                    if not os.path.exists('file/tmp/%s' % new_tmpatt.key):
+                        raise ValueError('att lost!')
                     self._['tmpatts'].append(new_tmpatt)
-                except:
+                except ValueError:
                     self._['alert'] = '遺失附件!'
         if self._['alert']:
             return False
