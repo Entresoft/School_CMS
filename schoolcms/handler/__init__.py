@@ -16,7 +16,7 @@ import os
 import tornado.web
 from tornado.escape import json_encode
 
-from schoolcms.db import Session, User, GroupList
+from schoolcms.db import SQL_Session, User, GroupList, Login_Session
 from webassets import Environment, Bundle
 from schoolcms.util  import webassets_react
 
@@ -56,7 +56,7 @@ class BaseHandler(tornado.web.RequestHandler):
         """This method is executed at the beginning of each request.
 
         """
-        self.sql_session = Session()
+        self.sql_session = SQL_Session()
 
     def on_finish(self):
         """Finish this response, ending the HTTP request 
@@ -69,10 +69,13 @@ class BaseHandler(tornado.web.RequestHandler):
         If a valid cookie is retrieved, return a User object.
         Otherwise, return None.
         """
-        uid = self.get_secure_cookie('uid')
-        if not uid:
+        session_key = self.get_secure_cookie('session_key')
+        if not session_key:
             return None
-        return User.by_key(uid, self.sql_session).scalar()
+        login_session = Login_Session.get_by_key(session_key, self.sql_session)
+        if not login_session:
+            return None
+        return User.by_key(login_session.userkey, self.sql_session).scalar()
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()

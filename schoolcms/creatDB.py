@@ -5,7 +5,7 @@
 
 CreatDB.
 
-DB ver -106
+DB ver -107
 
 """
 
@@ -22,7 +22,7 @@ from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound
 
 from .db import engine, Base, SessionGen
-from .db import System, User, GroupList, Announce, AnnTag, TempFileList, AttachmentList, Record
+from .db import System, Login_Session, User, GroupList, Announce, AnnTag, TempFileList, AttachmentList, Record
 from . import version as system_version
 from . import db
 

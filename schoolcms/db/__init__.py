@@ -13,14 +13,14 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = '-106'
+version = '-107'
 
 
 # creat engine
 engine = sqlalchemy.create_engine(options.database_config, 
                         echo=options.database_debug, pool_recycle=3600)
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
+SQL_Session = sessionmaker(bind=engine)
 
 
 class SessionGen(object):
@@ -35,7 +35,7 @@ class SessionGen(object):
         self.session = None
 
     def __enter__(self):
-        self.session = Session()
+        self.session = SQL_Session()
         return self.session
 
     def __exit__(self, unused1, unused2, unused3):
@@ -44,7 +44,7 @@ class SessionGen(object):
 
 
 from .system import System
-from .user import User, GroupList
+from .user import User, GroupList, Login_Session
 from .announce import Announce, AnnTag
 from .filelist import TempFileList, AttachmentList
 from .record import Record
