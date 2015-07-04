@@ -13,14 +13,14 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-version = -105
+version = '-107'
 
 
 # creat engine
 engine = sqlalchemy.create_engine(options.database_config, 
                         echo=options.database_debug, pool_recycle=3600)
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
+SQL_Session = sessionmaker(bind=engine)
 
 
 class SessionGen(object):
@@ -35,7 +35,7 @@ class SessionGen(object):
         self.session = None
 
     def __enter__(self):
-        self.session = Session()
+        self.session = SQL_Session()
         return self.session
 
     def __exit__(self, unused1, unused2, unused3):
@@ -43,30 +43,8 @@ class SessionGen(object):
         self.session.close()
 
 
-from .user import User, GroupList
+from .system import System
+from .user import User, GroupList, Login_Session
 from .announce import Announce, AnnTag
 from .filelist import TempFileList, AttachmentList
 from .record import Record
-
-if options.rbdb:
-    meta = sqlalchemy.MetaData(bind=engine)
-    meta.reflect()
-    for tb in reversed(meta.sorted_tables):
-        tb.drop(engine)
-
-Base.metadata.create_all(engine)
-
-if options.rbdb:
-    with SessionGen() as session:
-        user1 = User('root', 'root', 'root', '教師', True)
-        user2 = User('anner', 'anner', '組長', '教師', False)
-        session.add_all([
-                GroupList('system', 'Announcement Manager'),
-                GroupList('system', '系統師'),
-                user1,
-                GroupList(user1.key, 'Announcement Manager'),
-                user2,
-                GroupList(user2.key, 'Announcement Manager'),
-            ])
-
-        session.commit()

@@ -21,4 +21,4 @@ database_debug = False
 server_debug = False
 
 # For moving.py.
-ann_url = ''
+ann_system_url = ''

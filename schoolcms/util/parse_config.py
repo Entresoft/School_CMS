@@ -21,10 +21,6 @@ define('cookie_secret', default='', help='cookie_secret', type=unicode)
 define('database_config', default='', help='', type=unicode)
 define('server_debug', default=False, help='', type=bool)
 define('database_debug', default=False, help='', type=bool)
-define('rbdb', default=False, help='', type=bool)
-define('ann_url', default='', help='', type=unicode)
-define('mv_page', default=0, help='', type=int)
-define('mv_update', default=False, help='', type=bool)
 
 
 def parse_config():
