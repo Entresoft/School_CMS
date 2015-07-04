@@ -13,12 +13,13 @@ from __future__ import unicode_literals
 import random
 import hashlib
 import string
+import uuid
+from datetime import datetime, timedelta 
 
 from . import Base
-import uuid
 
 from sqlalchemy import Column
-from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN, CHAR, VARCHAR, ENUM
+from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN, CHAR, VARCHAR, ENUM, TIMESTAMP
 
 
 try:
@@ -126,3 +127,39 @@ class GroupList(Base):
             'userkey' : self.userkey,
             'group' : self.group,
         }
+
+
+class Login_Session(Base):
+    __tablename__ = 'login_sessions'
+
+    key = Column(VARCHAR(40, collation='utf8_unicode_ci'), primary_key=True)
+    userkey = Column(VARCHAR(40, collation='utf8_unicode_ci'), nullable=False)
+    ip = Column(VARCHAR(40, collation='utf8_unicode_ci'))
+    os = Column(VARCHAR(40, collation='utf8_unicode_ci'))
+    browser = Column(VARCHAR(40, collation='utf8_unicode_ci'))
+    TTL = Column(TIMESTAMP, nullable=False)
+
+    def __init__(self, userkey):
+        self.key = uuid.uuid3(uuid.uuid1(), userkey.encode()).hex
+        self.userkey = userkey
+        self.TTL = datetime.utcnow() + timedelta(days=1)
+
+    @classmethod
+    def get_by_key(cls, key, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.key == key)
+        q = q.filter(cls.TTL >= datetime.utcnow())
+        login_session = q.scalar()
+        return login_session
+
+    @classmethod
+    def delete_by_key(cls, key, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.key == key)
+        q.delete()
+
+    @classmethod
+    def clear_old(cls, sql_session):
+        q = sql_session.query(cls)
+        q = q.filter(cls.TTL < datetime.utcnow())
+        q.delete()
