@@ -154,7 +154,7 @@ class EditAnnHandler(BaseHandler):
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
-        del self_['atts']
+        del self._['atts']
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')

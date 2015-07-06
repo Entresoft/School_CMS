@@ -65,9 +65,8 @@ SC.AnnIndexPage = React.createClass({
               標籤：{tags}<br/><br/>
             </RB.Col>
             <RB.Col xs={12} md={12}>
-              <SC.A
-                href={SC.makeURL('/announce/'+ann.id,this.props.params)}
-                className='btn btn-fab btn-primary btn-raised mdi-content-send'></SC.A>
+              <SC.A href={SC.makeURL('/announce/'+ann.id,this.props.params)}
+                className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-forward'></SC.A>
               <span>&nbsp;</span>
               {function(){
                 if(ann.att_count)return (
@@ -107,14 +106,24 @@ SC.AnnIndexPage = React.createClass({
         }.bind(this)()}</h2>
       </RB.Col>
     );
+    var clear_search_btn = function(){
+      for(var k in this.props.params){
+        if(this.props.params[k].length){
+          return (
+            <RB.Row>
+              <RB.Col xs={12} md={12}>
+                <SC.A href='/announce/' className='btn btn-sm btn-danger btn-raised'>
+                  <span style={{fontSize:'16px',fontWeight: 'bold'}} className='mdi-content-clear'>清除搜尋</span>
+                </SC.A>
+              </RB.Col>
+            </RB.Row>
+          );
+        }
+      }
+    }.bind(this)();
     return (
       <div className='container-fluid'>
-        {/*<RB.Row>
-          <RB.Col xs={12} md={12}>
-            <h1> Announcement</h1><hr/>
-            <a href="/announce/edit">New Announcement!</a>
-          </RB.Col>
-        </RB.Row>*/}
+        {clear_search_btn}
         <RB.Row>
           <RB.Col xs={12} md={6} mdOffset={3}>
             <SC.SearchAnnForm params={this.props.params} groups={this.state.groups} authors={this.state.authors}/>
@@ -161,7 +170,6 @@ SC.SearchAnnForm = React.createClass({
       right: '0px',
       top: '20%',
       width: '100%',
-      height: '10px',
     };
     var btnStyle = {
       position: 'relative',

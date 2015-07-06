@@ -23,6 +23,7 @@ SC.AnnouncePage = React.createClass({
     $("html, body").animate({ scrollTop: 0 }, "slow");
   },
   handleDelete: function(){
+    if(!confirm('你確定要刪除這篇公告嗎?'))return;
     this.setState({ready: false});
     var url = '/api'+window.location.pathname
     var data = new FormData();
@@ -44,7 +45,7 @@ SC.AnnouncePage = React.createClass({
               href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
               className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
               &nbsp;&nbsp;
-              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-communication-no-sim'
+              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-action-delete'
                 disabled={!this.state.ready}
                 onClick={this.handleDelete}></RB.Button>
             </span>
