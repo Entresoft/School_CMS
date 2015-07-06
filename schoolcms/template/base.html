@@ -6,7 +6,7 @@
 #}
 <html lang="zh-Hant">
   <head>
-    <title>School CMS</title>
+    <title>{{ system_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     {% for url in css_urls %}
       <link rel="stylesheet" href="{{ url }}">
@@ -23,7 +23,7 @@
     {% block Body %}
     {% end %}
     <script type="text/jsx">
-      React.render(<SC.App history={true} />,document.getElementById('app'));
+      React.render(<SC.App history={true} name='{{ system_name }}' />,document.getElementById('app'));
     </script>
   </body>
 </html>

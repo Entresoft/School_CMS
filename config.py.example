@@ -6,6 +6,9 @@
 from __future__ import unicode_literals
 
 
+# system_name, the name of system, it's default value is 'SchoolCMS'.
+system_name = ''
+
 # cookie_secret
 cookie_secret = ''
 

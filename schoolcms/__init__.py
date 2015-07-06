@@ -15,4 +15,4 @@ from __future__ import unicode_literals
 # or negative for a release candidate or beta (after the base version
 # number has been incremented)
 version = "0.0.2b"
-version_info = (0, 0, 2, -1)
+version_info = (0, 0, 2, -2)

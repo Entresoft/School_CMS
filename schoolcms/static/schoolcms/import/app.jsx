@@ -92,7 +92,7 @@ SC.App = React.createClass({
     return (
       <div>
         {progressBar()}
-        <SC.NavbarInstance current_user={this.state.current_user} url={this.state.url}/>
+        <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} url={this.state.url}/>
         {getPage()}
       </div>
     );
@@ -103,7 +103,7 @@ SC.App = React.createClass({
   },
 
   indexHandler: function() {
-    return <SC.A href='/announce'>Announce</SC.A>;
+    return <SC.Redirect url='/announce' />;
   },
   loginHandler: function(params) {
     params = SC.makeOtherArray(['',], params);
@@ -153,7 +153,7 @@ SC.App = React.createClass({
 
 SC.Redirect = React.createClass({
   componentDidMount: function(){
-    console.log('RB run');
+    console.log('Redirect to '+this.props.url);
     RMR.navigate(this.props.url);
   },
   render: function() {
