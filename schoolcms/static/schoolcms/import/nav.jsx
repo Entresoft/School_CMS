@@ -20,7 +20,7 @@ SC.NavbarInstance = React.createClass({
   },
   render: function(){
     return (
-      <RB.Navbar brand={<SC.A href="/">School Cms</SC.A>} inverse toggleNavKey={0}
+      <RB.Navbar brand={<SC.A href="/">{this.props.name}</SC.A>} inverse toggleNavKey={0}
         className='navbar-material-brown shadow-z-2' >
         <RB.Nav right eventKey={0}> {/* This is the eventKey referenced */}
           { this.userSign() }
