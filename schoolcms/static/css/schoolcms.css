@@ -6,7 +6,7 @@ body,h1,h2,h3,h4,h5,h6{
 @font-face {
   font-family: 'SC Microsoft JhengHei UI';
   font-style: normal;
-  font-weight: bold;
+  font-weight: 600;
   src: local("Microsoft JhengHei"),local("微軟正黑體");
 }
 body{
