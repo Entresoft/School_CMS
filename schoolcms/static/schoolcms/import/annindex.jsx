@@ -133,6 +133,11 @@ SC.SearchAnnForm = React.createClass({
       search: this.props.params.search,
     };
   },
+  componentWillReceiveProps: function(nextprops){
+    if(this.props.params.search!=nextprops.params.search){
+      this.setState({search: nextprops.params.search});
+    }
+  },
   componentDidUpdate: function(){
     this.refs.group.setValue(this.props.params.group);
     this.refs.author.setValue(this.props.params.author);
