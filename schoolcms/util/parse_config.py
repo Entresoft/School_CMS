@@ -17,6 +17,7 @@ from tornado.options import define, options
 
 
 define('port', default=8000, help='run on the given port', type=int)
+define('system_name', default='SchoolCMS', help='系統的名稱，會顯示在網頁的標題上。', type=unicode)
 define('cookie_secret', default='', help='cookie_secret', type=unicode)
 define('database_config', default='', help='', type=unicode)
 define('server_debug', default=False, help='', type=bool)
