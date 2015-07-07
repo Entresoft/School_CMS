@@ -120,16 +120,19 @@ SC.ToggleButton = React.createClass({
 SC.SelectInput = React.createClass({
   getInitialState: function(){
     return {
-      value: this.props.defaultValue?this.props.defaultValue:'',
+      value: '',
     }
   },
   componentDidMount: function(){
-    $(React.findDOMNode(this.refs.select)).dropdown({
+    this.setState({value:$(React.findDOMNode(this.refs.select)).val()});
+    if(!isMobile.any){
+      $(React.findDOMNode(this.refs.select)).dropdown({
         autoinit : React.findDOMNode(this.refs.select),
         callback : function(){
-          this._updateSelect(this.state.value);
+          this._updateSelect();
         }.bind(this),
       });
+    }
     $(React.findDOMNode(this.refs.select)).bind('change', function(event){
       this.setState({value: event.currentTarget.value});
       if(this.props.onChange)this.props.onChange(event.currentTarget.value);
@@ -139,10 +142,15 @@ SC.SelectInput = React.createClass({
     return this.state.value;
   },
   setValue: function(value){
-    this.setState({value: value});
-    this._updateSelect(value);
+    if(!value)value = '';
+    $(React.findDOMNode(this.refs.select)).val(value);
+    this.setState({value:$(React.findDOMNode(this.refs.select)).val()});
+    if(!isMobile.any){
+      this._updateSelect();
+    }
   },
-  _updateSelect: function(_value){
+  _updateSelect: function(){
+    var _value = $(React.findDOMNode(this.refs.select)).val();
     var dropdownjs = React.findDOMNode(this.refs.select).nextElementSibling;
     var selected = dropdownjs.getElementsByClassName('selected');
     for(var i=0;i<selected.length;i++){
@@ -160,9 +168,7 @@ SC.SelectInput = React.createClass({
   render: function() {
     var options = [];
     if(this.props.emptyOption){
-      options.push(
-        <option key={-1} value={''}></option>
-      );
+      options.push(<option key={-1} value={''}></option>);
     }
     for(var key in this.props.options){
       options.push(
@@ -172,8 +178,8 @@ SC.SelectInput = React.createClass({
     return (
       <div>
         <label>{this.props.label}</label>
-        <input type='hidden' name={this.props.name} value={this.state.value}/>
-        <select ref='select' placeholder={this.props.placeholder} className='form-control selectinput'>
+        <input type='hidden' name={this.props.name} value={this.state.value} readOnly/>
+        <select ref='select' placeholder={this.props.placeholder} className='form-control'>
           {options}
         </select>
       </div>
@@ -218,12 +224,13 @@ SC.Pagination = React.createClass({
     var items = Math.ceil(this.props.total/this.props.step);
     if(items===0)items=1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
-    var maxBtn = SC.getWindowSize(5, 8, 10);
+    var maxBtn = SC.getWindowSize(3, 8, 10);
     return (
-       <RB.Pagination prev next first last ellipsis={false}
+       <RB.Pagination prev next first ellipsis={false}
           items={items}
           maxButtons={items>maxBtn?maxBtn:items}
           activePage={now}
+          bsSize='large'
           onSelect={this.handleSelect}
           className='shadow-z-2' />
     );

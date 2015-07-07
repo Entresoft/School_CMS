@@ -47,6 +47,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 'js/react-mini-router.min.js',
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
+                'js/isMobile.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
                 output='dict/plugin.min.js')
         self.assets.register('css_all', all_css)

@@ -61,28 +61,6 @@ SC.AnnIndexPage = React.createClass({
             <RB.Col xs={12} md={12}>
               標籤：{tags}<br/><br/>
             </RB.Col>
-            {/*<RB.Col xs={12} md={12}>
-              <SC.A href={SC.makeURL('/announce/'+ann.id,this.props.params)}
-                className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-forward'></SC.A>
-              <span>&nbsp;</span>
-              {function(){
-                if(ann.att_count)return (
-                  <RB.OverlayTrigger placement='top' overlay={<RB.Popover>這篇公告有{ann.att_count}個附件</RB.Popover>}>
-                    <RB.Button bsStyle='warning'
-                      className='btn-fab btn-raised mdi-editor-attach-file'></RB.Button>
-                  </RB.OverlayTrigger>
-                );
-              }()}
-              <span>&nbsp;</span>
-              {function(){
-                if(ann.is_private)return (
-                  <RB.OverlayTrigger placement='top' overlay={<RB.Popover>內部公告：只有管理員可以瀏覽</RB.Popover>}>
-                    <RB.Button bsStyle='default'
-                      className='btn-fab btn-raised mdi-action-visibility-off'></RB.Button>
-                  </RB.OverlayTrigger>
-                );
-              }()}
-            </RB.Col>*/}
           </RB.Row>
         </RB.Well>
       </RB.Col>
@@ -102,10 +80,10 @@ SC.AnnIndexPage = React.createClass({
     }
     if(annItems.length===0)annItems[0]=(
       <RB.Col xs={12} md={12} key={0}>
-        <h2>{function(){
+        <h3>{function(){
           if(this.state.ready)return '抱歉，沒有找到符合的公告喔!';
           else return 'Loading...';
-        }.bind(this)()}</h2>
+        }.bind(this)()}</h3>
       </RB.Col>
     );
     var clear_search_btn = function(){
@@ -124,91 +102,40 @@ SC.AnnIndexPage = React.createClass({
       }
     }.bind(this)();
     return (
-      <RB.Grid>
-        {clear_search_btn}
-        <RB.Row>
-          <RB.Col xs={12} md={6} mdOffset={3}>
-            <SC.SearchAnnForm params={this.props.params} groups={this.state.groups} authors={this.state.authors}/>
-          </RB.Col>
-        </RB.Row>
-        <RB.Row>
-          <RB.Col xs={12} md={12}>
-            <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
-              query={this.props.params}/>
-          </RB.Col>
-          {annItems}
-          <RB.Col xs={12} md={12}>
-            <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
-              query={this.props.params} resetWindow/>
-          </RB.Col>
-        </RB.Row>
-      </RB.Grid>
+      <div>
+        <SC.SearchAnnForm params={this.props.params} groups={this.state.groups} authors={this.state.authors}/>
+        <RB.Grid>
+          {clear_search_btn}
+          <RB.Row>
+            <RB.Col xs={12} md={12}>
+              <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
+                query={this.props.params}/>
+            </RB.Col>
+            {annItems}
+            <RB.Col xs={12} md={12}>
+              <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
+                query={this.props.params} resetWindow/>
+            </RB.Col>
+          </RB.Row>
+        </RB.Grid>
+      </div>
     );
   }
 });
 
 
 SC.SearchAnnForm = React.createClass({
-  getInitialState: function(){
-    return {
-      show: false,
-    };
-  },
-  handleClick: function(){
-    if(this.state.show){
-      this.handleHide();
-    }else{
-      this.setState({show: true});
-    }
-  },
-  handleHide: function(){
-    this.refs.fade.fadeout();
-    setTimeout(function(){this.setState({show: false})}.bind(this), 150);
-  },
-  render: function() {
-    var style = {
-      position: 'fixed',
-      zIndex: 101,
-      right: '0px',
-      top: '20%',
-      width: '100%',
-    };
-    var btnStyle = {
-      position: 'relative',
-      left: '-15px',
-    };
-    var btnState = function(){
-      return this.state.show?' btn-danger mdi-content-clear':' btn-info mdi-action-search';
-    }.bind(this);
-    return (
-      <div style={style}>
-        <RB.Col xs={2} xsOffset={10} md={1} mdOffset={11} lg={12} lgOffset={11}
-          style={{position: 'absolute'}}>
-          <RB.Button ref='button' bsStyle='info' onClick={this.handleClick} style={btnStyle}
-            className={'btn-fab btn-raised '+btnState()}></RB.Button>
-        </RB.Col>
-        <RB.Overlay show={this.state.show} placement="left" container={this}
-          target={ function(){return React.findDOMNode(this.refs.button)}.bind(this) }>
-          <SC.SearchAnnFormFadein ref='fade' {...this.props} onHide={this.handleHide}/>
-        </RB.Overlay>
-      </div>
-    );
-  }
-})
-
-SC.SearchAnnFormFadein = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function(){
     return {
-      className: 'fade',
+      show: false,
+      showing: false,
       search: this.props.params.search,
-    }
+    };
   },
-  componentDidMount: function(){
-    this.setState({className: 'fade in'});
-  },
-  fadeout: function(){
-    this.setState({className: 'fade'});
+  componentDidUpdate: function(){
+    this.refs.group.setValue(this.props.params.group);
+    this.refs.author.setValue(this.props.params.author);
   },
   handleSearch: function(){
     var url = SC.makeURL(window.location.pathname,{
@@ -217,34 +144,110 @@ SC.SearchAnnFormFadein = React.createClass({
       author: this.refs.author.getValue(),
     });
     RMR.navigate(url);
-    this.props.onHide();
   },
-  handleClear: function(){
-    this.setState({search: ''});
-    this.refs.group.setValue('');
-    this.refs.author.setValue('');
+  handleToggle: function(){
+    if(!this.state.showing){
+      this.setState({showing:true});
+      this.refs.fadein.toggle(function(){this.setState({showing:false})}.bind(this));
+      this.setState({show: !this.state.show});
+    }
   },
   render: function() {
+    var search_nav_style = {
+      position: 'relative',
+      top:'-20px',
+      width: '100%',
+      padding: '5px 20px 5px 0',
+      borderBottom: '2px solid #ddd',
+      backgroundColor: '#f1f1f1',
+    };
+    var search_input_style = {
+      margin: '10px 1px 10px 1px',
+      padding: '4px 4px 4px 4px',
+      width: '100%',
+      height: '40px',
+      border: '0',
+      backgroundColor: '#fff',
+    }
+    var addon_search_input_sytle = {
+      margin: '0 4px 0 4px',
+      'float': 'left',
+      width: '200px',
+    }
     return (
-      <div className={this.state.className} style={{position:'static',width:'100%'}}>
-        <RB.Col xs={10} md={6} mdOffset={5} lg={4} lgOffset={7} style={{position: 'absolute'}}>
-          <div className='sc-ann-search-form'>
-            <h3>搜尋</h3>
-            <SC.Form onSubmit={this.handleSearch}>
-              <RB.Input ref='search' type='text' name="search" valueLink={this.linkState('search')}
-                  label='關鍵字搜尋' placeholder='輸入關鍵字'/>
-              <SC.SelectInput ref='group' name="group" defaultValue={this.props.params.group}
-                options={this.props.groups} emptyOption label='公告群組' placeholder='選擇公告群組'/><br/>
-              <SC.SelectInput ref='author' name="author" defaultValue={this.props.params.author}
-                options={this.props.authors} emptyOption label='公告者' placeholder='選擇公告者'/><br/>
-              <RB.Button onClick={this.handleSearch}
-                className='btn btn-fab btn-success btn-raised mdi-content-send'></RB.Button>
-              &nbsp;
-              <RB.Button onClick={this.handleClear}
-                className='btn btn-fab btn-danger btn-raised mdi-content-reply-all'></RB.Button>
-            </SC.Form>
-          </div>
-        </RB.Col>
+      <SC.Form onSubmit={this.handleSearch}>
+        <div style={search_nav_style}>
+          <RB.Grid>
+            <RB.Row>
+              <RB.Col xs={9} md={8}>
+                <input type='text' ref='search' name="search" valueLink={this.linkState('search')}
+                    placeholder='請輸入關鍵字' style={search_input_style} className='form-control'/>
+              </RB.Col>
+              <RB.Col xs={3} md={4} style={{padding:'0 0 0 0', overflow:'hidden'}}>
+                {function(){
+                  if(SC.getWindowSize(0,1,1)){
+                    return (
+                      <RB.Button onClick={this.handleSearch} bsStyle='success'
+                        className='btn-raised mdi-action-search'></RB.Button>);
+                  }
+                }.bind(this)()}
+                <span> </span>
+                <RB.Button onClick={this.handleToggle} bsStyle={this.state.show?'danger':'warning'}
+                    className={'btn-raised '+(this.state.show?'mdi-navigation-expand-less':'mdi-navigation-expand-more')}></RB.Button>
+              </RB.Col>
+            </RB.Row>
+          </RB.Grid>
+        </div>
+        <SC.SearchAnnFormFadein ref='fadein'>
+          <RB.Grid>
+            <div style={addon_search_input_sytle}>
+              <SC.SelectInput ref='group' name="group" onChange={this.handleSearch}
+                  options={this.props.groups} emptyOption label='公告群組' placeholder='公告群組'/><br/>
+            </div>
+            <div style={addon_search_input_sytle}>
+              <SC.SelectInput ref='author' name="author" onChange={this.handleSearch}
+                  options={this.props.authors} emptyOption label='公告者' placeholder='公告者'/><br/>
+            </div>
+          </RB.Grid>
+        </SC.SearchAnnFormFadein>
+      </SC.Form>
+    );
+  }
+})
+
+SC.SearchAnnFormFadein = React.createClass({
+  getInitialState: function(){
+    return {
+      show: false,
+    };
+  },
+  toggle: function(callback){
+    this.setState({show: !this.state.show});
+    setTimeout(callback, 300);
+  },
+  render: function() {
+    var style = {
+      position: 'relative',
+      top:'-20px',
+      width: '100%',
+      height: 'auto',
+      padding: '5px 0 0 0',
+      borderBottom: '2px solid #bbb',
+      backgroundColor: '#fcfcfc',
+      transition: 'opacity 0.3s',
+      MozTransition: 'opacity 0.3s', /* Firefox 4 */
+      WebkitTransition: 'opacity 0.3s', /* Safari 和 Chrome */
+      OTransition: 'opacity 0.3s', /* Opera */
+      opacity: '1',
+    };
+    if(!this.state.show){
+      style.height = '0';
+      style.opacity = '0';
+      style.overflow = 'hidden';
+    }
+    return (
+      <div ref='div' style={style}>
+        {this.props.children}
       </div>
     );
   }
