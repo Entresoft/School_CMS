@@ -23,6 +23,7 @@ SC.AnnouncePage = React.createClass({
     $("html, body").animate({ scrollTop: 0 }, "slow");
   },
   handleDelete: function(){
+    if(!confirm('你確定要刪除這篇公告嗎?'))return;
     this.setState({ready: false});
     var url = '/api'+window.location.pathname
     var data = new FormData();
@@ -44,7 +45,7 @@ SC.AnnouncePage = React.createClass({
               href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
               className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
               &nbsp;&nbsp;
-              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-communication-no-sim'
+              <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-action-delete'
                 disabled={!this.state.ready}
                 onClick={this.handleDelete}></RB.Button>
             </span>
@@ -67,7 +68,7 @@ SC.AnnouncePage = React.createClass({
     return (
       <RB.Grid>
         <RB.PageHeader>{this.state.title}<br/>
-          <small> by &nbsp;
+          <small className='sc-border-a'> by &nbsp;
             <SC.A href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</SC.A>
             &nbsp; ‧ &nbsp;
             <SC.A href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</SC.A>

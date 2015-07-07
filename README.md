@@ -24,6 +24,7 @@ bootstrap-3.3.4
 react-0.13.2
 react-bootstrap
 jquery-2.1.3
+isMobile.js 0.3.8
 
 
 ###For moving.py

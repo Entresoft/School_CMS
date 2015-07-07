@@ -15,6 +15,7 @@ import os
 
 import tornado.web
 from tornado.escape import json_encode
+from tornado.options import options
 
 from schoolcms.db import SQL_Session, User, GroupList, Login_Session
 from webassets import Environment, Bundle
@@ -46,6 +47,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 'js/react-mini-router.min.js',
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
+                'js/isMobile.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
                 output='dict/plugin.min.js')
         self.assets.register('css_all', all_css)
@@ -82,6 +84,7 @@ class BaseHandler(tornado.web.RequestHandler):
         _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()
+        _['system_name'] = options.system_name
         return _
 
     @property

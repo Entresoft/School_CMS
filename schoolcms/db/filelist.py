@@ -80,12 +80,6 @@ class AttachmentList(Base):
     def by_ann_id(cls, ann_id, sql_session):
         q = sql_session.query(cls)
         return q.filter(cls.ann_id == ann_id)
-    
-    @classmethod
-    def count_by_ann_id(cls, ann_id, sql_session):
-        q = sql_session.query(cls.ann_id)
-        q = q.filter(cls.ann_id == ann_id)
-        return q.count()
 
     def to_dict(self):
         _filetype = mimetypes.guess_extension(self.content_type)

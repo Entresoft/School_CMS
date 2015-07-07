@@ -84,7 +84,6 @@ class AnnounceHandler(BaseHandler):
             def _make_ann(ann):
                 _d = ann.to_dict()
                 del _d['content']
-                _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
             self.write({
@@ -154,7 +153,7 @@ class EditAnnHandler(BaseHandler):
     def post(self, ann_id):
         self.ann_id = ann_id if ann_id else ''
         del ann_id
-        del self_['atts']
+        del self._['atts']
         self._['id'] = self.ann_id
         self._['title'] = self.get_argument('title', '')
         self._['content'] = self.get_argument('content', '')
