@@ -47,24 +47,21 @@ SC.AnnIndexPage = React.createClass({
       }
     }(ann);
     return (
-      <RB.Col xs={12} md={6} lg={4} key={ann.id}>
+      <RB.Col xs={12} md={12} key={ann.id}>
         <RB.Well>
           <RB.Row>
-            <RB.Col xs={9} md={9}>
-              <h3 style={{fontWeight:'500'}}>{ann.title}</h3>
-              <small>—— by&nbsp;
+            <RB.Col xs={12} md={12}>
+              <h2><SC.A href={SC.makeURL('/announce/'+ann.id,this.props.params)}>{ann.title}</SC.A></h2>
+              <small className='sc-border-a'>—— by&nbsp;
                 <SC.A href={SC.makeURL('/announce/',{group:ann.author_group_name})}>{ann.author_group_name}</SC.A>
                 &nbsp;‧&nbsp;
                 <SC.A href={SC.makeURL('/announce/',{author:ann.author_name})}>{ann.author_name}</SC.A>
               </small><br/><br/>
             </RB.Col>
-            <RB.Col xs={3} md={3}>
-              <p style={{textAlign:'right'}}>{this._getDateString(ann.created.substr(0,10))}</p>
-            </RB.Col>
             <RB.Col xs={12} md={12}>
               標籤：{tags}<br/><br/>
             </RB.Col>
-            <RB.Col xs={12} md={12}>
+            {/*<RB.Col xs={12} md={12}>
               <SC.A href={SC.makeURL('/announce/'+ann.id,this.props.params)}
                 className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-forward'></SC.A>
               <span>&nbsp;</span>
@@ -85,7 +82,7 @@ SC.AnnIndexPage = React.createClass({
                   </RB.OverlayTrigger>
                 );
               }()}
-            </RB.Col>
+            </RB.Col>*/}
           </RB.Row>
         </RB.Well>
       </RB.Col>
@@ -94,9 +91,14 @@ SC.AnnIndexPage = React.createClass({
   render: function() {
     var annItems = [];
     for(var i=0;i<this.state.anns.length;i++){
+      if(i==0||this.state.anns[i-1].created.substr(0,10)!=this.state.anns[i].created.substr(0,10)){
+        annItems.push(
+          <RB.Col xs={12} md={12} key={i+'date'}>
+            <h4>{this._getDateString(this.state.anns[i].created.substr(0,10))}</h4><hr/>
+          </RB.Col>
+        );
+      }
       annItems.push(this._make_ann(this.state.anns[i]));
-      if(i%2==1)annItems.push(<div key={i+'md'} className="clearfix visible-md-block"></div>);
-      if(i%3==2)annItems.push(<div key={i+'lg'} className="clearfix visible-lg-block"></div>);
     }
     if(annItems.length===0)annItems[0]=(
       <RB.Col xs={12} md={12} key={0}>
@@ -122,7 +124,7 @@ SC.AnnIndexPage = React.createClass({
       }
     }.bind(this)();
     return (
-      <div className='container-fluid'>
+      <RB.Grid>
         {clear_search_btn}
         <RB.Row>
           <RB.Col xs={12} md={6} mdOffset={3}>
@@ -140,7 +142,7 @@ SC.AnnIndexPage = React.createClass({
               query={this.props.params} resetWindow/>
           </RB.Col>
         </RB.Row>
-      </div>
+      </RB.Grid>
     );
   }
 });

@@ -84,7 +84,6 @@ class AnnounceHandler(BaseHandler):
             def _make_ann(ann):
                 _d = ann.to_dict()
                 del _d['content']
-                _d['att_count'] = AttachmentList.count_by_ann_id(ann.id, self.sql_session)
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
             self.write({

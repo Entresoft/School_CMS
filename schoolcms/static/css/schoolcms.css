@@ -1,20 +1,35 @@
 body,h1,h2,h3,h4,h5,h6{
   font-family: 
     Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro",
-    "Meiryo", "微軟正黑體", "Microsoft JhengHei",
-    sans-serif;
+    "SC Microsoft JhengHei UI", sans-serif;
+}
+@font-face {
+  font-family: 'SC Microsoft JhengHei UI';
+  font-style: normal;
+  font-weight: bold;
+  src: local("Microsoft JhengHei"),local("微軟正黑體");
 }
 body{
   background-image: url("/static/background.jpg");
   background-repeat: repeat;
   word-break: break-all;
 }
+a{
+  color: #a10;
+}
+a:hover,
+a:active,
+a:focus{
+  color: #a10;
+}
 .sc-border-a a{
   color: #333;
-  border-bottom: 1px dashed #009688;
+  border-bottom: 1px dashed #a10;
 }
-.sc-border-a a:hover{
-  color: #009688;
+.sc-border-a a:hover,
+.sc-border-a a:focus,
+.sc-border-a a:active{
+  color: #a10;
   text-decoration: none;
 }
 .sc-ann-search-form{
