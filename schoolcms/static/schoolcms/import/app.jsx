@@ -103,11 +103,11 @@ SC.App = React.createClass({
   },
 
   indexHandler: function() {
-    return <SC.Redirect url='/announce' />;
+    return <SC.RedirectPage url='/announce' />;
   },
   loginHandler: function(params) {
     params = SC.makeOtherArray(['',], params);
-    return <SC.LoginPage ajax={this.ajax} _xsrf={this.state._xsrf} next={params.next} redirect={params.redirect} getCurrentUser={this.getCurrentUser}/>;
+    return <SC.LoginPage ajax={this.ajax} _xsrf={this.state._xsrf} next={params.next} getCurrentUser={this.getCurrentUser}/>;
   },
   logoutHandler: function() {
     return <SC.LogoutPage ajax={this.ajax} onLogout={function(){this.setState({current_user:null})}.bind(this)}/>;
@@ -151,10 +151,10 @@ SC.App = React.createClass({
 });
 
 
-SC.Redirect = React.createClass({
+SC.RedirectPage = React.createClass({
   componentDidMount: function(){
     console.log('Redirect to '+this.props.url);
-    RMR.navigate(this.props.url);
+    SC.Redirect(this.props.url);
   },
   render: function() {
     return (
@@ -162,3 +162,8 @@ SC.Redirect = React.createClass({
     );
   }
 });
+
+
+SC.Redirect = function(url){
+  window.location.replace(url);
+}

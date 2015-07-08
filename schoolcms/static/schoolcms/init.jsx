@@ -39,7 +39,7 @@ SC.LoginPageMixin = {
   componentDidMount: function(){
     console.log('IF login');
     if(!this.props.current_user){
-      RMR.navigate(SC.makeURL('/login',{redirect:1,next:window.location.pathname+window.location.search}));
+      SC.Redirect(SC.makeURL('/login',{next:window.location.pathname+window.location.search}));
       return false;
     }
     this.pageInit(function(){

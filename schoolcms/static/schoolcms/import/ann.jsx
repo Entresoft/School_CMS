@@ -34,16 +34,14 @@ SC.AnnouncePage = React.createClass({
   render: function() {
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>
-        <SC.A
-          href={SC.makeURL('/announce',this.props.params)}
-          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></SC.A>
+        <a href={SC.makeURL('/announce',this.props.params)}
+          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></a>
         &nbsp;&nbsp;
         {function(){
           if(this.props.manager)return (
             <span>
-              <SC.A
-              href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
-              className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
+              <a href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
+              className='btn btn-fab btn-warning btn-raised mdi-content-create'></a>
               &nbsp;&nbsp;
               <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-action-delete'
                 disabled={!this.state.ready}
@@ -69,9 +67,9 @@ SC.AnnouncePage = React.createClass({
       <RB.Grid>
         <RB.PageHeader>{this.state.title}<br/>
           <small className='sc-border-a'> by &nbsp;
-            <SC.A href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</SC.A>
+            <a href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</a>
             &nbsp; ‧ &nbsp;
-            <SC.A href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</SC.A>
+            <a href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</a>
           </small>
         </RB.PageHeader>
         {buttonGroup}

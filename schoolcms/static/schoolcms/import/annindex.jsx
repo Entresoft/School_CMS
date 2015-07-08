@@ -51,11 +51,11 @@ SC.AnnIndexPage = React.createClass({
         <RB.Well>
           <RB.Row>
             <RB.Col xs={12} md={12}>
-              <h3><SC.A href={SC.makeURL('/announce/'+ann.id,this.props.params)}>{ann.title}</SC.A></h3>
+              <h3><a href={SC.makeURL('/announce/'+ann.id,this.props.params)}>{ann.title}</a></h3>
               <small className='sc-border-a'>—— by&nbsp;
-                <SC.A href={SC.makeURL('/announce/',{group:ann.author_group_name})}>{ann.author_group_name}</SC.A>
+                <a href={SC.makeURL('/announce/',{group:ann.author_group_name})}>{ann.author_group_name}</a>
                 &nbsp;‧&nbsp;
-                <SC.A href={SC.makeURL('/announce/',{author:ann.author_name})}>{ann.author_name}</SC.A>
+                <a href={SC.makeURL('/announce/',{author:ann.author_name})}>{ann.author_name}</a>
               </small><br/><br/>
             </RB.Col>
             <RB.Col xs={12} md={12}>

@@ -206,6 +206,23 @@ SC.Pagination = React.createClass({
       resetWindow: false,
     };
   },
+  componentDidUpdate: function(){
+    var lis = React.findDOMNode(this.refs.page).getElementsByTagName('li');
+    for(var i=0;i<lis.length;i++){
+      if(lis[i].className === 'disabled'|| lis[i].className === 'active'){
+        lis[i].getElementsByTagName('a')[0].removeAttribute('href');
+      }else{
+        var a = lis[i].getElementsByTagName('a')[0];
+        var now = Math.ceil(this.props.start/this.props.step)+1;
+        var all = Math.ceil(this.props.total/this.props.step);
+        var page = 1;
+        if(a.text === '‹')page = now-1;
+        else if(a.text === '›')page = now+1;
+        else page = i-1;
+        a.href = this.pageURL((page-1)*this.props.step);
+      }
+    }
+  },
   pageURL: function(start){
     var query = Object.create(this.props.query);
     query.start = start;
@@ -216,23 +233,19 @@ SC.Pagination = React.createClass({
     var now = Math.ceil(this.props.start/this.props.step)+1;
     var all = Math.ceil(this.props.total/this.props.step);
     if(page>0&&page<=all&&page!==now){
-      setTimeout(function(){ RMR.navigate(this.pageURL((page-1)*this.props.step)); }.bind(this), 1);
       if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
     }
   },
   render: function() {
     var items = Math.ceil(this.props.total/this.props.step);
-    if(items===0)items=1;
+    if(items===0)items = 1;
     var now = Math.ceil(this.props.start/this.props.step)+1;
     var maxBtn = SC.getWindowSize(3, 8, 10);
     return (
-       <RB.Pagination prev next first ellipsis={false}
-          items={items}
-          maxButtons={items>maxBtn?maxBtn:items}
-          activePage={now}
-          bsSize='large'
-          onSelect={this.handleSelect}
-          className='shadow-z-2' />
+      <RB.Pagination ref='page' prev next first ellipsis={false}
+        items={items} maxButtons={items>maxBtn?maxBtn:items}
+        activePage={now} bsSize='large'
+        onSelect={this.handleSelect} className='shadow-z-2' />
     );
   }
 });
