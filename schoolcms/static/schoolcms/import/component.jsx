@@ -206,46 +206,54 @@ SC.Pagination = React.createClass({
       resetWindow: false,
     };
   },
-  componentDidUpdate: function(){
-    var lis = React.findDOMNode(this.refs.page).getElementsByTagName('li');
-    for(var i=0;i<lis.length;i++){
-      if(lis[i].className === 'disabled'|| lis[i].className === 'active'){
-        lis[i].getElementsByTagName('a')[0].removeAttribute('href');
-      }else{
-        var a = lis[i].getElementsByTagName('a')[0];
-        var now = Math.ceil(this.props.start/this.props.step)+1;
-        var all = Math.ceil(this.props.total/this.props.step);
-        var page = 1;
-        if(a.text === '‹')page = now-1;
-        else if(a.text === '›')page = now+1;
-        else page = i-1;
-        a.href = this.pageURL((page-1)*this.props.step);
-      }
-    }
-  },
-  pageURL: function(start){
+  pageURL: function(page){
+    var start = (page-1)*this.props.step;
     var query = Object.create(this.props.query);
     query.start = start;
     return SC.makeURL(this.props.path,query);
   },
-  handleSelect: function(event, selectedEvent){
-    var page = selectedEvent.eventKey;
-    var now = Math.ceil(this.props.start/this.props.step)+1;
-    var all = Math.ceil(this.props.total/this.props.step);
-    if(page>0&&page<=all&&page!==now){
-      if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
-    }
+  handleClick: function(){
+    if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
+  },
+  _make_btn: function(name, href){
+    if(href.length)return (<a key={name} className='btn btn-default sc-pagination-default-btn' href={href} onClick={this.handleClick}>{name}</a>);
+    else return (<RB.Button key={name}>{name}</RB.Button>);
   },
   render: function() {
-    var items = Math.ceil(this.props.total/this.props.step);
-    if(items===0)items = 1;
+    var all = Math.ceil(this.props.total/this.props.step);
+    if(all===0)items = 1;
+
     var now = Math.ceil(this.props.start/this.props.step)+1;
-    var maxBtn = SC.getWindowSize(3, 8, 10);
+    var maxBtn = SC.getWindowSize(1, 7, 10);
+    if(maxBtn>all)maxBtn = all;
+
+    var offset;
+    if(now-1<maxBtn/2)offset = 0;
+    else if(all-now<maxBtn/2)offset = all-maxBtn;
+    else offset = now - Math.ceil(maxBtn/2);
+
+    var btns = [];
+    for(var i=0;i<maxBtn;i++){
+      var page = offset+i+1;
+      if(page===now){
+        btns.push(<RB.Button key={page} className='btn-primary'>{page}</RB.Button>);
+      }else{
+        btns.push(this._make_btn(page, this.pageURL(page)));
+      }
+    }
     return (
-      <RB.Pagination ref='page' prev next first ellipsis={false}
-        items={items} maxButtons={items>maxBtn?maxBtn:items}
-        activePage={now} bsSize='large'
-        onSelect={this.handleSelect} className='shadow-z-2' />
+      <div>
+        <div className='btn-group'>
+          {this._make_btn('«', now===1?'':this.pageURL(1))}
+          {this._make_btn('‹', now===1?'':this.pageURL(now-1))}
+        </div>
+        <div className='btn-group'>
+          {btns}
+        </div>
+        <div className='btn-group'>
+          {this._make_btn('›', now===all?'':this.pageURL(now+1))}
+        </div>
+      </div>
     );
   }
 });
