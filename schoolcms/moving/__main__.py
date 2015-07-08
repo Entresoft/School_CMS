@@ -127,7 +127,7 @@ def parse_ann(ann_url, ann_is_private):
     time_s = m.group(2) if m.group(2) else m.group(1)
     ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S')
 
-    if not movinglog or movinglog.time < ann_time or options.mv_update:
+    if not movinglog or movinglog.time < ann_time or options.mv_update or ann_is_private:
         _parse_ann(ann_trs, ann_url, movinglog, mytid, ann_time)
 
 
@@ -142,7 +142,7 @@ with SessionGen() as sql_session:
             link = post_tr.find_all('td')[1]
             ann_url = link.find('a')['href']
             # private ann
-            ann_is_private = link.text[-4::] == '[內部]'
+            ann_is_private = '[內部]' in link.text
 
             parse_ann(ann_url, ann_is_private)
             sql_session.commit()
