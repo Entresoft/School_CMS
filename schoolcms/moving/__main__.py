@@ -15,7 +15,7 @@ from __future__ import unicode_literals
 from tornado.options import options
 
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import os
@@ -125,7 +125,8 @@ def parse_ann(ann_url, ann_is_private):
     ann_time_s = ann_trs[2].find_all('td')[0].find('font').text
     m = time_re.match(ann_time_s)
     time_s = m.group(2) if m.group(2) else m.group(1)
-    ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S')
+    ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S') - timedelta(hours=8)
+
 
     if not movinglog or movinglog.time < ann_time or options.mv_update or ann_is_private:
         _parse_ann(ann_trs, ann_url, movinglog, mytid, ann_time)

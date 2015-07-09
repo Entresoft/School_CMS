@@ -8,7 +8,7 @@ Terminal Tool.
 
 Add att.
 
-DB version -106
+DB version -108
 """
 
 from __future__ import absolute_import

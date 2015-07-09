@@ -14,7 +14,7 @@ import random
 import hashlib
 import string
 import uuid
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
 
 from . import Base
 
