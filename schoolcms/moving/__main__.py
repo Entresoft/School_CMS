@@ -53,7 +53,7 @@ def _update_att(ann_trs, ann_id):
         if m:
             att_key = '%s' % uuid.uuid1().hex
             att_name = m.group(1)
-            att_time = datetime.strptime(m.group(2), '%Y-%m-%d %H:%M:%S')
+            att_time = datetime.strptime(m.group(2), '%Y-%m-%d %H:%M:%S') - timedelta(hours=8)
 
             os.makedirs('file/%s' % att_key)
             r = requests.get(a['href'], stream=True)
