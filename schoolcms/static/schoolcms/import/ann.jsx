@@ -20,7 +20,7 @@ SC.AnnouncePage = React.createClass({
       json.ready = true;
       this.setState(json);
     }.bind(this));
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+    SC.resetWindow();
   },
   handleDelete: function(){
     if(!confirm('你確定要刪除這篇公告嗎?'))return;

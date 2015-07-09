@@ -213,7 +213,7 @@ SC.Pagination = React.createClass({
     return SC.makeURL(this.props.path,query);
   },
   handleClick: function(){
-    if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
+    if(this.props.resetWindow)SC.resetWindow();
   },
   _make_btn: function(name, href){
     if(href.length)return (<a key={name} className='btn btn-default sc-pagination-default-btn' href={href} onClick={this.handleClick}>{name}</a>);

@@ -19,7 +19,7 @@ SC.AnnIndexPage = React.createClass({
   },
   componentDidMount: function(){
     this.ajax();
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+    SC.resetWindow();
   },
   componentWillReceiveProps: function(nextprops) {
     for(var k in this.props.params){
@@ -83,14 +83,16 @@ SC.AnnIndexPage = React.createClass({
       }
       annItems.push(this._make_ann(this.state.anns[i]));
     }
-    if(annItems.length===0)annItems[0]=(
-      <RB.Col xs={12} md={12} key={0}>
-        <h3>{function(){
-          if(this.state.ready)return '抱歉，沒有找到符合的公告喔!';
-          else return 'Loading...';
-        }.bind(this)()}</h3>
+    var message;
+    if(!this.state.ready){message=(
+      <RB.Col xs={12} md={12}>
+        <h3>Loading...</h3>
       </RB.Col>
-    );
+    )}else if(annItems.length===0){message=(
+      <RB.Col xs={12} md={12}>
+        <h3>抱歉，沒有找到符合的公告喔!</h3>
+      </RB.Col>
+    )};
     var clear_search_btn = function(){
       for(var k in this.props.params){
         if(this.props.params[k].length){
@@ -116,6 +118,7 @@ SC.AnnIndexPage = React.createClass({
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
                 query={this.props.params}/>
             </RB.Col>
+            {message}
             {annItems}
             <RB.Col xs={12} md={12}>
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}

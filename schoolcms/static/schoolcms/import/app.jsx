@@ -167,3 +167,11 @@ SC.RedirectPage = React.createClass({
 SC.Redirect = function(url){
   window.location.replace(url);
 }
+
+SC.resetWindow = function(){
+  if(isMobile.any){
+    window.scrollTo(0,0);
+  }else{
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+  }
+}
