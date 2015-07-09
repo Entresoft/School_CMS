@@ -37,8 +37,8 @@ class Announce(FullText, Base):
     author_group_name = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
     author_name = Column(VARCHAR(30, collation='utf8_unicode_ci'), nullable=False)
     is_private = Column(BOOLEAN, nullable=False)
-    created = Column(TIMESTAMP, default=datetime.now)
-    updated = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
+    created = Column(TIMESTAMP, default=datetime.utcnow)
+    updated = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
     search = Column(TEXT(charset='utf8'), nullable=False, onupdate=_search_update)
     
     def __init__(self, title, content, author_group_name, author_name, is_private, **kwargs):

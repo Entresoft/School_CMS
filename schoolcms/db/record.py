@@ -24,7 +24,7 @@ class Record(Base):
 
     id = Column(INTEGER, primary_key=True)
     method = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
-    time = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
+    time = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     def __init__(self, method, ann_id, **kwargs):
         self.id = ann_id

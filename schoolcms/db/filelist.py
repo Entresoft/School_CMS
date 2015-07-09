@@ -26,7 +26,7 @@ class TempFileList(Base):
     key = Column(CHAR(40, collation='utf8_unicode_ci'), primary_key=True)
     filename = Column(TEXT(charset='utf8'), nullable=False)
     content_type = Column(TEXT(charset='utf8'), nullable=False)
-    created = Column(TIMESTAMP, default=datetime.now())
+    created = Column(TIMESTAMP, default=datetime.utcnow)
     author_key = Column(CHAR(40, collation='utf8_unicode_ci'), nullable=False)
     
     def __init__(self, key, filename, content_type, author_key, **kwargs):
