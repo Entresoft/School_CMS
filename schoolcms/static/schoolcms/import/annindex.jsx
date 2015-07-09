@@ -167,39 +167,45 @@ SC.SearchAnnForm = React.createClass({
       backgroundColor: '#f1f1f1',
     };
     var search_input_style = {
-      margin: '10px 1px 10px 1px',
+      display: 'block',
+      'float': 'left',
+      margin: '10px 5px 10px 5px',
       padding: '4px 4px 4px 4px',
-      width: '100%',
+      width: 'calc(100% - '+SC.getWindowSize('124px','238px','238px')+')',
       height: '40px',
       border: '0',
       backgroundColor: '#fff',
-    }
+    };
+    var search_btn_sytle = {
+      'float': 'left',
+      margin: '0 15px 0 15px',
+      width: '84px',
+    };
     var addon_search_input_sytle = {
       margin: '0 4px 0 4px',
       'float': 'left',
       width: '200px',
-    }
+    };
     return (
       <SC.Form onSubmit={this.handleSearch}>
         <div style={search_nav_style}>
           <RB.Grid>
             <RB.Row>
-              <RB.Col xs={9} md={8}>
-                <input type='text' ref='search' name="search" valueLink={this.linkState('search')}
-                    placeholder='請輸入關鍵字' style={search_input_style} className='form-control'/>
-              </RB.Col>
-              <RB.Col xs={3} md={4} style={{padding:'0 0 0 0', overflow:'hidden'}}>
-                {function(){
-                  if(SC.getWindowSize(0,1,1)){
-                    return (
-                      <RB.Button onClick={this.handleSearch} bsStyle='success'
-                        className='btn-raised mdi-action-search'></RB.Button>);
-                  }
-                }.bind(this)()}
-                <span> </span>
+              <div style={search_btn_sytle}>
                 <RB.Button onClick={this.handleToggle} bsStyle={this.state.show?'danger':'warning'}
                     className={'btn-raised '+(this.state.show?'mdi-navigation-expand-less':'mdi-navigation-expand-more')}></RB.Button>
-              </RB.Col>
+              </div>
+              <input type='text' ref='search' name="search" valueLink={this.linkState('search')}
+                  placeholder='請輸入關鍵字' style={search_input_style} className='form-control'/>
+              {function(){
+                if(SC.getWindowSize(0,1,1)){
+                  return (
+                    <div style={search_btn_sytle}>
+                      <RB.Button onClick={this.handleSearch} bsStyle='success'
+                          className='btn-raised mdi-action-search'></RB.Button>
+                    </div>);
+                }
+              }.bind(this)()}
             </RB.Row>
           </RB.Grid>
         </div>
