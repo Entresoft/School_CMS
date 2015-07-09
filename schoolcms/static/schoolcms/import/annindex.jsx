@@ -30,11 +30,15 @@ SC.AnnIndexPage = React.createClass({
       }
     }
   },
-  _getDateString: function(time_s){
-    var pass_time = new Date() - new Date(time_s)
-    if(pass_time <= 86400000)return '今天';
-    if(pass_time <= 172800000)return '昨天';
-    return time_s;
+  _getDayString: function(time_s){
+    var this_day = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
+    var today = moment().startOf('day');
+    var yesterday = moment().startOf('day').subtract(1, 'days');
+    var this_year = moment().startOf('year');
+    if(this_day.isAfter(today))return this_day.format('MM/DD dddd [ (Today)]');
+    if(this_day.isAfter(yesterday))return this_day.format('MM/DD dddd [ (Yesterday)]');
+    if(this_day.isAfter(this_year))return this_day.format('MM/DD dddd');
+    return this_day.format('YYYY - MM/DD dddd');
   },
   _make_ann: function (ann) {
     var tags = function(ann){
@@ -69,10 +73,11 @@ SC.AnnIndexPage = React.createClass({
   render: function() {
     var annItems = [];
     for(var i=0;i<this.state.anns.length;i++){
-      if(i==0||this.state.anns[i-1].created.substr(0,10)!=this.state.anns[i].created.substr(0,10)){
+      var time_s = this._getDayString(this.state.anns[i].created);
+      if(i==0||this._getDayString(this.state.anns[i-1].created)!==time_s){
         annItems.push(
           <RB.Col xs={12} md={12} key={i+'date'}>
-            <h4>{this._getDateString(this.state.anns[i].created.substr(0,10))}</h4><hr/>
+            <h4>{time_s}</h4><hr/>
           </RB.Col>
         );
       }

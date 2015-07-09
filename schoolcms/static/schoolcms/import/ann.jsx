@@ -31,6 +31,14 @@ SC.AnnouncePage = React.createClass({
     this.props.ajax(url,'DELETE',data,function(){});
     setTimeout(function(){ RMR.navigate(SC.makeURL('/announce',this.props.params)) }.bind(this), 1);
   },
+  _get_locale_time: function(time_s){
+    var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
+    return time.format('YYYY - MM/DD dddd HH:mm:ss');
+  },
+  _get_time_from_now: function(time_s){
+    var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
+    return time.fromNow();
+  },
   render: function() {
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>
@@ -77,6 +85,7 @@ SC.AnnouncePage = React.createClass({
           {tags}
         </RB.Col></RB.Row>
         <RB.Row><RB.Col xs={12} md={12}><RB.Well>
+          <p style={{color:'#777',textAlign:'right'}}>{this._get_time_from_now(this.state.created)}</p>
           <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
         </RB.Well></RB.Col></RB.Row>
         <RB.Row>
@@ -86,8 +95,8 @@ SC.AnnouncePage = React.createClass({
           </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>時間</h4><hr/>
-            <p>發布於：{this.state.created}</p>
-            <p>最後更新：{this.state.updated}</p>
+            <p>發布於：{this._get_locale_time(this.state.created)}</p>
+            <p>最後更新：{this._get_locale_time(this.state.updated)}</p>
           </RB.Well></RB.Col>
         </RB.Row>
         {buttonGroup}

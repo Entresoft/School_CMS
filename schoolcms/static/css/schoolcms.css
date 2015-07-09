@@ -48,6 +48,12 @@ a:focus{
 .sc-ann-search-form .dropdownjs{
   color: #333;
 }
+.btn.btn-default.sc-pagination-disable,
+.btn.btn-default.sc-pagination-disable:hover,
+.btn.btn-default.sc-pagination-disable:focus,
+.btn.btn-default.sc-pagination-disable:active{
+  opacity: 0.3;
+}
 .btn.btn-default.sc-pagination-default-btn:hover,
 .btn.default-btn.sc-pagination-default-btn:focus,
 .btn.default-btn.sc-pagination-default-btn:active{

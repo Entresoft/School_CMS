@@ -217,7 +217,7 @@ SC.Pagination = React.createClass({
   },
   _make_btn: function(name, href){
     if(href.length)return (<a key={name} className='btn btn-default sc-pagination-default-btn' href={href} onClick={this.handleClick}>{name}</a>);
-    else return (<RB.Button key={name}>{name}</RB.Button>);
+    else return (<RB.Button className='sc-pagination-disable' key={name}>{name}</RB.Button>);
   },
   render: function() {
     var all = Math.ceil(this.props.total/this.props.step);
