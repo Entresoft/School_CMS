@@ -34,11 +34,9 @@ SC.AnnIndexPage = React.createClass({
     var this_day = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
     var today = moment().startOf('day');
     var yesterday = moment().startOf('day').subtract(1, 'days');
-    var this_year = moment().startOf('year');
-    if(this_day.isAfter(today))return this_day.format('MM/DD dddd '+(moment.locale()==='zh-tw'?'[(今天)]':'[(Today)]'));
-    if(this_day.isAfter(yesterday))return this_day.format('MM/DD dddd '+(moment.locale()==='zh-tw'?'[(昨天)]':'[(Yesterday)]'));
-    if(this_day.isAfter(this_year))return this_day.format('MM/DD dddd');
-    return this_day.format('YYYY - MM/DD dddd');
+    if(this_day.isAfter(today))return this_day.format('ll (dddd) '+(moment.locale()==='zh-tw'?'[- 今天]':'[- Today]'));
+    if(this_day.isAfter(yesterday))return this_day.format('ll (dddd) '+(moment.locale()==='zh-tw'?'[- 昨天]':'[- Yesterday]'));
+    return this_day.format('ll (dddd)');
   },
   _make_ann: function (ann) {
     var tag = function(ann){
