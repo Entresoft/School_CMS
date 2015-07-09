@@ -48,6 +48,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
                 'js/isMobile.min.js',
+                'js/moment-with-locales.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
                 output='dict/plugin.min.js')
         self.assets.register('css_all', all_css)
