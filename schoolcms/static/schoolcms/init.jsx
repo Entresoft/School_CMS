@@ -4,6 +4,7 @@ const RB = ReactBootstrap;
 const RMR = ReactMiniRouter;
 var Alert = RB.Alert;
 var SC = {}
+moment.locale(window.navigator.userLanguage || window.navigator.language);
 
 SC.makeURL = function(path,query){
     var q = [];

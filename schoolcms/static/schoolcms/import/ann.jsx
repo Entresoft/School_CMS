@@ -33,7 +33,7 @@ SC.AnnouncePage = React.createClass({
   },
   _get_locale_time: function(time_s){
     var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
-    return time.format('YYYY - MM/DD dddd HH:mm:ss');
+    return time.format('YYYY - MM/DD dddd HH:mm');
   },
   _get_time_from_now: function(time_s){
     var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();

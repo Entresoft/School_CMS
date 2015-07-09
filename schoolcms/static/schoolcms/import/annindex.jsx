@@ -35,19 +35,24 @@ SC.AnnIndexPage = React.createClass({
     var today = moment().startOf('day');
     var yesterday = moment().startOf('day').subtract(1, 'days');
     var this_year = moment().startOf('year');
-    if(this_day.isAfter(today))return this_day.format('MM/DD dddd [ (Today)]');
-    if(this_day.isAfter(yesterday))return this_day.format('MM/DD dddd [ (Yesterday)]');
+    if(this_day.isAfter(today))return this_day.format('MM/DD dddd '+(moment.locale()==='zh-tw'?'[(今天)]':'[(Today)]'));
+    if(this_day.isAfter(yesterday))return this_day.format('MM/DD dddd '+(moment.locale()==='zh-tw'?'[(昨天)]':'[(Yesterday)]'));
     if(this_day.isAfter(this_year))return this_day.format('MM/DD dddd');
     return this_day.format('YYYY - MM/DD dddd');
   },
   _make_ann: function (ann) {
-    var tags = function(ann){
+    var tag = function(ann){
       if(ann.tags.length){
-        return ann.tags.map(function(tag){
-          return (<RB.Button key={tag} className='btn-primary' bsSize='small'>{tag}</RB.Button>);
-        });
-      }else{
-        return (<span>沒有分類標籤</span>);
+        return (
+          <RB.Col xs={12} md={12}>
+            標籤：{
+              ann.tags.map(function(tag){
+                return (<RB.Button key={tag} className='btn-primary' bsSize='small'>{tag}</RB.Button>);
+              })
+            }
+            <br/><br/>
+          </RB.Col>);
+        return 
       }
     }(ann);
     return (
@@ -62,9 +67,7 @@ SC.AnnIndexPage = React.createClass({
                 <a href={SC.makeURL('/announce/',{author:ann.author_name})}>{ann.author_name}</a>
               </small><br/><br/>
             </RB.Col>
-            <RB.Col xs={12} md={12}>
-              標籤：{tags}<br/><br/>
-            </RB.Col>
+            {tag}
           </RB.Row>
         </RB.Well>
       </RB.Col>
