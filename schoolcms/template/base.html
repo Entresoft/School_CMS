@@ -33,7 +33,7 @@
          var js, fjs = d.getElementsByTagName(s)[0];
          if (d.getElementById(id)) return;
          js = d.createElement(s); js.id = id;
-         var locale = window.navigator.userLanguage || window.navigator.language || 'en_US';
+         var locale = (window.navigator.userLanguage || window.navigator.language || 'en_US').replace(/-/, '_');
          js.src = '//connect.facebook.net/'+ locale +'/sdk.js';
          fjs.parentNode.insertBefore(js, fjs);
        }(document, 'script', 'facebook-jssdk'));
