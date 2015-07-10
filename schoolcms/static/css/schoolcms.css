@@ -59,3 +59,6 @@ a:focus{
 .btn.default-btn.sc-pagination-default-btn:active{
   background-color: rgba(0,0,0,.12);
 }
+.fb-like{
+  display: inline-block;
+}

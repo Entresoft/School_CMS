@@ -86,6 +86,7 @@ class BaseHandler(tornado.web.RequestHandler):
         _['js_urls'] = self.assets['js_all'].urls()
         _['jsx_urls'] = self.assets['jsx'].urls()
         _['system_name'] = options.system_name
+        _['SERVER_DEBUG'] = options.server_debug
         return _
 
     @property

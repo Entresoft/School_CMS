@@ -21,6 +21,7 @@ SC.AnnouncePage = React.createClass({
       this.setState(json);
     }.bind(this));
     SC.resetWindow();
+    if (typeof FB !== 'undefined')FB.XFBML.parse();
   },
   handleDelete: function(){
     if(!confirm('你確定要刪除這篇公告嗎?'))return;
@@ -81,14 +82,17 @@ SC.AnnouncePage = React.createClass({
           </small>
         </RB.PageHeader>
         {buttonGroup}
-        <RB.Row><RB.Col xs={12} md={12}>
-          {tags}
-        </RB.Col></RB.Row>
-        <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <p style={{color:'#777',textAlign:'right'}}>{this._get_time_from_now(this.state.created)}</p>
-          <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
-        </RB.Well></RB.Col></RB.Row>
         <RB.Row>
+          <RB.Col xs={12} md={12}>
+            {tags}
+          </RB.Col>
+          <RB.Col xs={12} md={12}><RB.Well>
+            <div style={{width:'100%',textAlign:'right'}}>
+              <SC.FBLikeBtn uri={window.location.pathname}/>
+              <span style={{color:'#777'}}> {this._get_time_from_now(this.state.created)} </span>
+            </div>
+            <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
+          </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>附件</h4><hr/>
             <SC.AttachmentPanel atts={this.state.atts} />
@@ -98,6 +102,9 @@ SC.AnnouncePage = React.createClass({
             <p>發布於：{this._get_locale_time(this.state.created)}</p>
             <p>最後更新：{this._get_locale_time(this.state.updated)}</p>
           </RB.Well></RB.Col>
+          <RB.Col xs={12} md={8}>
+            <SC.FBCommentBox uri={window.location.pathname}/>
+          </RB.Col>
         </RB.Row>
         {buttonGroup}
       </RB.Grid>

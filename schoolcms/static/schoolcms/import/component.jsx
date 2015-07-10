@@ -268,3 +268,34 @@ SC.MaterialInit = React.createClass({
     );
   }
 });
+
+SC.FBCommentBox = React.createClass({
+  getDefaultProps: function() {
+    return {
+      uri: window.location.origin,
+      maxPost: 5,
+    };
+  },
+  render: function() {
+    return (
+      <div className="fb-comments" data-href={window.location.origin+this.props.uri}
+        data-numposts={this.props.maxPost} data-width='100%'>
+      </div>
+    );
+  }
+});
+
+SC.FBLikeBtn = React.createClass({
+  getDefaultProps: function() {
+    return {
+      uri: window.location.origin,
+    };
+  },
+  render: function() {
+    return (
+      <div className="fb-like" data-href={window.location.origin+this.props.uri}
+          data-layout="button_count" data-action="like" data-show-faces="true"
+          data-share="true" style={{display:'inline-block'}}></div>
+    );
+  }
+});
