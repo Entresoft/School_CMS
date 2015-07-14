@@ -90,7 +90,7 @@ SC.AnnouncePage = React.createClass({
             <div style={{width:'100%',textAlign:'right'}}>
               <SC.FBLikeBtn uri={window.location.pathname}/>
               <span style={{color:'#777'}}> {this._get_time_from_now(this.state.created)} </span>
-            </div>
+            </div><br/>
             <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
           </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
@@ -124,16 +124,19 @@ SC.AttachmentPanel = React.createClass({
       'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
+  btn_style: {
+    margin: '1px 1px 1px 1px',
+  },
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
       return (
         <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}
-          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility' style={this.btn_style}></a>
       );
     }else if(att.filetype!=='file'){
       return (
         <a target="_blank" href={'/file/'+att.path}
-          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility' style={this.btn_style}></a>
       );
     }
   },
@@ -150,7 +153,7 @@ SC.AttachmentPanel = React.createClass({
           </div>
           <div className="media-right media-middle">
             {this.openlink(att)}
-            <a target="_blank" href={'/file/'+att.path+'?download=1'}
+            <a target="_blank" href={'/file/'+att.path+'?download=1'} style={this.btn_style}
               className='btn btn-danger btn-sm btn-raised mdi-file-file-download'></a>
           </div>
         </div>
