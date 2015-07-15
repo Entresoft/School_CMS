@@ -28,7 +28,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
         all_css = Bundle(
                 'css/bootstrap.min.css',
-                'css/material-fullpalette.min.css',
+                'css/material.min.css',
                 Bundle(
                     'css/dropdown.css',
                     'css/schoolcms.css',
@@ -41,8 +41,7 @@ class BaseHandler(tornado.web.RequestHandler):
         all_js = Bundle(
                 'js/jquery-2.1.3.min.js',
                 'bootstrap-3.3.4-dist/js/bootstrap.min.js',
-                'react-0.13.2/react-with-addons.js',
-                'react-0.13.2/JSXTransformer.js',
+                'react-0.13.2/react-with-addons.min.js',
                 'js/react-bootstrap.min.js',
                 'js/react-mini-router.min.js',
                 'js/marked.min.js',
