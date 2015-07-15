@@ -20,5 +20,5 @@ define('ann_system_url', default='', help='', type=unicode)
 define('mv_page', default=0, help='', type=int)
 define('mv_update', default=False, help='', type=bool)
 
-from schoolcms.util.parse_config import parse_config
+from ..util.parse_config import parse_config
 parse_config()

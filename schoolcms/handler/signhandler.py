@@ -10,11 +10,10 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import re
-
 from . import BaseHandler
+from ..db import User, Login_Session
 
-from schoolcms.db import User, Login_Session
+import re
 
 
 class LoginHandler(BaseHandler):

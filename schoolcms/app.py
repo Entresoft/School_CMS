@@ -10,30 +10,30 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from .util.parse_config import parse_config
+parse_config()
+
+from .handler import route, DefaultHandler
+from .db import SessionGen, System
+from .db import version as db_version
+
 import os
 import logging
 # logging.basicConfig(filename='logging.txt', filemod='w', level=logging.DEBUG)
 
-from tornado.ioloop import IOLoop
-from tornado.web import Application
-from tornado.options import options
-
-from .util.parse_config import parse_config
-parse_config()
-
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound
 
-from .handler import route, DefaultHandler
-from . import db
-from .db import SessionGen, System
+from tornado.ioloop import IOLoop
+from tornado.web import Application
+from tornado.options import options
 
 
 def check_db():
     with SessionGen() as session:
         try:
             db_info = System.by_key('db_version', session).one()
-            if db_info.value != db.version:
+            if db_info.value != db_version:
                 raise ValueError('db version error')
         except (ProgrammingError, NoResultFound) as e:
             print(e)

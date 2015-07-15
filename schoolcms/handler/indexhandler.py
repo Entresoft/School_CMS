@@ -8,7 +8,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
-from schoolcms.db import GroupList
+from ..db import GroupList
 
 from tornado.ioloop import IOLoop
 

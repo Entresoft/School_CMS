@@ -13,7 +13,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from schoolcms.db import Base, engine
+from ..db import Base, engine
+
 from sqlalchemy import Column
 from sqlalchemy.dialects.mysql import INTEGER, TIMESTAMP
 

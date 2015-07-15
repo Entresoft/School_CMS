@@ -8,10 +8,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
+from ..db import GroupList, User
 
 import re
-
-from schoolcms.db import GroupList, User
 
 
 def _to_int(s, default):

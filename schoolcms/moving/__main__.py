@@ -12,10 +12,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from tornado.options import options
-
-from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
+from .movinglog import MovingLog
+from ..db import SessionGen, Announce, Record, AttachmentList
 
 import logging
 import requests
@@ -25,9 +23,10 @@ import uuid
 import shutil
 import subprocess
 import mimetypes
+from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
-from schoolcms.db import SessionGen, Announce, Record, AttachmentList
-from .movinglog import MovingLog
+from tornado.options import options
 
 
 mytid_re    = re.compile(r'mytid=([0-9]+)')

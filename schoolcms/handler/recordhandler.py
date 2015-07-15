@@ -11,11 +11,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
+from ..db import Record
 
 import os
 from datetime import datetime
-
-from schoolcms.db import Record
 from sqlalchemy import desc
 
 

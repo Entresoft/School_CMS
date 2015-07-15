@@ -16,15 +16,16 @@ from __future__ import unicode_literals
 from .util.parse_config import parse_config
 parse_config()
 
-import re
-from getpass import getpass
-from sqlalchemy.exc import ProgrammingError
-from sqlalchemy.orm.exc import NoResultFound
-
+from . import version as system_version
 from .db import engine, Base, SessionGen
 from .db import System, Login_Session, User, GroupList, Announce, AnnTag, TempFileList, AttachmentList, Record
-from . import version as system_version
-from . import db
+from .db import version as db_version
+
+import re
+from getpass import getpass
+
+from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.orm.exc import NoResultFound
 
 
 def creat_db(sql_session):
@@ -45,7 +46,7 @@ def creat_db(sql_session):
     user = User('root', passwd, 'root', '教師', True)
     session.add_all([
             System('system_version', system_version),
-            System('db_version', db.version),
+            System('db_version', db_version),
             user,
             GroupList('system', 'Announcement Manager'),
             GroupList(user.key, 'Announcement Manager'),

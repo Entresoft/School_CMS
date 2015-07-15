@@ -11,13 +11,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import Base
+from ..util.sqlalchemy_fulltext import FullText, FullTextSearch
+from ..util.sqlalchemy_fulltext import modes as FullTextMode
+
+import jieba
 from datetime import datetime
 
 from sqlalchemy import Column, func
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, TEXT, TIMESTAMP, BOOLEAN
-from schoolcms.util.sqlalchemy_fulltext import FullText, FullTextSearch
-import schoolcms.util.sqlalchemy_fulltext.modes as FullTextMode
-import jieba
 
 jieba.set_dictionary('schoolcms/util/sqlalchemy_fulltext/dict.txt.big')
 
@@ -64,13 +65,8 @@ class Announce(FullText, Base):
 
     @classmethod
     def full_text_search(cls, query):
-        return FullTextSearch(query, cls, FullTextMode.NATURAL)
-
-    @classmethod
-    def by_full_text(cls, query, sql_session):
-        q = sql_session.query(cls)
         query = ' '.join(jieba.cut_for_search(query))
-        return q.filter(cls.full_text_search(query))
+        return FullTextSearch(query, cls, FullTextMode.NATURAL)
 
     def to_dict(self):
         return {

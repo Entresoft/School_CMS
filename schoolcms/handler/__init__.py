@@ -10,16 +10,16 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from ..db import SQL_Session, User, GroupList, Login_Session
+from ..util  import webassets_react
+
 import functools
 import os
+from webassets import Environment, Bundle
 
 import tornado.web
 from tornado.escape import json_encode
 from tornado.options import options
-
-from schoolcms.db import SQL_Session, User, GroupList, Login_Session
-from webassets import Environment, Bundle
-from schoolcms.util  import webassets_react
 
 
 class BaseHandler(tornado.web.RequestHandler):
