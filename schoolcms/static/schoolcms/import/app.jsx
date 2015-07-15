@@ -84,8 +84,8 @@ SC.App = React.createClass({
     var progressBar = function(){
       if(this.state.loading>=0){
         return (
-          <RB.ProgressBar now={this.state.loading} className='progress-bar-material-red-700'
-            style={{position:'fixed',top:'0px',height:'6px',width:'100%',zIndex:100,}} />
+          <RB.ProgressBar now={this.state.loading} bsStyle='danger'
+            style={{position:'fixed',top:'0px',height:'6px',width:'100%',zIndex:100}} />
         );
       }
     }.bind(this);

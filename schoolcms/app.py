@@ -26,6 +26,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from tornado.ioloop import IOLoop
 from tornado.web import Application
+from tornado.httpserver import HTTPServer
 from tornado.options import options
 
 
@@ -56,12 +57,11 @@ def make_app():
         debug = options.server_debug,
         autoreload = False,
         default_handler_class = DefaultHandler,
-        xheaders=True,
     )
 
 
 if __name__ == '__main__':
     check_db()
-    app = make_app()
-    app.listen(options.port)
+    server = HTTPServer(make_app(), xheaders=True)
+    server.listen(options.port)
     IOLoop.current().start()
