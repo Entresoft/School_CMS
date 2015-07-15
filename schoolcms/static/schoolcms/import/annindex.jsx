@@ -95,8 +95,9 @@ SC.AnnIndexPage = React.createClass({
       </RB.Col>
     )};
     var clear_search_btn = function(){
-      for(var k in this.props.params){
-        if(this.props.params[k].length){
+      var search_key = ['author','group','search','hours'];
+      for(var i=0;i<search_key.length;i++){
+        if(this.props.params[search_key[i]]&&this.props.params[search_key[i]].length){
           return (
             <RB.Row>
               <RB.Col xs={12} md={12}>
