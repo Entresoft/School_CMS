@@ -10,6 +10,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from ..import version as system_version
 from ..db import SQL_Session, User, GroupList, Login_Session
 from ..util  import webassets_react
 
@@ -86,6 +87,8 @@ class BaseHandler(tornado.web.RequestHandler):
         _['jsx_urls'] = self.assets['jsx'].urls()
         _['system_name'] = options.system_name
         _['SERVER_DEBUG'] = options.server_debug
+        _['ip'] = self.request.remote_ip
+        _['system_version'] = system_version
         return _
 
     @property

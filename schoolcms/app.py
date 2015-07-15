@@ -56,6 +56,7 @@ def make_app():
         debug = options.server_debug,
         autoreload = False,
         default_handler_class = DefaultHandler,
+        xheaders=True,
     )
 
 
