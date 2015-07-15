@@ -123,6 +123,15 @@ SC.SelectInput = React.createClass({
       value: '',
     }
   },
+  getDefaultProps: function() {
+    return {
+      options: [],
+      options_kv: {},
+      emptyOption: false,
+      emptyOptionKey: null,
+      placeholder: '',
+    };
+  },
   componentDidMount: function(){
     this.setState({value:$(React.findDOMNode(this.refs.select)).val()});
     if(!isMobile.any){
@@ -153,6 +162,7 @@ SC.SelectInput = React.createClass({
     var _value = $(React.findDOMNode(this.refs.select)).val();
     var dropdownjs = React.findDOMNode(this.refs.select).nextElementSibling;
     var selected = dropdownjs.getElementsByClassName('selected');
+    var input = dropdownjs.getElementsByTagName('input')[0];
     for(var i=0;i<selected.length;i++){
       selected[i].className = '';
     }
@@ -160,20 +170,18 @@ SC.SelectInput = React.createClass({
     for(var i=0;i<options.length;i++){
       if(options[i].getAttribute('value')===_value){
         options[i].className = 'selected';
+        input.value = options[i].innerText;
       }
     }
-    var input = dropdownjs.getElementsByTagName('input')[0];
-    input.value = _value;
   },
   render: function() {
     var options = [];
-    if(this.props.emptyOption){
-      options.push(<option key={-1} value={''}></option>);
-    }
+    if(this.props.emptyOption){options.push(<option key={-1} value=''>{this.props.placeholder}</option>);}
     for(var key in this.props.options){
-      options.push(
-        <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
-      );
+      options.push(<option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>);
+    }
+    for(var key in this.props.options_kv){
+      options.push(<option key={key} value={this.props.options_kv[key]}>{key}</option>);
     }
     return (
       <div>

@@ -151,14 +151,21 @@ SC.SearchAnnForm = React.createClass({
   componentDidUpdate: function(){
     this.refs.group.setValue(this.props.params.group);
     this.refs.author.setValue(this.props.params.author);
+    this.refs.hours.setValue(this.props.params.hours);
   },
   handleSearch: function(){
-    var url = SC.makeURL(window.location.pathname,{
-      search: this.state.search,
-      group: this.refs.group.getValue(),
-      author: this.refs.author.getValue(),
-    });
-    RMR.navigate(url);
+    var group = this.refs.group.getValue();
+    var author = this.refs.author.getValue();
+    var hours = this.refs.hours.getValue();
+    if(this.state.search!==this.props.params.search||
+          group!==this.props.params.group||
+          author!==this.props.params.author||
+          hours!==this.props.params.hours){
+      var url = SC.makeURL(window.location.pathname,{
+        search: this.state.search, group: group, author: author, hours: hours,
+      });
+      RMR.navigate(url);
+    }
   },
   handleToggle: function(){
     if(!this.state.showing){
@@ -167,50 +174,57 @@ SC.SearchAnnForm = React.createClass({
       this.setState({show: !this.state.show});
     }
   },
+  start_times: {
+    '1小時內': 1,
+    '24小時內': 24,
+    '一週內': 168,
+    '一個月內': 720,
+    '一年內': 8760,
+  },
+  search_nav_style: {
+    position: 'relative',
+    top:'-20px',
+    width: '100%',
+    padding: '5px 20px 5px 0',
+    borderBottom: '2px solid #ddd',
+    backgroundColor: '#f1f1f1',
+  },
+  search_input_style: {
+    display: 'block',
+    'float': 'left',
+    margin: '10px 5px 10px 5px',
+    padding: '4px 4px 4px 4px',
+    width: 'calc(100% - '+SC.getWindowSize('124px','238px','238px')+')',
+    height: '40px',
+    border: '0',
+    backgroundColor: '#fff',
+  },
+  search_btn_sytle: {
+    'float': 'left',
+    margin: '0 15px 0 15px',
+    width: '84px',
+  },
+  addon_search_input_sytle: {
+    margin: '0 4px 0 4px',
+    'float': 'left',
+    width: '200px',
+  },
   render: function() {
-    var search_nav_style = {
-      position: 'relative',
-      top:'-20px',
-      width: '100%',
-      padding: '5px 20px 5px 0',
-      borderBottom: '2px solid #ddd',
-      backgroundColor: '#f1f1f1',
-    };
-    var search_input_style = {
-      display: 'block',
-      'float': 'left',
-      margin: '10px 5px 10px 5px',
-      padding: '4px 4px 4px 4px',
-      width: 'calc(100% - '+SC.getWindowSize('124px','238px','238px')+')',
-      height: '40px',
-      border: '0',
-      backgroundColor: '#fff',
-    };
-    var search_btn_sytle = {
-      'float': 'left',
-      margin: '0 15px 0 15px',
-      width: '84px',
-    };
-    var addon_search_input_sytle = {
-      margin: '0 4px 0 4px',
-      'float': 'left',
-      width: '200px',
-    };
     return (
       <SC.Form onSubmit={this.handleSearch}>
-        <div style={search_nav_style}>
+        <div style={this.search_nav_style}>
           <RB.Grid>
             <RB.Row>
-              <div style={search_btn_sytle}>
+              <div style={this.search_btn_sytle}>
                 <RB.Button onClick={this.handleToggle} bsStyle={this.state.show?'danger':'warning'}
                     className={'btn-raised '+(this.state.show?'mdi-navigation-expand-less':'mdi-navigation-expand-more')}></RB.Button>
               </div>
               <input type='text' ref='search' name="search" valueLink={this.linkState('search')}
-                  placeholder='請輸入關鍵字' style={search_input_style} className='form-control'/>
+                  placeholder='請輸入關鍵字' style={this.search_input_style} className='form-control'/>
               {function(){
                 if(SC.getWindowSize(0,1,1)){
                   return (
-                    <div style={search_btn_sytle}>
+                    <div style={this.search_btn_sytle}>
                       <RB.Button onClick={this.handleSearch} bsStyle='success'
                           className='btn-raised mdi-action-search'></RB.Button>
                     </div>);
@@ -221,13 +235,17 @@ SC.SearchAnnForm = React.createClass({
         </div>
         <SC.SearchAnnFormFadein ref='fadein'>
           <RB.Grid>
-            <div style={addon_search_input_sytle}>
+            <div style={this.addon_search_input_sytle}>
               <SC.SelectInput ref='group' name="group" onChange={this.handleSearch}
-                  options={this.props.groups} emptyOption label='公告群組' placeholder='公告群組'/><br/>
+                  options={this.props.groups} emptyOption label='公告群組' placeholder='不限群組'/><br/>
             </div>
-            <div style={addon_search_input_sytle}>
+            <div style={this.addon_search_input_sytle}>
               <SC.SelectInput ref='author' name="author" onChange={this.handleSearch}
-                  options={this.props.authors} emptyOption label='公告者' placeholder='公告者'/><br/>
+                  options={this.props.authors} emptyOption label='公告單位' placeholder='不限單位'/><br/>
+            </div>
+            <div style={this.addon_search_input_sytle}>
+              <SC.SelectInput ref='hours' name="author" onChange={this.handleSearch}
+                  options_kv={this.start_times} emptyOption label='時間' placeholder='不限時間'/><br/>
             </div>
           </RB.Grid>
         </SC.SearchAnnFormFadein>
@@ -246,28 +264,30 @@ SC.SearchAnnFormFadein = React.createClass({
     this.setState({show: !this.state.show});
     setTimeout(callback, 300);
   },
+  style: {
+    position: 'relative',
+    top:'-20px',
+    width: '100%',
+    padding: '5px 0 0 0',
+    borderBottom: '2px solid #bbb',
+    backgroundColor: '#fcfcfc',
+    transition: 'opacity 0.3s',
+    MozTransition: 'opacity 0.3s', /* Firefox 4 */
+    WebkitTransition: 'opacity 0.3s', /* Safari 和 Chrome */
+    OTransition: 'opacity 0.3s', /* Opera */
+  },
   render: function() {
-    var style = {
-      position: 'relative',
-      top:'-20px',
-      width: '100%',
-      height: 'auto',
-      padding: '5px 0 0 0',
-      borderBottom: '2px solid #bbb',
-      backgroundColor: '#fcfcfc',
-      transition: 'opacity 0.3s',
-      MozTransition: 'opacity 0.3s', /* Firefox 4 */
-      WebkitTransition: 'opacity 0.3s', /* Safari 和 Chrome */
-      OTransition: 'opacity 0.3s', /* Opera */
-      opacity: '1',
-    };
-    if(!this.state.show){
-      style.height = '0';
-      style.opacity = '0';
-      style.overflow = 'hidden';
+    if(this.state.show){
+      this.style.height = 'auto';
+      this.style.opacity = '1';
+      this.style.overflow = 'visible';
+    }else{
+      this.style.height = '0';
+      this.style.opacity = '0';
+      this.style.overflow = 'hidden';
     }
     return (
-      <div ref='div' style={style}>
+      <div ref='div' style={this.style}>
         {this.props.children}
       </div>
     );
