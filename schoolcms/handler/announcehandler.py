@@ -11,11 +11,13 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
+from ..db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
+
 import os
 import shutil
 import re
+from datetime import datetime, timedelta
 
-from schoolcms.db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -54,22 +56,30 @@ class AnnounceHandler(BaseHandler):
 
         # AnnIndex Page
         else:
-            start = _to_int(self.get_argument('start', ''), 0, 0)
-            step = _to_int(self.get_argument('step', ''), 12, 1, 20)
+            start = _to_int(self.get_argument('start', '0'), -1, 0, 10000000000000000000)
+            step = _to_int(self.get_argument('step', '12'), 0, 1, 20)
             search = self.get_argument('search', '')
             group = self.get_argument('group', '')
             author = self.get_argument('author', '')
+            hours = _to_int(self.get_argument('hours', ''), 0, 1, 23999999976)
 
+            if start == -1 or step == 0:
+                raise self.HTTPError(400)
+
+            q = self.sql_session.query(Announce)
             if search:
-                q = Announce.by_full_text(search, self.sql_session)
+                q = q.filter(Announce.full_text_search(search))
             else:
-                q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
 
             if author:
                 q = q.filter(Announce.author_name == author)
             if group:
                 q = q.filter(Announce.author_group_name == group)
+
+            if hours:
+                start_time = datetime.utcnow() - timedelta(hours=hours)
+                q = q.filter(Announce.created >= start_time)
 
             if not self.is_group_user('Announcement Manager'):
                 q = q.filter(Announce.is_private == False)
