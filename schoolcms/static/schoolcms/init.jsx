@@ -79,7 +79,7 @@ SC.App = React.createClass({
       if(this.state.status===200){
         return this.renderCurrentRoute();
       }else{
-        return <h1>Geez, {this.state.status}</h1>;
+        return <SC.ErrorPage errorCode={this.state.status} />;
       }
     }.bind(this);
     var progressBar = function(){
@@ -147,7 +147,7 @@ SC.App = React.createClass({
 
   // Else
   notFound: function(path) {
-      return <div className="not-found">Page Not Found: {path}</div>;
+      return <SC.ErrorPage errorCode='404' />;
   },
 });
 
