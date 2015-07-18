@@ -24,7 +24,9 @@ from tornado.options import options
 
 
 class BaseHandler(tornado.web.RequestHandler):
-    def initialize(self):
+    def initialize(self, is_api=True):
+        self.is_api = is_api
+
         self.assets = Environment(
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
         all_css = Bundle(
@@ -37,7 +39,9 @@ class BaseHandler(tornado.web.RequestHandler):
                 output='dict/plugin.min.css')
         jsx = Bundle(
             'schoolcms/init.jsx',
-            'schoolcms/import/*.jsx',
+            'schoolcms/mixin/*.jsx',
+            'schoolcms/component/*.jsx',
+            'schoolcms/page/*.jsx',
             filters=('react','jsmin'),output='dict/jsx.min.js')
         all_js = Bundle(
                 'js/jquery-2.1.3.min.js',
@@ -89,14 +93,29 @@ class BaseHandler(tornado.web.RequestHandler):
         _['SERVER_DEBUG'] = options.server_debug
         _['ip'] = self.request.remote_ip
         _['system_version'] = system_version
+        _['_host'] = self.request.host
+        _['_protocol'] = self.request.protocol
+        
+        if self.current_user:
+            groups = GroupList.get_user_groups(self.current_user.key, self.sql_session)
+        else:
+            groups = []
+        _['current_user'] = self.current_user.to_dict() if self.current_user else None
+        _['current_groups'] = groups
         return _
+
+    def page_render(self, page_json, template='app.html', **kw):
+        if self.is_api:
+            self.write(page_json)
+        else:
+            self.render(template, page_json=page_json, **kw)
 
     @property
     def HTTPError(self):
         return tornado.web.HTTPError
     
     def write_error(self, error, **kargs):
-        self.write('<p style="font-size:150px;">Geez! %d!</h1>' % error)
+        self.render('app.html', page_json={})
 
     @staticmethod
     def authenticated(method):
@@ -132,32 +151,27 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class AppHandler(BaseHandler):
     def get(self,  *a, **kwargs):
-        self.render('app.html')
+        self.render('app.html', page_json={})
 
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .signhandler import LoginHandler, LogoutHandler
 from .userhandler import GroupHandler, UserHandler
-from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
 from .recordhandler import RecordHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
-    (r'/', AppHandler),
-    (r'/login/?', AppHandler),
-    (r'/logout/?', AppHandler),
-    (r'/announce(?:/([0-9]+))?/?', AppHandler),
-    (r'/announce/edit(?:/([0-9]+))?/?', AppHandler),
-
-    # Att and File
-    (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
-    (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
+    # (r'/', AppHandler),
+    # (r'/login/?', AppHandler),
+    # (r'/logout/?', AppHandler),
+    (r'/announce(?:/([0-9]+))?/?', AnnounceHandler, {'is_api': False}),
+    (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler, {'is_api': False}),
 
     # Admin
-    (r'/admin/user/?', AppHandler),
+    (r'/admin/user/?', UserHandler, {'is_api': False}),
 
     # API
     (r'/api/?', IndexHandler),
@@ -170,4 +184,8 @@ route = [
     # Admin API
     (r'/api/admin/group/?', GroupHandler),
     (r'/api/admin/user/?', UserHandler),
+
+    # Att and File
+    (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
+    (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
 ]

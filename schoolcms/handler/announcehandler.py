@@ -16,6 +16,8 @@ from ..db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupLi
 import os
 import shutil
 import re
+from markdown import markdown
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 from sqlalchemy import desc
@@ -49,10 +51,16 @@ class AnnounceHandler(BaseHandler):
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
-            self._ = ann.to_dict()
-            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
-            self._['atts'] = [att.to_dict() for att in atts]
-            self.write(self._)
+            self.ann_d = ann.to_dict()
+            self.ann_d['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
+            self.ann_d['atts'] = [att.to_dict() for att in atts]
+            
+            meta = {
+                'title': self.ann_d['title'],
+                'uri': '/announce/%s' % self.ann_d['id'],
+                'content': BeautifulSoup(markdown(self.ann_d['content']), 'html.parser').text,
+            }
+            self.page_render(self.ann_d, 'announce.html', meta=meta)
 
         # AnnIndex Page
         else:
@@ -96,7 +104,7 @@ class AnnounceHandler(BaseHandler):
                 del _d['content']
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
-            self.write({
+            self.page_render({
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
@@ -157,7 +165,7 @@ class EditAnnHandler(BaseHandler):
 
         self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
-        self.write(self._)
+        self.page_render(self._)
 
     @BaseHandler.check_is_group_user('Announcement Manager')
     def post(self, ann_id):

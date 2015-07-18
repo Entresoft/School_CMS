@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from .util.parse_config import parse_config
 parse_config()
 
-from .handler import route, DefaultHandler
+from .handler import route, AppHandler
 from .db import SessionGen, System
 from .db import version as db_version
 
@@ -56,7 +56,7 @@ def make_app():
         xsrf_cookies = True,
         debug = options.server_debug,
         autoreload = False,
-        default_handler_class = DefaultHandler,
+        default_handler_class = AppHandler,
     )
 
 

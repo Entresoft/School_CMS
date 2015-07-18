@@ -1,14 +1,13 @@
 /** @jsx React.DOM */
 
 SC.UserPage = React.createClass({
-  mixins: [SC.LoginPageMixin, React.addons.LinkedStateMixin],
+  mixins: [SC.PageMixin, React.addons.LinkedStateMixin],
   getInitialState: function() {
     return {
       users: [],
       groups: [],
       total: 0,
       checkAll: false,
-      _xsrf: '',
       au_account: '',
       au_passwd: '',
       au_name: '',
@@ -80,7 +79,7 @@ SC.UserPage = React.createClass({
           <SC.Form ref='au_form' onSubmit={handleSubmin}>
             { successMsg() }
             { errorMsg() }
-            <RB.Input type='hidden' name="_xsrf" value={this.state._xsrf} />
+            <RB.Input type='hidden' name="_xsrf" value={SC.getCookie('_xsrf')} />
             <RB.Input type='text' name="account" valueLink={this.linkState('au_account')} label='帳號' placeholder='帳號' />
             <RB.Input type='text' name="passwd" valueLink={this.linkState('au_passwd')} label='密碼' placeholder='密碼' />
             <RB.Input type='text' name="name" valueLink={this.linkState('au_name')} label='名稱' placeholder='名稱' />
@@ -116,7 +115,7 @@ SC.UserPage = React.createClass({
     var have_group = true;
     var checked_userkey = [];
     var form = new FormData();
-    form.append('_xsrf', this.state._xsrf);
+    form.append('_xsrf', SC.getCookie('_xsrf'));
     form.append('group', group_name);
     for(var i=0;i<this.state.users.length;i++){
       if(this.refs['userItem_'+this.state.users[i].key].state.check){

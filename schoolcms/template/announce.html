@@ -6,11 +6,12 @@
 
 
 {% block Meta %}
-  <meta property="og:title" content="School CMS"/>
-  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="{{ meta['title'] }}"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:url" content="{{ '%s://%s%s' % (_protocol, _host, meta['uri']) }}"/>
   <meta property="og:image" content="{{ '%s://%s%s' % (_protocol, _host, static_url('logo.png')) }}"/>
   <meta property="og:site_name" content="{{ system_name }}"/>
-  <meta property="og:description" content="學校的最新消息。"/>
+  <meta property="og:description" content="{{ meta['content'] }}"/>
 {% end %}
 
 {% block Body %}

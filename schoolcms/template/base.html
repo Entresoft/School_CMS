@@ -18,6 +18,8 @@
     {% for url in jsx_urls %}
       <script src="{{ url }}"></script>
     {% end %}
+    {% block Meta %}
+    {% end %}
   </head>
   <body>
     <div id="fb-root"></div>
@@ -42,7 +44,10 @@
     {% block Body %}
     {% end %}
     <script>
-      React.render(React.createElement(SC.App, {history: true, name: "{{ system_name }}"}),document.getElementById('app'));
+      var page_json = {% raw json_encode(page_json) %};
+      var current_groups = {% raw json_encode(current_groups) %};
+      var current_user = {% raw current_user and json_encode(current_user) or 'null' %};
+      React.render(React.createElement(SC.App, {history: true, name: "{{ system_name }}", page_json:page_json, current_user:current_user, current_groups:current_groups}),document.getElementById('app'));
     </script>
     <hr>
     <div class="container">

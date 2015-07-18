@@ -28,7 +28,7 @@ SC.AnnouncePage = React.createClass({
     this.setState({ready: false});
     var url = '/api'+window.location.pathname
     var data = new FormData();
-    data.append('_xsrf',this.props._xsrf);
+    data.append('_xsrf',SC.getCookie('_xsrf'));
     this.props.ajax(url,'DELETE',data,function(){});
     setTimeout(function(){ RMR.navigate(SC.makeURL('/announce',this.props.params)) }.bind(this), 1);
   },
@@ -47,7 +47,7 @@ SC.AnnouncePage = React.createClass({
           className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></a>
         &nbsp;&nbsp;
         {function(){
-          if(this.props.manager)return (
+          if(this.props.ann_manager)return (
             <span>
               <a href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
               className='btn btn-fab btn-warning btn-raised mdi-content-create'></a>

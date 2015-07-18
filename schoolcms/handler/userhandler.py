@@ -71,7 +71,7 @@ class UserHandler(BaseHandler):
 
         groups = GroupList.get_all_groups(self.sql_session)
 
-        self.write({
+        self.page_render({
                 '_xsrf': self.xsrf_token,
                 'users': users_list,
                 'groups': groups,

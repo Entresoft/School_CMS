@@ -11,16 +11,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
-from ..db import User, Login_Session
+from ..db import User, Login_Session, GroupList
 
 import re
+import user_agents
 
 
 class LoginHandler(BaseHandler):
     def post(self):
-        if self.current_user:
-            raise self.HTTPError(403)
-
         self._ = dict()
         self._['account'] = self.get_argument('account', '')
         self._['passwd'] = self.get_argument('passwd', '')
@@ -31,13 +29,23 @@ class LoginHandler(BaseHandler):
             del self._['passwd']
             self.write(self._)
         else:
+            user_agent_string = self.request.headers["User-Agent"]
+            user_agent = user_agents.parse(user_agent_string)
+
             login_session = Login_Session(user.key)
             self.sql_session.add(login_session)
             Login_Session.clear_old(self.sql_session)
             self.sql_session.commit()
 
             self.set_secure_cookie('session_key', login_session.key)
-            self.write({'success':True,'next':self._['next']})
+
+            groups = GroupList.get_user_groups(user.key, self.sql_session)
+            self.write({
+                    'current_user': user.to_dict(),
+                    'current_groups': groups,
+                    'success':True,
+                    'next':self._['next']
+                })
 
     def login(self):
         if not re.match(r'^[a-zA-Z0-9]{4,20}$', self._['account']):

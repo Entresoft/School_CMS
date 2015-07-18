@@ -19,6 +19,8 @@ nodejs 0.12.4
 python-jsmin 2.1.1
 python-cssmin 0.2.0
 python-user-agents 0.3.2
+python-beautifulsoup4
+python-markdown 2.4
 
 ###Client
 bootstrap-3.3.4
@@ -27,7 +29,3 @@ react-bootstrap
 jquery-2.1.3
 isMobile.js 0.3.8
 moment.js 2.10.3
-
-
-###For moving.py
-beautifulsoup4
