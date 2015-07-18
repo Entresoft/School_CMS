@@ -307,3 +307,16 @@ SC.FBLikeBtn = React.createClass({
     );
   }
 });
+
+
+SC.Loading = React.createClass({
+  render: function() {
+    return (
+      <div style={{width:'100%',height:this.props.height,position:'relative'}}>
+        <div style={{width:'180px',height:'180px'}} className="ball-scale-multiple">
+          <div/><div/><div/>
+        </div>
+      </div>
+    );
+  }
+});

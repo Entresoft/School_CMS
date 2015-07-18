@@ -72,28 +72,27 @@ SC.AnnIndexPage = React.createClass({
     );
   },
   render: function() {
-    var annItems = [];
-    for(var i=0;i<this.state.anns.length;i++){
-      var time_s = this._getDayString(this.state.anns[i].created);
-      if(i==0||this._getDayString(this.state.anns[i-1].created)!==time_s){
-        annItems.push(
-          <RB.Col xs={12} md={12} key={i+'date'}>
-            <h4>{time_s}</h4><hr/>
-          </RB.Col>
-        );
+    var annItems = [], message;
+    if(this.state.ready){
+      for(var i=0;i<this.state.anns.length;i++){
+        var time_s = this._getDayString(this.state.anns[i].created);
+        if(i==0||this._getDayString(this.state.anns[i-1].created)!==time_s){
+          annItems.push(
+            <RB.Col xs={12} md={12} key={i+'date'}>
+              <h4>{time_s}</h4><hr/>
+            </RB.Col>
+          );
+        }
+        annItems.push(this._make_ann(this.state.anns[i]));
       }
-      annItems.push(this._make_ann(this.state.anns[i]));
-    }
-    var message;
-    if(!this.state.ready){message=(
-      <RB.Col xs={12} md={12}>
-        <h3>Loading...</h3>
-      </RB.Col>
-    )}else if(annItems.length===0){message=(
-      <RB.Col xs={12} md={12}>
-        <h3>抱歉，沒有找到符合的公告喔!</h3>
-      </RB.Col>
-    )};
+      if(annItems.length===0){message=(
+        <RB.Col xs={12} md={12}>
+          <h3>抱歉，沒有找到符合的公告喔!</h3>
+        </RB.Col>
+      );}
+    }else{
+      message = (<SC.Loading height='180px'/>);
+    };
     var clear_search_btn = function(){
       var search_key = ['author','group','search','hours'];
       for(var i=0;i<search_key.length;i++){
@@ -120,8 +119,12 @@ SC.AnnIndexPage = React.createClass({
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
                 query={this.props.params}/>
             </RB.Col>
+          </RB.Row>
+          <RB.Row>
             {message}
             {annItems}
+          </RB.Row>
+          <RB.Row>
             <RB.Col xs={12} md={12}>
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
                 query={this.props.params} resetWindow/>

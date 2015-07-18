@@ -41,6 +41,9 @@ SC.AnnouncePage = React.createClass({
     return time.fromNow();
   },
   render: function() {
+    if(!this.state.ready){
+      return (<SC.Loading height='400px'/>);
+    }
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>
         <a href={SC.makeURL('/announce',this.props.params)}
