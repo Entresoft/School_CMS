@@ -10,9 +10,9 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import re
-
 from . import Base
+
+import re
 from datetime import datetime
 
 from sqlalchemy import Column, func
@@ -24,7 +24,7 @@ class Record(Base):
 
     id = Column(INTEGER, primary_key=True)
     method = Column(CHAR(20, collation='utf8_unicode_ci'), nullable=False)
-    time = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
+    time = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     def __init__(self, method, ann_id, **kwargs):
         self.id = ann_id

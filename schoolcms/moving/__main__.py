@@ -12,11 +12,10 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from tornado.options import options
+from .movinglog import MovingLog
+from ..db import SessionGen, Announce, Record, AttachmentList
 
-from bs4 import BeautifulSoup
-from datetime import datetime
-
+import logging
 import requests
 import os
 import re
@@ -24,9 +23,10 @@ import uuid
 import shutil
 import subprocess
 import mimetypes
+from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
-from schoolcms.db import SessionGen, Announce, Record, AttachmentList
-from .movinglog import MovingLog
+from tornado.options import options
 
 
 mytid_re    = re.compile(r'mytid=([0-9]+)')
@@ -53,7 +53,7 @@ def _update_att(ann_trs, ann_id):
         if m:
             att_key = '%s' % uuid.uuid1().hex
             att_name = m.group(1)
-            att_time = datetime.strptime(m.group(2), '%Y-%m-%d %H:%M:%S')
+            att_time = datetime.strptime(m.group(2), '%Y-%m-%d %H:%M:%S') - timedelta(hours=8)
 
             os.makedirs('file/%s' % att_key)
             r = requests.get(a['href'], stream=True)
@@ -125,24 +125,33 @@ def parse_ann(ann_url, ann_is_private):
     ann_time_s = ann_trs[2].find_all('td')[0].find('font').text
     m = time_re.match(ann_time_s)
     time_s = m.group(2) if m.group(2) else m.group(1)
-    ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S')
+    ann_time = datetime.strptime(time_s, '%Y-%m-%d %H:%M:%S') - timedelta(hours=8)
 
-    if not movinglog or movinglog.time < ann_time or options.mv_update:
+
+    if not movinglog or movinglog.time < ann_time or options.mv_update or ann_is_private:
         _parse_ann(ann_trs, ann_url, movinglog, mytid, ann_time)
+        logging.info('Ann Update(mytid= %s )' % mytid)
+    else: 
+        logging.info('Ann Doesn\'t Need TO Update(mytid= %s )' % mytid)
 
 
 with SessionGen() as sql_session:
     for page in xrange(options.mv_page):
-        rel = requests.get('%s?show=%d' % (options.ann_system_url, page*20))
+        logging.info('Start Page %s' % page)
+        rel = requests.get('%s?myday=999&show=%d' % (options.ann_system_url, page*20))
         rel.encoding = 'utf8'
         soup = BeautifulSoup(rel.text, 'html.parser')
 
+        if len(soup.find_all('table')) == 1:
+            logging.info('This Page Is Empty')
+            continue
         post_trs = soup.find_all('table')[1].find_all('tr')[1:]
         for post_tr in post_trs:
             link = post_tr.find_all('td')[1]
             ann_url = link.find('a')['href']
             # private ann
-            ann_is_private = link.text[-4::] == '[內部]'
+            ann_is_private = '[內部]' in link.text
+            logging.info('AnnURL %s' % ann_url)
 
             parse_ann(ann_url, ann_is_private)
             sql_session.commit()

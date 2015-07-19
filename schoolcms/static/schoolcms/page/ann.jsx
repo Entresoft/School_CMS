@@ -20,30 +20,40 @@ SC.AnnouncePage = React.createClass({
       json.ready = true;
       this.setState(json);
     }.bind(this));
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+    SC.resetWindow();
+    if (typeof FB !== 'undefined')FB.XFBML.parse();
   },
   handleDelete: function(){
     if(!confirm('你確定要刪除這篇公告嗎?'))return;
     this.setState({ready: false});
     var url = '/api'+window.location.pathname
     var data = new FormData();
-    data.append('_xsrf',this.props._xsrf);
+    data.append('_xsrf',SC.getCookie('_xsrf'));
     this.props.ajax(url,'DELETE',data,function(){});
     setTimeout(function(){ RMR.navigate(SC.makeURL('/announce',this.props.params)) }.bind(this), 1);
   },
+  _get_locale_time: function(time_s){
+    var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
+    return time.format('LLL');
+  },
+  _get_time_from_now: function(time_s){
+    var time = moment.utc(time_s, 'YYYY-MM-DD HH:mm:ss').local();
+    return time.fromNow();
+  },
   render: function() {
+    if(!this.state.ready){
+      return (<SC.Loading height='400px'/>);
+    }
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>
-        <SC.A
-          href={SC.makeURL('/announce',this.props.params)}
-          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></SC.A>
+        <a href={SC.makeURL('/announce',this.props.params)}
+          className='btn btn-fab btn-primary btn-raised mdi-navigation-arrow-back'></a>
         &nbsp;&nbsp;
         {function(){
-          if(this.props.manager)return (
+          if(this.props.ann_manager)return (
             <span>
-              <SC.A
-              href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
-              className='btn btn-fab btn-warning btn-raised mdi-content-create'></SC.A>
+              <a href={SC.makeURL('/announce/edit/'+this.props.id,this.props.params)}
+              className='btn btn-fab btn-warning btn-raised mdi-content-create'></a>
               &nbsp;&nbsp;
               <RB.Button bsStyle='danger' className='btn-fab btn-raised mdi-action-delete'
                 disabled={!this.state.ready}
@@ -69,28 +79,35 @@ SC.AnnouncePage = React.createClass({
       <RB.Grid>
         <RB.PageHeader>{this.state.title}<br/>
           <small className='sc-border-a'> by &nbsp;
-            <SC.A href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</SC.A>
+            <a href={SC.makeURL('/announce/',{group:this.state.author_group_name})}>{this.state.author_group_name}</a>
             &nbsp; ‧ &nbsp;
-            <SC.A href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</SC.A>
+            <a href={SC.makeURL('/announce/',{author:this.state.author_name})}>{this.state.author_name}</a>
           </small>
         </RB.PageHeader>
         {buttonGroup}
-        <RB.Row><RB.Col xs={12} md={12}>
-          {tags}
-        </RB.Col></RB.Row>
-        <RB.Row><RB.Col xs={12} md={12}><RB.Well>
-          <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
-        </RB.Well></RB.Col></RB.Row>
         <RB.Row>
+          <RB.Col xs={12} md={12}>
+            {tags}
+          </RB.Col>
+          <RB.Col xs={12} md={12}><RB.Well>
+            <div style={{width:'100%',textAlign:'right'}}>
+              <SC.FBLikeBtn uri={window.location.pathname}/>
+              <span style={{color:'#777'}}> {this._get_time_from_now(this.state.created)} </span>
+            </div><br/>
+            <span className='sc-border-a' dangerouslySetInnerHTML={{__html: marked(this.state.content, {sanitize: true,breaks:true})}} />
+          </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>附件</h4><hr/>
             <SC.AttachmentPanel atts={this.state.atts} />
           </RB.Well></RB.Col>
           <RB.Col xs={12} md={6}><RB.Well>
             <h4>時間</h4><hr/>
-            <p>發布於：{this.state.created}</p>
-            <p>最後更新：{this.state.updated}</p>
+            <p>發布於：{this._get_locale_time(this.state.created)}</p>
+            <p>最後更新：{this._get_locale_time(this.state.updated)}</p>
           </RB.Well></RB.Col>
+          <RB.Col xs={12} md={8}>
+            <SC.FBCommentBox uri={window.location.pathname}/>
+          </RB.Col>
         </RB.Row>
         {buttonGroup}
       </RB.Grid>
@@ -110,16 +127,19 @@ SC.AttachmentPanel = React.createClass({
       'tga','tgz','tiff','txt','wav','xlb','xlsx','xml','yml','zip'],
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
+  btn_style: {
+    margin: '1px 1px 1px 1px',
+  },
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
       return (
         <a target="_blank" href={'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.host+'/file/'+att.path)}
-          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility' style={this.btn_style}></a>
       );
     }else if(att.filetype!=='file'){
       return (
         <a target="_blank" href={'/file/'+att.path}
-          className='btn btn-primary btn-sm btn-raised mdi-action-visibility'></a>
+          className='btn btn-primary btn-sm btn-raised mdi-action-visibility' style={this.btn_style}></a>
       );
     }
   },
@@ -136,7 +156,7 @@ SC.AttachmentPanel = React.createClass({
           </div>
           <div className="media-right media-middle">
             {this.openlink(att)}
-            <a target="_blank" href={'/file/'+att.path+'?download=1'}
+            <a target="_blank" href={'/file/'+att.path+'?download=1'} style={this.btn_style}
               className='btn btn-danger btn-sm btn-raised mdi-file-file-download'></a>
           </div>
         </div>

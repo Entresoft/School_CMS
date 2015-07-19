@@ -123,6 +123,15 @@ SC.SelectInput = React.createClass({
       value: '',
     }
   },
+  getDefaultProps: function() {
+    return {
+      options: [],
+      options_kv: {},
+      emptyOption: false,
+      emptyOptionKey: null,
+      placeholder: '',
+    };
+  },
   componentDidMount: function(){
     this.setState({value:$(React.findDOMNode(this.refs.select)).val()});
     if(!isMobile.any){
@@ -153,6 +162,7 @@ SC.SelectInput = React.createClass({
     var _value = $(React.findDOMNode(this.refs.select)).val();
     var dropdownjs = React.findDOMNode(this.refs.select).nextElementSibling;
     var selected = dropdownjs.getElementsByClassName('selected');
+    var input = dropdownjs.getElementsByTagName('input')[0];
     for(var i=0;i<selected.length;i++){
       selected[i].className = '';
     }
@@ -160,20 +170,18 @@ SC.SelectInput = React.createClass({
     for(var i=0;i<options.length;i++){
       if(options[i].getAttribute('value')===_value){
         options[i].className = 'selected';
+        input.value = options[i].innerText;
       }
     }
-    var input = dropdownjs.getElementsByTagName('input')[0];
-    input.value = _value;
   },
   render: function() {
     var options = [];
-    if(this.props.emptyOption){
-      options.push(<option key={-1} value={''}></option>);
-    }
+    if(this.props.emptyOption){options.push(<option key={-1} value=''>{this.props.placeholder}</option>);}
     for(var key in this.props.options){
-      options.push(
-        <option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>
-      );
+      options.push(<option key={key} value={this.props.options[key]}>{this.props.options[key]}</option>);
+    }
+    for(var key in this.props.options_kv){
+      options.push(<option key={key} value={this.props.options_kv[key]}>{key}</option>);
     }
     return (
       <div>
@@ -206,33 +214,54 @@ SC.Pagination = React.createClass({
       resetWindow: false,
     };
   },
-  pageURL: function(start){
+  pageURL: function(page){
+    var start = (page-1)*this.props.step;
     var query = Object.create(this.props.query);
     query.start = start;
     return SC.makeURL(this.props.path,query);
   },
-  handleSelect: function(event, selectedEvent){
-    var page = selectedEvent.eventKey;
-    var now = Math.ceil(this.props.start/this.props.step)+1;
-    var all = Math.ceil(this.props.total/this.props.step);
-    if(page>0&&page<=all&&page!==now){
-      setTimeout(function(){ RMR.navigate(this.pageURL((page-1)*this.props.step)); }.bind(this), 1);
-      if(this.props.resetWindow)$("html, body").animate({ scrollTop: 0 }, "slow");
-    }
+  handleClick: function(){
+    if(this.props.resetWindow)SC.resetWindow();
+  },
+  _make_btn: function(name, href){
+    if(href.length)return (<a key={name} className='btn btn-default sc-pagination-default-btn' href={href} onClick={this.handleClick}>{name}</a>);
+    else return (<RB.Button className='sc-pagination-disable' key={name}>{name}</RB.Button>);
   },
   render: function() {
-    var items = Math.ceil(this.props.total/this.props.step);
-    if(items===0)items=1;
+    var all = Math.ceil(this.props.total/this.props.step);
+    if(all===0)items = 1;
+
     var now = Math.ceil(this.props.start/this.props.step)+1;
-    var maxBtn = SC.getWindowSize(3, 8, 10);
+    var maxBtn = SC.getWindowSize(1, 7, 10);
+    if(maxBtn>all)maxBtn = all;
+
+    var offset;
+    if(now-1<maxBtn/2)offset = 0;
+    else if(all-now<maxBtn/2)offset = all-maxBtn;
+    else offset = now - Math.ceil(maxBtn/2);
+
+    var btns = [];
+    for(var i=0;i<maxBtn;i++){
+      var page = offset+i+1;
+      if(page===now){
+        btns.push(<RB.Button key={page} className='btn-primary'>{page}</RB.Button>);
+      }else{
+        btns.push(this._make_btn(page, this.pageURL(page)));
+      }
+    }
     return (
-       <RB.Pagination prev next first ellipsis={false}
-          items={items}
-          maxButtons={items>maxBtn?maxBtn:items}
-          activePage={now}
-          bsSize='large'
-          onSelect={this.handleSelect}
-          className='shadow-z-2' />
+      <div>
+        <div className='btn-group'>
+          {this._make_btn('«', now===1?'':this.pageURL(1))}
+          {this._make_btn('‹', now===1?'':this.pageURL(now-1))}
+        </div>
+        <div className='btn-group'>
+          {btns}
+        </div>
+        <div className='btn-group'>
+          {this._make_btn('›', now===all?'':this.pageURL(now+1))}
+        </div>
+      </div>
     );
   }
 });
@@ -244,6 +273,50 @@ SC.MaterialInit = React.createClass({
   render: function() {
     return (
       <div />
+    );
+  }
+});
+
+SC.FBCommentBox = React.createClass({
+  getDefaultProps: function() {
+    return {
+      uri: window.location.origin,
+      maxPost: 5,
+    };
+  },
+  render: function() {
+    return (
+      <div className="fb-comments" data-href={window.location.origin+this.props.uri}
+        data-numposts={this.props.maxPost} data-width='100%'>
+      </div>
+    );
+  }
+});
+
+SC.FBLikeBtn = React.createClass({
+  getDefaultProps: function() {
+    return {
+      uri: window.location.origin,
+    };
+  },
+  render: function() {
+    return (
+      <div className="fb-like" data-href={window.location.origin+this.props.uri}
+          data-layout="button_count" data-action="like" data-show-faces="true"
+          data-share="true" style={{display:'inline-block'}}></div>
+    );
+  }
+});
+
+
+SC.Loading = React.createClass({
+  render: function() {
+    return (
+      <div style={{width:'100%',height:this.props.height,position:'relative'}}>
+        <div style={{width:'180px',height:'180px'}} className="ball-scale-multiple">
+          <div/><div/><div/>
+        </div>
+      </div>
     );
   }
 });

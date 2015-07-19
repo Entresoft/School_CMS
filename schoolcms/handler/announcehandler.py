@@ -11,11 +11,15 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
+from ..db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
+
 import os
 import shutil
 import re
+from markdown import markdown
+from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
-from schoolcms.db import Announce, AnnTag, TempFileList, AttachmentList, Record, GroupList
 from sqlalchemy import desc
 
 try:
@@ -47,29 +51,43 @@ class AnnounceHandler(BaseHandler):
 
             atts = AttachmentList.by_ann_id(ann_id, self.sql_session).all()
 
-            self._ = ann.to_dict()
-            self._['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
-            self._['atts'] = [att.to_dict() for att in atts]
-            self.write(self._)
+            self.ann_d = ann.to_dict()
+            self.ann_d['tags'] = AnnTag.get_ann_tags(ann_id, self.sql_session)
+            self.ann_d['atts'] = [att.to_dict() for att in atts]
+            
+            meta = {
+                'title': self.ann_d['title'],
+                'uri': '/announce/%s' % self.ann_d['id'],
+                'content': BeautifulSoup(markdown(self.ann_d['content']), 'html.parser').text,
+            }
+            self.page_render(self.ann_d, 'announce.html', meta=meta)
 
         # AnnIndex Page
         else:
-            start = _to_int(self.get_argument('start', ''), 0, 0)
-            step = _to_int(self.get_argument('step', ''), 12, 1, 20)
+            start = _to_int(self.get_argument('start', '0'), -1, 0, 10000000000000000000)
+            step = _to_int(self.get_argument('step', '12'), 0, 1, 20)
             search = self.get_argument('search', '')
             group = self.get_argument('group', '')
             author = self.get_argument('author', '')
+            hours = _to_int(self.get_argument('hours', ''), 0, 1, 23999999976)
 
+            if start == -1 or step == 0:
+                raise self.HTTPError(400)
+
+            q = self.sql_session.query(Announce)
             if search:
-                q = Announce.by_full_text(search, self.sql_session)
+                q = q.filter(Announce.full_text_search(search))
             else:
-                q = self.sql_session.query(Announce)
                 q = q.order_by(Announce.created.desc())
 
             if author:
                 q = q.filter(Announce.author_name == author)
             if group:
                 q = q.filter(Announce.author_group_name == group)
+
+            if hours:
+                start_time = datetime.utcnow() - timedelta(hours=hours)
+                q = q.filter(Announce.created >= start_time)
 
             if not self.is_group_user('Announcement Manager'):
                 q = q.filter(Announce.is_private == False)
@@ -86,7 +104,7 @@ class AnnounceHandler(BaseHandler):
                 del _d['content']
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
-            self.write({
+            self.page_render({
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,
                     'start' : start,
@@ -147,7 +165,7 @@ class EditAnnHandler(BaseHandler):
 
         self._['user_groups'] = GroupList.get_user_groups(self.current_user.key, self.sql_session)
 
-        self.write(self._)
+        self.page_render(self._)
 
     @BaseHandler.check_is_group_user('Announcement Manager')
     def post(self, ann_id):

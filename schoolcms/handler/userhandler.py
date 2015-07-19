@@ -8,10 +8,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
+from ..db import GroupList, User
 
 import re
-
-from schoolcms.db import GroupList, User
 
 
 def _to_int(s, default):
@@ -72,7 +71,7 @@ class UserHandler(BaseHandler):
 
         groups = GroupList.get_all_groups(self.sql_session)
 
-        self.write({
+        self.page_render({
                 '_xsrf': self.xsrf_token,
                 'users': users_list,
                 'groups': groups,

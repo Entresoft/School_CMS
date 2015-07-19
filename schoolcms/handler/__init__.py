@@ -10,49 +10,51 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from ..import version as system_version
+from ..db import SQL_Session, User, GroupList, Login_Session
+from ..util  import webassets_react
+
 import functools
 import os
+from webassets import Environment, Bundle
 
 import tornado.web
 from tornado.escape import json_encode
 from tornado.options import options
 
-from schoolcms.db import SQL_Session, User, GroupList, Login_Session
-from webassets import Environment, Bundle
-from schoolcms.util  import webassets_react
-
 
 class BaseHandler(tornado.web.RequestHandler):
-    def initialize(self):
+    def initialize(self, is_api=True):
+        self.is_api = is_api
+
         self.assets = Environment(
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
-        all_css = Bundle(
+        base_css = Bundle('css/schoolcms.css', filters=('cssmin',), output='dict/schoolcms.min.css')
+        css_all = Bundle(
                 'css/bootstrap.min.css',
-                'css/material-fullpalette.min.css',
-                Bundle(
-                    'css/dropdown.css',
-                    'css/schoolcms.css',
-                    filters=('cssmin',)),
+                'css/material.min.css',
+                Bundle('css/dropdown.css', filters=('cssmin',)),
                 output='dict/plugin.min.css')
-        jsx = Bundle(
-            'schoolcms/init.jsx',
-            'schoolcms/import/*.jsx',
-            filters=('react','jsmin'),output='dict/jsx.min.js')
-        all_js = Bundle(
+        js_all = Bundle(
                 'js/jquery-2.1.3.min.js',
                 'bootstrap-3.3.4-dist/js/bootstrap.min.js',
-                'react-0.13.2/react-with-addons.js',
-                'react-0.13.2/JSXTransformer.js',
+                'react-0.13.2/react-with-addons.min.js',
                 'js/react-bootstrap.min.js',
                 'js/react-mini-router.min.js',
                 'js/marked.min.js',
                 'bootstrap-material/js/material.min.js',
                 'js/isMobile.min.js',
+                'js/moment-with-locales.min.js',
                 Bundle('js/dropdown.js',filters='jsmin'),
+                Bundle(
+                    'schoolcms/init.jsx',
+                    'schoolcms/mixin/*.jsx',
+                    'schoolcms/component/*.jsx',
+                    'schoolcms/page/*.jsx', filters=('react','jsmin')),
                 output='dict/plugin.min.js')
-        self.assets.register('css_all', all_css)
-        self.assets.register('js_all', all_js)
-        self.assets.register('jsx', jsx)
+        self.assets.register('base_css', base_css)
+        self.assets.register('css_all', css_all)
+        self.assets.register('js_all', js_all)
 
     def prepare(self):
         """This method is executed at the beginning of each request.
@@ -81,18 +83,36 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
+        _['base_css_urls'] = self.assets['base_css'].urls()
         _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
-        _['jsx_urls'] = self.assets['jsx'].urls()
         _['system_name'] = options.system_name
+        _['SERVER_DEBUG'] = options.server_debug
+        _['ip'] = self.request.remote_ip
+        _['system_version'] = system_version
+        _['_host'] = self.request.host
+        _['_protocol'] = self.request.protocol
+        
+        if self.current_user:
+            groups = GroupList.get_user_groups(self.current_user.key, self.sql_session)
+        else:
+            groups = []
+        _['current_user'] = self.current_user.to_dict() if self.current_user else None
+        _['current_groups'] = groups
         return _
+
+    def page_render(self, page_json, template='app.html', **kw):
+        if self.is_api:
+            self.write(page_json)
+        else:
+            self.render(template, page_json=page_json, **kw)
 
     @property
     def HTTPError(self):
         return tornado.web.HTTPError
     
     def write_error(self, error, **kargs):
-        self.write('<p style="font-size:150px;">Geez! %d!</h1>' % error)
+        self.render('app.html', page_json={})
 
     @staticmethod
     def authenticated(method):
@@ -128,32 +148,27 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class AppHandler(BaseHandler):
     def get(self,  *a, **kwargs):
-        self.render('app.html')
+        self.render('app.html', page_json={})
 
 
 from .indexhandler import IndexHandler
 from .announcehandler import AnnounceHandler, EditAnnHandler
 from .signhandler import LoginHandler, LogoutHandler
 from .userhandler import GroupHandler, UserHandler
-from .defaulthandler import DefaultHandler
 from .filehandler import FileHandler, TempUploadHandler
 from .recordhandler import RecordHandler
 
 print(os.path.join(os.path.dirname(__file__), '../../file'))
 
 route = [
-    (r'/', AppHandler),
-    (r'/login/?', AppHandler),
-    (r'/logout/?', AppHandler),
-    (r'/announce(?:/([0-9]+))?/?', AppHandler),
-    (r'/announce/edit(?:/([0-9]+))?/?', AppHandler),
-
-    # Att and File
-    (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
-    (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
+    # (r'/', AppHandler),
+    # (r'/login/?', AppHandler),
+    # (r'/logout/?', AppHandler),
+    (r'/announce(?:/([0-9]+))?/?', AnnounceHandler, {'is_api': False}),
+    (r'/announce/edit(?:/([0-9]+))?/?', EditAnnHandler, {'is_api': False}),
 
     # Admin
-    (r'/admin/user/?', AppHandler),
+    (r'/admin/user/?', UserHandler, {'is_api': False}),
 
     # API
     (r'/api/?', IndexHandler),
@@ -166,4 +181,8 @@ route = [
     # Admin API
     (r'/api/admin/group/?', GroupHandler),
     (r'/api/admin/user/?', UserHandler),
+
+    # Att and File
+    (r'/file/(.*)', FileHandler, {"path": os.path.join(os.path.dirname(__file__), '../../file')}),
+    (r'/fileupload(?:/([a-zA-Z0-9]+))?/?', TempUploadHandler),
 ]

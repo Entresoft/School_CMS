@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 SC.EditAnnPage = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, SC.LoginPageMixin],
+  mixins: [React.addons.LinkedStateMixin, SC.PageMixin],
   getInitialState: function() {
     return {
       title: '',
@@ -96,7 +96,7 @@ SC.EditAnnPage = React.createClass({
           <RB.Row>
             <RB.Col sm={12} md={6} lg={5} lgOffset={1}>
               <RB.Well>
-                <RB.Input type='hidden' name='_xsrf' value={this.props._xsrf}/>
+                <RB.Input type='hidden' name='_xsrf' value={SC.getCookie('_xsrf')}/>
                 <RB.Input type='text' name='title' valueLink={this.linkState('title')} label='公告標題' placeholder='輸入公告標題' disabled={!this.state.ready}/>
                 <SC.ResizeTextArea name='content' valueLink={this.linkState('content')} label='公告內容' placeholder='輸入公告內容' disabled={!this.state.ready}/>
               </RB.Well>
@@ -110,11 +110,11 @@ SC.EditAnnPage = React.createClass({
               </RB.Well>
               <RB.Well>
                 <h4>編輯附件</h4><hr/>
-                <SC.AttPanel atts={this.state.atts} _xsrf={this.props._xsrf} uploaded={true}
+                <SC.AttPanel atts={this.state.atts} uploaded={true}
                   onChange={function(atts){this.setState({atts:atts})}.bind(this)} />
-                <SC.AttPanel atts={this.state.tmpatts} _xsrf={this.props._xsrf}
+                <SC.AttPanel atts={this.state.tmpatts}
                   onChange={function(atts){this.setState({tmpatts:atts})}.bind(this)} />
-                <SC.UploadAttBox _xsrf={this.props._xsrf} onUpload={this.uploadAtt}
+                <SC.UploadAttBox onUpload={this.uploadAtt}
                   disabled={!this.state.ready} alert={this.alert} lock={this.lock}/>
               </RB.Well>
             </RB.Col>
@@ -139,7 +139,7 @@ SC.AttPanel = React.createClass({
   },
   render: function() {
     var atts = this.props.atts.map(function (att) {
-      return <SC.AttComponent key={att.key} att={att} _xsrf={this.props._xsrf}
+      return <SC.AttComponent key={att.key} att={att}
         onDelete={this.handleDelete} uploaded={this.props.uploaded}/>
     }.bind(this));
     return (
@@ -156,7 +156,7 @@ SC.AttComponent = React.createClass({
     if(!confirm('你確定要刪除 '+this.props.att.filename+' 嗎?'))return;
     var xhr = new XMLHttpRequest();
     var form = new FormData();
-    form.append('_xsrf', this.props._xsrf);
+    form.append('_xsrf', SC.getCookie('_xsrf'));
     var path = this.props.uploaded?'/file/':'/fileupload/';
     path+=this.props.att.key;
     xhr.open('DELETE',path,true);
@@ -223,7 +223,7 @@ SC.UploadAttBox = React.createClass({
     });
 
     form.append('file',file);
-    form.append('_xsrf',this.props._xsrf);
+    form.append('_xsrf',SC.getCookie('_xsrf'));
     this.xhr[uuid].open('POST','/fileupload',true);
     this.xhr[uuid].onreadystatechange = function(){
       if(this.xhr[uuid].readyState==4){

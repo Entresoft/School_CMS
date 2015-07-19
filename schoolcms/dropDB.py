@@ -5,7 +5,7 @@
 
 DropDB.
 
-DB ver -107
+DB ver -108
 
 """
 
@@ -16,9 +16,9 @@ from __future__ import unicode_literals
 from .util.parse_config import parse_config
 parse_config()
 
-import sqlalchemy
-
 from .db import engine
+
+import sqlalchemy
 
 
 if __name__ == '__main__':

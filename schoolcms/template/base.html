@@ -7,23 +7,83 @@
 <html lang="zh-Hant">
   <head>
     <title>{{ system_name }}</title>
+    <link rel="shortcut icon" href="{{ static_url('favicon.ico') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    {% for url in css_urls %}
-      <link rel="stylesheet" href="{{ url }}">
-    {% end %}
-    {% for url in js_urls %}
-      <script src="{{ url }}"></script>
-    {% end %}
-    {% for url in jsx_urls %}
-      <script src="{{ url }}"></script>
+    {% block Meta %}
     {% end %}
   </head>
   <body>
-    <div id="app"></div>
-    {% block Body %}
+    {% for url in base_css_urls %}
+      <link rel="stylesheet" href="{{ url }}">
     {% end %}
-    <script type="text/jsx">
-      React.render(<SC.App history={true} name='{{ system_name }}' />,document.getElementById('app'));
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : {% if SERVER_DEBUG %}791832797604344{% else %}791371384317152{% end %},
+          xfbml      : true,
+          version    : 'v2.4'
+        });
+      };
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        var locale = (window.navigator.userLanguage || window.navigator.language || 'en_US').replace(/-/, '_');
+        js.src = '//connect.facebook.net/'+ locale +'/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="app">
+      <div class="sc-app-loader">
+        <div class="sc-app-loader-inner ball-scale-multiple">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="container footer">
+      <div class="row">
+        <div class="col-xs-12 col-md-6">
+          <h4>Information</h4>
+          <p>
+            單位：台北市立建國高級中學 <br>
+            地址：台北市南海路56號 <br>
+            單位電話：(02)2303-4381 <br>
+            維謢人員：samsam2310@gmail.com <br>
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <h4>School CMS - School Content Management System</h4>
+          <p>
+            版本：{{ system_version }} <br>
+            系統開發中，有任何建議歡迎到 <a target="_blank" href="https://www.facebook.com/ckschoolcms">FaceBook 粉絲專頁</a> 留言。<br>
+            IP: {{ ip }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      var head = document.getElementsByTagName('head')[0];
+      {% for url in css_urls %}
+        var css = document.createElement('link');
+        css.rel="stylesheet"; css.href="{{ url }}";
+        head.appendChild(css);
+      {% end %}
+      {% for url in js_urls %}
+        var js = document.createElement('script');
+        js.src="{{ url }}";
+        js.onload = function(){
+          console.log(SC);
+          var page_json = {% raw json_encode(page_json) %};
+          var current_groups = {% raw json_encode(current_groups) %};
+          var current_user = {% raw current_user and json_encode(current_user) or 'null' %};
+          React.render(React.createElement(SC.App, {history: true, name: "{{ system_name }}", page_json:page_json, current_user:current_user, current_groups:current_groups}),document.getElementById('app'));
+        };
+        head.appendChild(js);
+      {% end %}
     </script>
   </body>
 </html>

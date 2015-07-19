@@ -10,13 +10,13 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from . import Base
+
 import random
 import hashlib
 import string
 import uuid
-from datetime import datetime, timedelta 
-
-from . import Base
+from datetime import datetime, timedelta
 
 from sqlalchemy import Column
 from sqlalchemy.dialects.mysql import INTEGER, BOOLEAN, CHAR, VARCHAR, ENUM, TIMESTAMP

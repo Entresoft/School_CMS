@@ -11,7 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import BaseHandler
-from schoolcms.db import Announce, TempFileList, AttachmentList
+from ..db import Announce, TempFileList, AttachmentList
 
 import re
 import os
