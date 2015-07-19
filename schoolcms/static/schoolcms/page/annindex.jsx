@@ -115,7 +115,7 @@ SC.AnnIndexPage = React.createClass({
         <RB.Grid>
           {clear_search_btn}
           <RB.Row>
-            <RB.Col xs={12} md={12}>
+            <RB.Col xs={12} md={12} style={{textAlign:'center'}}>
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
                 query={this.props.params}/>
             </RB.Col>
@@ -125,7 +125,7 @@ SC.AnnIndexPage = React.createClass({
             {annItems}
           </RB.Row>
           <RB.Row>
-            <RB.Col xs={12} md={12}>
+            <RB.Col xs={12} md={12} style={{textAlign:'center'}}>
               <SC.Pagination path='/announce' start={this.props.params.start} step={12} total={this.state.total}
                 query={this.props.params} resetWindow/>
             </RB.Col>

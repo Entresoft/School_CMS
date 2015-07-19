@@ -1,3 +1,4 @@
+/*Base*/
 body,h1,h2,h3,h4,h5,h6{
   font-family: 
     Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro",
@@ -6,7 +7,7 @@ body,h1,h2,h3,h4,h5,h6{
 @font-face {
   font-family: 'SC Microsoft JhengHei UI';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   src: local("Microsoft JhengHei"),local("微軟正黑體");
 }
 body{
@@ -22,6 +23,9 @@ a:active,
 a:focus{
   color: #a10;
 }
+.footer{
+  color: #633;
+}
 .sc-border-a a{
   color: #333;
   border-bottom: 1px dashed #a10;
@@ -32,6 +36,9 @@ a:focus{
   color: #a10;
   text-decoration: none;
 }
+
+
+/*Ann search-form*/
 .sc-ann-search-form{
   padding: 1px 12px 24px 12px;
   border-radius: 2px;
@@ -48,6 +55,9 @@ a:focus{
 .sc-ann-search-form .dropdownjs{
   color: #333;
 }
+
+
+/*btn default*/
 .btn.btn-default.sc-pagination-disable,
 .btn.btn-default.sc-pagination-disable:hover,
 .btn.btn-default.sc-pagination-disable:focus,
@@ -59,9 +69,13 @@ a:focus{
 .btn.default-btn.sc-pagination-default-btn:active{
   background-color: rgba(0,0,0,.12);
 }
+
+
+/*FB API*/
 .fb-like{
   display: inline-block;
 }
+
 
 /*loading*/
 .sc-app-loader{
