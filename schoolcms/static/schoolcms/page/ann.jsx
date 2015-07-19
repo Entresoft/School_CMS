@@ -21,7 +21,6 @@ SC.AnnouncePage = React.createClass({
       this.setState(json);
     }.bind(this));
     SC.resetWindow();
-    if (typeof FB !== 'undefined')FB.XFBML.parse();
   },
   handleDelete: function(){
     if(!confirm('你確定要刪除這篇公告嗎?'))return;
@@ -42,7 +41,7 @@ SC.AnnouncePage = React.createClass({
   },
   render: function() {
     if(!this.state.ready){
-      return (<SC.Loading height='400px'/>);
+      return (<SC.Loading height='400px' size='180px'/>);
     }
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>

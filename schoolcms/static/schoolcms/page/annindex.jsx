@@ -91,7 +91,7 @@ SC.AnnIndexPage = React.createClass({
         </RB.Col>
       );}
     }else{
-      message = (<SC.Loading height='180px'/>);
+      message = (<SC.Loading height='180px' size='180px'/>);
     };
     var clear_search_btn = function(){
       var search_key = ['author','group','search','hours'];

@@ -284,10 +284,23 @@ SC.FBCommentBox = React.createClass({
       maxPost: 5,
     };
   },
+  getInitialState: function(){
+    return {ready: false,};
+  },
+  componentDidMount: function(){
+    if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
+    React.findDOMNode(this.refs.div).addEventListener('fb-onrander',function(){
+      this.setState({ready: true});
+    }.bind(this));
+  },
   render: function() {
+    var loading;
+    if(!this.state.ready){loading=(<SC.Loading height='90px' size='90px'/>);}
     return (
-      <div className="fb-comments" data-href={window.location.origin+this.props.uri}
-        data-numposts={this.props.maxPost} data-width='100%'>
+      <div ref='div' className='fb_ele'>
+        <div className="fb-comments" data-href={window.location.origin+this.props.uri}
+          data-numposts={this.props.maxPost} data-width='100%' />
+        {loading}
       </div>
     );
   }
@@ -299,11 +312,14 @@ SC.FBLikeBtn = React.createClass({
       uri: window.location.origin,
     };
   },
+  componentDidMount: function(){
+    if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
+  },
   render: function() {
     return (
       <div className="fb-like" data-href={window.location.origin+this.props.uri}
           data-layout="button_count" data-action="like" data-show-faces="true"
-          data-share="true" style={{display:'inline-block'}}></div>
+          data-share="true" style={{display:'inline-block'}} />
     );
   }
 });
@@ -313,7 +329,7 @@ SC.Loading = React.createClass({
   render: function() {
     return (
       <div style={{width:'100%',height:this.props.height,position:'relative'}}>
-        <div style={{width:'180px',height:'180px'}} className="ball-scale-multiple">
+        <div style={{width:this.props.size,height:this.props.size}} className="ball-scale-multiple">
           <div/><div/><div/>
         </div>
       </div>
