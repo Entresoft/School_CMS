@@ -6,7 +6,7 @@
 
 
 {% block Meta %}
-  <meta property="og:title" content="School CMS"/>
+  <meta property="og:title" content="School CMS | {{ system_name }}"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="{{ '%s://%s%s' % (_protocol, _host, static_url('logo.png')) }}"/>
   <meta property="og:site_name" content="{{ system_name }}"/>
