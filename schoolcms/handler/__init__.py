@@ -33,9 +33,11 @@ class BaseHandler(tornado.web.RequestHandler):
                 'css/bootstrap.min.css',
                 'css/material.min.css',
                 Bundle('css/schoolcms.css','css/dropdown.css', filters='cssmin'),
+                'outdatedbrowser/outdatedbrowser.min.css',
                 output='dict/plugin.min.css')
         js_all = Bundle(
                 Bundle(
+                    'outdatedbrowser/outdatedbrowser.min.js',
                     'react-0.13.2/react-with-addons.min.js',
                     'js/jquery-2.1.3.min.js',
                     'js/bootstrap.min.js',

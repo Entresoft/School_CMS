@@ -121,6 +121,7 @@
   </head>
   <body>
     <div id="fb-root"></div>
+    <div id="outdated"></div>
     <div id="app">
       <div class="sc-app-loader">
         <div class="sc-app-loader-inner ball-scale-multiple">
@@ -194,7 +195,6 @@
     </script>
     <script>
       window.onload = function(){
-        console.log('win onload');
         {% for url in css_urls %}
           var css = document.createElement('link'), fcss = document.getElementsByTagName('style')[0];
           css.rel="stylesheet"; css.href="{{ url }}";
@@ -204,7 +204,12 @@
           var js = document.createElement('script');
           js.src="{{ url }}";
           js.onload = function(){
-            console.log('JS onload');
+            outdatedBrowser({
+                bgColor: '#f25648',
+                color: '#ffffff',
+                lowerThan: 'transform',
+                languagePath: "{{ static_url('outdatedbrowser/lang/tw.html') }}"
+            });       
             var page_json = {% raw json_encode(page_json) %};
             var current_groups = {% raw json_encode(current_groups) %};
             var current_user = {% raw current_user and json_encode(current_user) or 'null' %};

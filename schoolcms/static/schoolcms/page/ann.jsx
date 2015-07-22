@@ -149,7 +149,7 @@ SC.AttachmentPanel = React.createClass({
       }
       return (
         <div key={att.key} className="media">
-          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
+          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png?v=1'} alt={att.filetype} /></div>
           <div className="media-body media-middle">
             <div className="media-heading">{att.filename}</div>
           </div>
