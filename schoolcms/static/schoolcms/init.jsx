@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
-const RB = ReactBootstrap;
-const RMR = ReactMiniRouter;
+var RB = ReactBootstrap;
+var RMR = ReactMiniRouter;
 var Alert = RB.Alert;
 var SC = {}
 moment.locale(window.navigator.userLanguage || window.navigator.language);

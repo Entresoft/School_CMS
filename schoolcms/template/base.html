@@ -11,53 +11,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     {% block Meta %}
     {% end %}
+    <style>
+      body,h1,h2,h3,h4,h5,h6{
+        font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro",
+          "SC Microsoft JhengHei UI", sans-serif;
+      }
+      @font-face {
+        font-family: 'SC Microsoft JhengHei UI';
+        font-style: normal;
+        font-weight: 500;
+        src: local("Microsoft JhengHei"),local("微軟正黑體");
+      }
+      body{
+        background-image: url("{{ static_url('background.jpg') }}");
+        background-repeat: repeat;
+        word-break: break-all;
+      }
+      a{
+        color: #a10;
+      }
+      a:hover,
+      a:active,
+      a:focus{
+        color: #a10;
+      }
+      .footer{
+        color: #633;
+      }
+      .sc-border-a a{
+        color: #333;
+        border-bottom: 1px dashed #a10;
+      }
+      .sc-border-a a:hover,
+      .sc-border-a a:focus,
+      .sc-border-a a:active{
+        color: #a10;
+        text-decoration: none;
+      }
+      .sc-app-loader{
+        position: relative;
+        width: 100%;
+        height: 500px;
+      }
+      .sc-app-loader-inner{
+        height: 180px;
+        width: 180px;
+      }
+      @-webkit-keyframes ball-scale-multiple{
+        0% {
+          -webkit-transform: scale(0);
+                  transform: scale(0);
+          opacity: 0;
+        }
+        5% {
+          opacity: 1;
+        }
+        100% {
+          -webkit-transform: scale(1);
+                  transform: scale(1);
+          opacity: 0;
+        } 
+      }
+      @keyframes ball-scale-multiple{
+        0% {
+          -webkit-transform: scale(0);
+                  transform: scale(0);
+          opacity: 0;
+        }
+        5% {
+          opacity: 1;
+        }
+        100% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+      .ball-scale-multiple {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+            -ms-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+      }
+      .ball-scale-multiple > div:nth-child(2) {
+        -webkit-animation-delay: -0.4s;
+                animation-delay: -0.4s;
+      }
+      .ball-scale-multiple > div:nth-child(3) {
+        -webkit-animation-delay: -0.2s;
+                animation-delay: -0.2s;
+      }
+      .ball-scale-multiple > div {
+        background-color: #a10;
+        border-radius: 100%;
+        -webkit-animation-fill-mode: both;
+                animation-fill-mode: both;
+        position: absolute;
+        top: 0px;
+        opacity: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-animation: ball-scale-multiple 1s 0s linear infinite;
+                animation: ball-scale-multiple 1s 0s linear infinite;
+      }
+    </style>
   </head>
   <body>
-    {% for url in base_css_urls %}
-      <link rel="stylesheet" href="{{ url }}">
-    {% end %}
     <div id="fb-root"></div>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-65186313-1', 'auto');
-      ga('send', 'pageview');
-    </script>
-    <script>
-      var createEvent = function(name) {
-        if (typeof window.Event == "function") {
-          return new window.Event(name);
-        } else {
-          var event = document.createEvent('Event');
-          event.initEvent(name, true, false);
-          return event;
-        }
-      };
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : {% if SERVER_DEBUG %}791832797604344{% else %}791371384317152{% end %},
-          xfbml      : true,
-          version    : 'v2.4'
-        });
-        FB.Event.subscribe('xfbml.render', function(){
-          var fb_ele = document.getElementsByClassName('fb_ele');
-          for(var i=0;i<fb_ele.length;i++){
-            fb_ele[i].dispatchEvent(createEvent('fb-onrander'));
-          }
-        });
-      };
-      (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        var locale = (window.navigator.userLanguage || window.navigator.language || 'en_US').replace(/-/, '_');
-        js.src = '//connect.facebook.net/'+ locale +'/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script>
     <div id="app">
       <div class="sc-app-loader">
         <div class="sc-app-loader-inner ball-scale-multiple">
@@ -90,23 +153,66 @@
       </div>
     </div>
     <script>
-      var head = document.getElementsByTagName('head')[0];
-      {% for url in css_urls %}
-        var css = document.createElement('link');
-        css.rel="stylesheet"; css.href="{{ url }}";
-        head.appendChild(css);
-      {% end %}
-      {% for url in js_urls %}
-        var js = document.createElement('script');
-        js.src="{{ url }}";
-        js.onload = function(){
-          var page_json = {% raw json_encode(page_json) %};
-          var current_groups = {% raw json_encode(current_groups) %};
-          var current_user = {% raw current_user and json_encode(current_user) or 'null' %};
-          React.render(React.createElement(SC.App, {history: true, name: "{{ system_name }}", page_json:page_json, current_user:current_user, current_groups:current_groups}),document.getElementById('app'));
-        };
-        head.appendChild(js);
-      {% end %}
+      var createEvent = function(name) {
+        if (typeof window.Event == "function") {
+          return new window.Event(name);
+        } else {
+          var event = document.createEvent('Event');
+          event.initEvent(name, true, false);
+          return event;
+        }
+      };
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : {% if SERVER_DEBUG %}791832797604344{% else %}791371384317152{% end %},
+          xfbml      : true,
+          version    : 'v2.4'
+        });
+        FB.Event.subscribe('xfbml.render', function(){
+          var fb_ele = document.getElementsByClassName('fb_ele');
+          for(var i=0;i<fb_ele.length;i++){
+            fb_ele[i].dispatchEvent(createEvent('fb-onrander'));
+          }
+        });
+      };
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        var locale = (window.navigator.userLanguage || window.navigator.language || 'en_US').replace(/-/, '_');
+        js.src = '//connect.facebook.net/'+ locale +'/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-65186313-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script>
+      window.onload = function(){
+        console.log('win onload');
+        {% for url in css_urls %}
+          var css = document.createElement('link'), fcss = document.getElementsByTagName('style')[0];
+          css.rel="stylesheet"; css.href="{{ url }}";
+          fcss.parentNode.insertBefore(css, fcss);
+        {% end %}
+        {% for url in js_urls %}
+          var js = document.createElement('script');
+          js.src="{{ url }}";
+          js.onload = function(){
+            console.log('JS onload');
+            var page_json = {% raw json_encode(page_json) %};
+            var current_groups = {% raw json_encode(current_groups) %};
+            var current_user = {% raw current_user and json_encode(current_user) or 'null' %};
+            React.render(React.createElement(SC.App, {history: true, name: "{{ system_name }}", page_json:page_json, current_user:current_user, current_groups:current_groups}),document.getElementById('app'));
+          };
+          document.getElementsByTagName('body')[0].appendChild(js);
+        {% end %}
+      }
     </script>
   </body>
 </html>

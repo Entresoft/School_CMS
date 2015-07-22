@@ -29,30 +29,29 @@ class BaseHandler(tornado.web.RequestHandler):
 
         self.assets = Environment(
                 os.path.join(os.path.dirname(__file__), '../static'),'/static')
-        base_css = Bundle('css/schoolcms.css', filters=('cssmin',), output='dict/schoolcms.min.css')
         css_all = Bundle(
                 'css/bootstrap.min.css',
                 'css/material.min.css',
-                Bundle('css/dropdown.css', filters=('cssmin',)),
+                Bundle('css/schoolcms.css','css/dropdown.css', filters='cssmin'),
                 output='dict/plugin.min.css')
         js_all = Bundle(
-                'js/jquery-2.1.3.min.js',
-                'bootstrap-3.3.4-dist/js/bootstrap.min.js',
-                'react-0.13.2/react-with-addons.min.js',
-                'js/react-bootstrap.min.js',
-                'js/react-mini-router.min.js',
-                'js/marked.min.js',
-                'bootstrap-material/js/material.min.js',
-                'js/isMobile.min.js',
-                'js/moment-with-locales.min.js',
-                Bundle('js/dropdown.js',filters='jsmin'),
+                Bundle(
+                    'react-0.13.2/react-with-addons.min.js',
+                    'js/jquery-2.1.3.min.js',
+                    'js/bootstrap.min.js',
+                    'js/react-bootstrap.min.js',
+                    'js/react-mini-router.min.js',
+                    'js/marked.min.js',
+                    'js/material.min.js',
+                    'js/isMobile.min.js',
+                    'js/moment-with-locales.min.js',
+                    'js/dropdown.js',filters='jsmin'),
                 Bundle(
                     'schoolcms/init.jsx',
                     'schoolcms/mixin/*.jsx',
                     'schoolcms/component/*.jsx',
                     'schoolcms/page/*.jsx', filters=('react','jsmin')),
                 output='dict/plugin.min.js')
-        self.assets.register('base_css', base_css)
         self.assets.register('css_all', css_all)
         self.assets.register('js_all', js_all)
 
@@ -83,7 +82,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_template_namespace(self):
         _ = super(BaseHandler, self).get_template_namespace()
-        _['base_css_urls'] = self.assets['base_css'].urls()
         _['css_urls'] = self.assets['css_all'].urls()
         _['js_urls'] = self.assets['js_all'].urls()
         _['system_name'] = options.system_name
