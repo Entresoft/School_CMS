@@ -11,7 +11,7 @@ SC.AnnouncePage = React.createClass({
       updated: '',
       atts: [],
       tags: [],
-      ready: false,
+      ready: false
     };
   },
   componentDidMount: function(){
@@ -127,7 +127,7 @@ SC.AttachmentPanel = React.createClass({
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
   btn_style: {
-    margin: '1px 1px 1px 1px',
+    margin: '1px 1px 1px 1px'
   },
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
@@ -166,5 +166,5 @@ SC.AttachmentPanel = React.createClass({
     }else{
       return <p>沒有附件</p>;
     }
-  },
+  }
 });

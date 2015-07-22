@@ -13,7 +13,7 @@ SC.UserPage = React.createClass({
       au_name: '',
       au_admin: false,
       au_alert: '',
-      au_success: false,
+      au_success: false
     };
   },
   ajax: function(callback){
@@ -48,7 +48,7 @@ SC.UserPage = React.createClass({
             au_name: '',
             au_alert: '',
             au_admin: false,
-            au_success: true,
+            au_success: true
           });
           this.ajax(function(){
             $.material.init();
@@ -189,7 +189,7 @@ SC.UserPage = React.createClass({
 SC.UserPageUserItem = React.createClass({
   getInitialState: function(){
     return {
-      'check': false,
+      'check': false
     }
   },
   handleCheck: function(){

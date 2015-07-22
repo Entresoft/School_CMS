@@ -27,5 +27,5 @@ SC.NavbarInstance = React.createClass({
         </RB.Nav>
       </RB.Navbar>
     );
-  },
+  }
 });

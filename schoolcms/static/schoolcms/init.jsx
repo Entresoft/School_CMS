@@ -23,7 +23,7 @@ SC.App = React.createClass({
     // Admin Page
     '/admin/adduser': 'adduserHandler',
     '/admin/group': 'groupHandler',
-    '/admin/user': 'userHandler',
+    '/admin/user': 'userHandler'
   },
   ajax: function(url,method,data,callback){
     console.log('AJAX TO URL:'+url);
@@ -58,7 +58,7 @@ SC.App = React.createClass({
       loading: -1,
       status: 200,
       current_user: this.props.current_user,
-      current_groups: this.props.current_groups,
+      current_groups: this.props.current_groups
     };
   },
   componentDidMount: function(){
@@ -147,8 +147,8 @@ SC.App = React.createClass({
 
   // Else
   notFound: function(path) {
-      return <SC.ErrorPage errorCode='404' />;
-  },
+    return <SC.ErrorPage errorCode='404' />;
+  }
 });
 
 

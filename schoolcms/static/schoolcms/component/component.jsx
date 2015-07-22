@@ -52,7 +52,7 @@ SC.Form = React.createClass({
 
 SC.A = React.createClass({
   propTypes: {
-    href: React.PropTypes.string,
+    href: React.PropTypes.string
   },
   componentDidMount: function(){
     React.findDOMNode(this.refs.a).addEventListener('click', this.handleClick);
@@ -73,11 +73,11 @@ SC.A = React.createClass({
 
 SC.MenuItem = React.createClass({
   propTypes: {
-    href:      React.PropTypes.string,
+    href:      React.PropTypes.string
   },
   getDefaultProps: function() {
     return {
-      href: '#',
+      href: '#'
     };
   },
   render: function() {
@@ -92,7 +92,7 @@ SC.MenuItem = React.createClass({
 SC.ToggleButton = React.createClass({
   getInitialState: function(){
     return {
-      'checked': this.props.checked,
+      'checked': this.props.checked
     }
   },
   componentWillReceiveProps: function(nextprops) {
@@ -120,7 +120,7 @@ SC.ToggleButton = React.createClass({
 SC.SelectInput = React.createClass({
   getInitialState: function(){
     return {
-      value: '',
+      value: ''
     }
   },
   getDefaultProps: function() {
@@ -129,7 +129,7 @@ SC.SelectInput = React.createClass({
       options_kv: {},
       emptyOption: false,
       emptyOptionKey: null,
-      placeholder: '',
+      placeholder: ''
     };
   },
   componentDidMount: function(){
@@ -139,7 +139,7 @@ SC.SelectInput = React.createClass({
         autoinit : React.findDOMNode(this.refs.select),
         callback : function(){
           this._updateSelect();
-        }.bind(this),
+        }.bind(this)
       });
     }
     $(React.findDOMNode(this.refs.select)).bind('change', function(event){
@@ -202,7 +202,7 @@ SC.Pagination = React.createClass({
     start: React.PropTypes.number,
     total: React.PropTypes.number,
     query: React.PropTypes.object,
-    resetWindow: React.PropTypes.bool,
+    resetWindow: React.PropTypes.bool
   },
   getDefaultProps: function() {
     return {
@@ -211,7 +211,7 @@ SC.Pagination = React.createClass({
       start: 0,
       total: 0,
       query: {},
-      resetWindow: false,
+      resetWindow: false
     };
   },
   pageURL: function(page){
@@ -281,11 +281,11 @@ SC.FBCommentBox = React.createClass({
   getDefaultProps: function() {
     return {
       uri: window.location.origin,
-      maxPost: 5,
+      maxPost: 5
     };
   },
   getInitialState: function(){
-    return {ready: false,};
+    return {ready: false};
   },
   componentDidMount: function(){
     if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
@@ -309,7 +309,7 @@ SC.FBCommentBox = React.createClass({
 SC.FBLikeBtn = React.createClass({
   getDefaultProps: function() {
     return {
-      uri: window.location.origin,
+      uri: window.location.origin
     };
   },
   componentDidMount: function(){

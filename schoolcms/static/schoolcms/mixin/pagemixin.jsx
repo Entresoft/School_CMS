@@ -3,7 +3,7 @@
 SC.PageMixin = {
   getInitialState: function() {
     return {
-      ready: false,
+      ready: false
     };
   },
   componentDidMount: function(){
@@ -15,5 +15,5 @@ SC.PageMixin = {
         this.setState({ready: true});
       }.bind(this));
     }
-  },
+  }
 };

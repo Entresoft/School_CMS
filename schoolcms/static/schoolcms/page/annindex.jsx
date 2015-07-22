@@ -7,7 +7,7 @@ SC.AnnIndexPage = React.createClass({
       groups: [],
       authors: [],
       total: 0,
-      ready: false,
+      ready: false
     };
   },
   ajax: function(){
@@ -143,7 +143,7 @@ SC.SearchAnnForm = React.createClass({
     return {
       show: false,
       showing: false,
-      search: this.props.params.search,
+      search: this.props.params.search
     };
   },
   componentWillReceiveProps: function(nextprops){
@@ -165,7 +165,7 @@ SC.SearchAnnForm = React.createClass({
           author!==this.props.params.author||
           hours!==this.props.params.hours){
       var url = SC.makeURL(window.location.pathname,{
-        search: this.state.search, group: group, author: author, hours: hours,
+        search: this.state.search, group: group, author: author, hours: hours
       });
       RMR.navigate(url);
     }
@@ -182,7 +182,7 @@ SC.SearchAnnForm = React.createClass({
     '24小時內': 24,
     '一週內': 168,
     '一個月內': 720,
-    '一年內': 8760,
+    '一年內': 8760
   },
   search_nav_style: {
     position: 'relative',
@@ -190,7 +190,7 @@ SC.SearchAnnForm = React.createClass({
     width: '100%',
     padding: '5px 20px 5px 0',
     borderBottom: '2px solid #ddd',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#f1f1f1'
   },
   search_input_style: {
     display: 'block',
@@ -200,17 +200,17 @@ SC.SearchAnnForm = React.createClass({
     width: 'calc(100% - '+SC.getWindowSize('124px','238px','238px')+')',
     height: '40px',
     border: '0',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   search_btn_sytle: {
     'float': 'left',
     margin: '0 15px 0 15px',
-    width: '84px',
+    width: '84px'
   },
   addon_search_input_sytle: {
     margin: '0 4px 0 4px',
     'float': 'left',
-    width: '200px',
+    width: '200px'
   },
   render: function() {
     return (
@@ -260,7 +260,7 @@ SC.SearchAnnForm = React.createClass({
 SC.SearchAnnFormFadein = React.createClass({
   getInitialState: function(){
     return {
-      show: false,
+      show: false
     };
   },
   toggle: function(callback){
@@ -277,7 +277,7 @@ SC.SearchAnnFormFadein = React.createClass({
     transition: 'opacity 0.3s',
     MozTransition: 'opacity 0.3s', /* Firefox 4 */
     WebkitTransition: 'opacity 0.3s', /* Safari 和 Chrome */
-    OTransition: 'opacity 0.3s', /* Opera */
+    OTransition: 'opacity 0.3s' /* Opera */
   },
   render: function() {
     if(this.state.show){

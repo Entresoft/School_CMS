@@ -5,7 +5,7 @@ SC.LoginPage = React.createClass({
   getInitialState: function() {
     return {
       account : '',
-      alert: false,
+      alert: false
     };
   },
   handleLogin: function(){
