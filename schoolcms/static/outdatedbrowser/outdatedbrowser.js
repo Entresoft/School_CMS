@@ -112,7 +112,7 @@ var outdatedBrowser = function(options) {
             }
         }
     }else{
-        return;
+        return true;
     };//end if
 
     //Check AJAX Options: if languagePath == '' > use no Ajax way, html is needed inside <div id="outdated">

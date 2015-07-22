@@ -95,6 +95,28 @@ SC.App = React.createClass({
         {progressBar()}
         <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} url={this.state.url}/>
         {getPage()}
+        <hr/>
+        <RB.Grid className="footer">
+          <RB.Row>
+            <RB.Col xs={12} md={6}>
+              <h4>Information</h4>
+              <p>
+                單位：台北市立建國高級中學 <br/>
+                地址：台北市南海路56號 <br/>
+                單位電話：(02)2303-4381 <br/>
+                維謢人員：samsam2310@gmail.com <br/>
+              </p>
+            </RB.Col>
+            <RB.Col xs={12} md={6}>
+              <h4>School CMS</h4>
+              <p>
+                版本：{ this.props.information.system_version } <br/>
+                系統開發中，有任何建議歡迎到 <a target="_blank" href="https://www.facebook.com/ckschoolcms">FaceBook 粉絲專頁</a> 留言。<br/>
+                IP: { this.props.information.ip }
+              </p>
+            </RB.Col>
+          </RB.Row>
+        </RB.Grid>
       </div>
     );
   },
