@@ -204,12 +204,6 @@
           var js = document.createElement('script');
           js.src="{{ url }}";
           js.onload = function(){
-            outdatedBrowser({
-                bgColor: '#f25648',
-                color: '#ffffff',
-                lowerThan: 'transform',
-                languagePath: "{{ static_url('outdatedbrowser/lang/tw.html') }}"
-            });       
             var page_json = {% raw json_encode(page_json) %};
             var current_groups = {% raw json_encode(current_groups) %};
             var current_user = {% raw current_user and json_encode(current_user) or 'null' %};
