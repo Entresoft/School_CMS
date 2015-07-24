@@ -67,7 +67,10 @@ class BaseHandler(tornado.web.RequestHandler):
         """Finish this response, ending the HTTP request 
         and properly close the database.
         """
-        self.sql_session.close()
+        try:
+            self.sql_session.close()
+        except AttributeError:
+            pass
 
     def get_current_user(self):
         """Gets the current user logged in from the cookies
