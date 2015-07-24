@@ -37,7 +37,8 @@ SC.getCookie = function(cname) {
 }
 
 SC.Redirect = function(url){
-  window.location.replace(url);
+  history.replaceState({}, '', url);
+  window.dispatchEvent(window.sc_createEvent('popstate'));
 }
 
 SC.resetWindow = function(){

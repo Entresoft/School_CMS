@@ -58,15 +58,21 @@ SC.App = React.createClass({
       loading: -1,
       status: 200,
       current_user: this.props.current_user,
-      current_groups: this.props.current_groups
+      current_groups: this.props.current_groups,
+      uri: window.location.pathname+window.location.search
     };
   },
   componentDidMount: function(){
     $.material.init();
   },
   componentWillUpdate: function(){
-    if(this.state.url!=window.location.pathname+window.location.search){
-      this.setState({url:window.location.pathname+window.location.search,status:200});
+    if(this.state.uri!=window.location.pathname+window.location.search){
+      this.setState({uri:window.location.pathname+window.location.search,status:200});
+    }
+  },
+  componentDidUpdate: function(prevProps, prevState){
+    if(this.state.uri != prevState.uri){
+      ga('send', 'pageview', this.state.uri);
     }
   },
   setCurrentUser: function(current_user, current_groups){
@@ -93,7 +99,7 @@ SC.App = React.createClass({
     return (
       <div>
         {progressBar()}
-        <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} url={this.state.url}/>
+        <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} uri={this.state.uri}/>
         {getPage()}
         <hr/>
         <RB.Grid className="footer">

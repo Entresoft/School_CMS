@@ -289,7 +289,7 @@ SC.FBCommentBox = React.createClass({
   },
   componentDidMount: function(){
     if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
-    React.findDOMNode(this.refs.div).addEventListener('fb-onrander',function(){
+    this.getDOMNode().addEventListener('fb-onrander',function(){
       this.setState({ready: true});
     }.bind(this));
   },
@@ -297,7 +297,7 @@ SC.FBCommentBox = React.createClass({
     var loading;
     if(!this.state.ready){loading=(<SC.Loading height='90px' size='90px'/>);}
     return (
-      <div ref='div' className='fb_ele'>
+      <div className='fb_ele'>
         <div className="fb-comments" data-href={window.location.origin+this.props.uri}
           data-numposts={this.props.maxPost} data-width='100%' />
         {loading}
