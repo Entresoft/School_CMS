@@ -36,7 +36,12 @@ SC.getCookie = function(cname) {
     return "";
 }
 
-SC.Redirect = function(url){
+SC.Redirect = function(url, rdTime){
+  if(!rdTime)rdTime = 0;
+  if(!SC.AppDidMount && rdTime<=500){
+    setTimeout(function(){SC.Redirect(url, rdTime+1);}, 10);
+    return false;
+  }
   history.replaceState({}, '', url);
   window.dispatchEvent(window.sc_createEvent('popstate'));
 }

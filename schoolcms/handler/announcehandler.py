@@ -60,6 +60,7 @@ class AnnounceHandler(BaseHandler):
                 'uri': '/announce/%s' % self.ann_d['id'],
                 'content': BeautifulSoup(markdown(self.ann_d['content']), 'html.parser').text,
             }
+            self.set_header('Cache-Control', 'max-age=300')
             self.page_render(self.ann_d, 'announce.html', meta=meta)
 
         # AnnIndex Page
@@ -104,6 +105,7 @@ class AnnounceHandler(BaseHandler):
                 del _d['content']
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
+            self.set_header('Cache-Control', 'max-age=300')
             self.page_render({
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,

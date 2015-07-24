@@ -64,6 +64,7 @@ SC.App = React.createClass({
   },
   componentDidMount: function(){
     $.material.init();
+    SC.AppDidMount = true;
   },
   componentWillUpdate: function(){
     if(this.state.uri!=window.location.pathname+window.location.search){
