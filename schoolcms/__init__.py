@@ -14,5 +14,5 @@ from __future__ import unicode_literals
 # is zero for an official release, positive for a development branch,
 # or negative for a release candidate or beta (after the base version
 # number has been incremented)
-version = "0.0.3dev2"
-version_info = (0, 0, 3, 12)
+version = "0.0.3b1"
+version_info = (0, 0, 3, -1)

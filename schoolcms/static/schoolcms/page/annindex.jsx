@@ -75,8 +75,8 @@ SC.AnnIndexPage = React.createClass({
     var annItems = [], message;
     if(this.state.ready){
       for(var i=0;i<this.state.anns.length;i++){
-        var time_s = this._getDayString(this.state.anns[i].created);
-        if(i==0||this._getDayString(this.state.anns[i-1].created)!==time_s){
+        var time_s = this._getDayString(this.state.anns[i].updated);
+        if(i==0||this._getDayString(this.state.anns[i-1].updated)!==time_s){
           annItems.push(
             <RB.Col xs={12} md={12} key={i+'date'}>
               <h4>{time_s}</h4><hr/>

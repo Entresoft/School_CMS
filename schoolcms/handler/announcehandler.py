@@ -79,7 +79,7 @@ class AnnounceHandler(BaseHandler):
             if search:
                 q = q.filter(Announce.full_text_search(search))
             else:
-                q = q.order_by(Announce.created.desc())
+                q = q.order_by(Announce.updated.desc())
 
             if author:
                 q = q.filter(Announce.author_name == author)
@@ -88,7 +88,7 @@ class AnnounceHandler(BaseHandler):
 
             if hours:
                 start_time = datetime.utcnow() - timedelta(hours=hours)
-                q = q.filter(Announce.created >= start_time)
+                q = q.filter(Announce.updated >= start_time)
 
             if not self.is_group_user('Announcement Manager'):
                 q = q.filter(Announce.is_private == False)
