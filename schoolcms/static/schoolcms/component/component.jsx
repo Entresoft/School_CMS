@@ -52,7 +52,7 @@ SC.Form = React.createClass({
 
 SC.A = React.createClass({
   propTypes: {
-    href: React.PropTypes.string,
+    href: React.PropTypes.string
   },
   componentDidMount: function(){
     React.findDOMNode(this.refs.a).addEventListener('click', this.handleClick);
@@ -73,11 +73,11 @@ SC.A = React.createClass({
 
 SC.MenuItem = React.createClass({
   propTypes: {
-    href:      React.PropTypes.string,
+    href:      React.PropTypes.string
   },
   getDefaultProps: function() {
     return {
-      href: '#',
+      href: '#'
     };
   },
   render: function() {
@@ -92,7 +92,7 @@ SC.MenuItem = React.createClass({
 SC.ToggleButton = React.createClass({
   getInitialState: function(){
     return {
-      'checked': this.props.checked,
+      'checked': this.props.checked
     }
   },
   componentWillReceiveProps: function(nextprops) {
@@ -120,7 +120,7 @@ SC.ToggleButton = React.createClass({
 SC.SelectInput = React.createClass({
   getInitialState: function(){
     return {
-      value: '',
+      value: ''
     }
   },
   getDefaultProps: function() {
@@ -129,7 +129,7 @@ SC.SelectInput = React.createClass({
       options_kv: {},
       emptyOption: false,
       emptyOptionKey: null,
-      placeholder: '',
+      placeholder: ''
     };
   },
   componentDidMount: function(){
@@ -139,7 +139,7 @@ SC.SelectInput = React.createClass({
         autoinit : React.findDOMNode(this.refs.select),
         callback : function(){
           this._updateSelect();
-        }.bind(this),
+        }.bind(this)
       });
     }
     $(React.findDOMNode(this.refs.select)).bind('change', function(event){
@@ -202,7 +202,7 @@ SC.Pagination = React.createClass({
     start: React.PropTypes.number,
     total: React.PropTypes.number,
     query: React.PropTypes.object,
-    resetWindow: React.PropTypes.bool,
+    resetWindow: React.PropTypes.bool
   },
   getDefaultProps: function() {
     return {
@@ -211,7 +211,7 @@ SC.Pagination = React.createClass({
       start: 0,
       total: 0,
       query: {},
-      resetWindow: false,
+      resetWindow: false
     };
   },
   pageURL: function(page){
@@ -281,13 +281,26 @@ SC.FBCommentBox = React.createClass({
   getDefaultProps: function() {
     return {
       uri: window.location.origin,
-      maxPost: 5,
+      maxPost: 5
     };
   },
+  getInitialState: function(){
+    return {ready: false};
+  },
+  componentDidMount: function(){
+    if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
+    this.getDOMNode().addEventListener('fb-onrander',function(){
+      this.setState({ready: true});
+    }.bind(this));
+  },
   render: function() {
+    var loading;
+    if(!this.state.ready){loading=(<SC.Loading height='90px' size='90px'/>);}
     return (
-      <div className="fb-comments" data-href={window.location.origin+this.props.uri}
-        data-numposts={this.props.maxPost} data-width='100%'>
+      <div className='fb_ele'>
+        <div className="fb-comments" data-href={window.location.origin+this.props.uri}
+          data-numposts={this.props.maxPost} data-width='100%' />
+        {loading}
       </div>
     );
   }
@@ -296,14 +309,17 @@ SC.FBCommentBox = React.createClass({
 SC.FBLikeBtn = React.createClass({
   getDefaultProps: function() {
     return {
-      uri: window.location.origin,
+      uri: window.location.origin
     };
+  },
+  componentDidMount: function(){
+    if (typeof(FB) !== 'undefined'){FB.XFBML.parse();}
   },
   render: function() {
     return (
       <div className="fb-like" data-href={window.location.origin+this.props.uri}
           data-layout="button_count" data-action="like" data-show-faces="true"
-          data-share="true" style={{display:'inline-block'}}></div>
+          data-share="true" style={{display:'inline-block'}} />
     );
   }
 });
@@ -313,7 +329,7 @@ SC.Loading = React.createClass({
   render: function() {
     return (
       <div style={{width:'100%',height:this.props.height,position:'relative'}}>
-        <div style={{width:'180px',height:'180px'}} className="ball-scale-multiple">
+        <div style={{width:this.props.size,height:this.props.size}} className="ball-scale-multiple">
           <div/><div/><div/>
         </div>
       </div>

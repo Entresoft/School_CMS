@@ -11,7 +11,7 @@ SC.EditAnnPage = React.createClass({
       tmpatts: [],
       atts: [],
       tag_string: '',
-      submitLock: 0,
+      submitLock: 0
     };
   },
   pageInit: function(callback){
@@ -195,7 +195,7 @@ SC.AttComponent = React.createClass({
 SC.UploadAttBox = React.createClass({
   getInitialState: function() {
     return {
-      filelist: {},
+      filelist: {}
     };
   },
   componentWillMount: function(){
@@ -215,11 +215,11 @@ SC.UploadAttBox = React.createClass({
     var filelist = this.state.filelist;
     filelist[uuid] = {
       percent: 0.0,
-      filename: file.name,
+      filename: file.name
     };
     this.setState({
       filelist:filelist,
-      file: '',
+      file: ''
     });
 
     form.append('file',file);
@@ -231,7 +231,7 @@ SC.UploadAttBox = React.createClass({
           var attfile = JSON.parse(this.xhr[uuid].response);
           this.props.onUpload({
             'filename': attfile.file_name,
-            'key': attfile.key,
+            'key': attfile.key
           });
         }else if(this.xhr[uuid].status){
           this.props.alert('發生錯誤，請重新整理網頁');
@@ -251,9 +251,7 @@ SC.UploadAttBox = React.createClass({
     this.xhr[uuid].onloadend = function(){
       var filelist = this.state.filelist;
       delete filelist[uuid];
-      this.setState({
-        filelist: filelist,
-      });
+      this.setState({filelist: filelist});
       this.props.lock(-1);
     }.bind(this);
     this.xhr[uuid].send(form);
@@ -279,12 +277,8 @@ SC.UploadAttBox = React.createClass({
     for (var i in this.state.filelist){
       uploading.push(this.progressBar(i));
     }
-    var uploadButtonStyle = {
-        width: '100%',
-      };
-    var uploadInputStyle = {
-      display: 'none',
-    };
+    var uploadButtonStyle = {width: '100%'};
+    var uploadInputStyle = {display: 'none'};
     var uploadButton = (
         <RB.Button disabled={this.props.disabled} style={uploadButtonStyle}
         className='btn-material-grey-300 mdi-content-add'

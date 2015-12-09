@@ -60,6 +60,7 @@ class AnnounceHandler(BaseHandler):
                 'uri': '/announce/%s' % self.ann_d['id'],
                 'content': BeautifulSoup(markdown(self.ann_d['content']), 'html.parser').text,
             }
+            self.set_header('Cache-Control', 'max-age=300')
             self.page_render(self.ann_d, 'announce.html', meta=meta)
 
         # AnnIndex Page
@@ -78,7 +79,7 @@ class AnnounceHandler(BaseHandler):
             if search:
                 q = q.filter(Announce.full_text_search(search))
             else:
-                q = q.order_by(Announce.created.desc())
+                q = q.order_by(Announce.updated.desc())
 
             if author:
                 q = q.filter(Announce.author_name == author)
@@ -87,7 +88,7 @@ class AnnounceHandler(BaseHandler):
 
             if hours:
                 start_time = datetime.utcnow() - timedelta(hours=hours)
-                q = q.filter(Announce.created >= start_time)
+                q = q.filter(Announce.updated >= start_time)
 
             if not self.is_group_user('Announcement Manager'):
                 q = q.filter(Announce.is_private == False)
@@ -104,6 +105,7 @@ class AnnounceHandler(BaseHandler):
                 del _d['content']
                 _d['tags'] = AnnTag.get_ann_tags(ann.id, self.sql_session)
                 return _d
+            self.set_header('Cache-Control', 'max-age=300')
             self.page_render({
                     'anns' : [_make_ann(ann) for ann in anns],
                     'search' : search,

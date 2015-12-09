@@ -11,7 +11,7 @@ SC.AnnouncePage = React.createClass({
       updated: '',
       atts: [],
       tags: [],
-      ready: false,
+      ready: false
     };
   },
   componentDidMount: function(){
@@ -21,7 +21,6 @@ SC.AnnouncePage = React.createClass({
       this.setState(json);
     }.bind(this));
     SC.resetWindow();
-    if (typeof FB !== 'undefined')FB.XFBML.parse();
   },
   handleDelete: function(){
     if(!confirm('你確定要刪除這篇公告嗎?'))return;
@@ -42,7 +41,7 @@ SC.AnnouncePage = React.createClass({
   },
   render: function() {
     if(!this.state.ready){
-      return (<SC.Loading height='400px'/>);
+      return (<SC.Loading height='400px' size='180px'/>);
     }
     var buttonGroup = (
       <RB.Row><RB.Col xs={12} md={12}>
@@ -128,7 +127,7 @@ SC.AttachmentPanel = React.createClass({
   _ms_office: ['docx','doc','dot','dotx','xlsx','xlsb','xlb','xlsm','pptx','ppsx','ppt',
       'pps','pptm','potm','ppam','potx','ppsm'],
   btn_style: {
-    margin: '1px 1px 1px 1px',
+    margin: '1px 1px 1px 1px'
   },
   openlink: function(att){
     if(this._ms_office.indexOf(att.filetype)>=0){
@@ -150,7 +149,7 @@ SC.AttachmentPanel = React.createClass({
       }
       return (
         <div key={att.key} className="media">
-          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png'} alt={att.filetype} /></div>
+          <div className="media-left media-middle"><img src={'/static/icon/'+att.filetype+'.png?v=1'} alt={att.filetype} /></div>
           <div className="media-body media-middle">
             <div className="media-heading">{att.filename}</div>
           </div>
@@ -167,5 +166,5 @@ SC.AttachmentPanel = React.createClass({
     }else{
       return <p>沒有附件</p>;
     }
-  },
+  }
 });

@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
-const RB = ReactBootstrap;
-const RMR = ReactMiniRouter;
+var RB = ReactBootstrap;
+var RMR = ReactMiniRouter;
 var Alert = RB.Alert;
 var SC = {}
 moment.locale(window.navigator.userLanguage || window.navigator.language);
@@ -23,7 +23,7 @@ SC.App = React.createClass({
     // Admin Page
     '/admin/adduser': 'adduserHandler',
     '/admin/group': 'groupHandler',
-    '/admin/user': 'userHandler',
+    '/admin/user': 'userHandler'
   },
   ajax: function(url,method,data,callback){
     console.log('AJAX TO URL:'+url);
@@ -59,14 +59,21 @@ SC.App = React.createClass({
       status: 200,
       current_user: this.props.current_user,
       current_groups: this.props.current_groups,
+      uri: window.location.pathname+window.location.search
     };
   },
   componentDidMount: function(){
     $.material.init();
+    SC.AppDidMount = true;
   },
   componentWillUpdate: function(){
-    if(this.state.url!=window.location.pathname+window.location.search){
-      this.setState({url:window.location.pathname+window.location.search,status:200});
+    if(this.state.uri!=window.location.pathname+window.location.search){
+      this.setState({uri:window.location.pathname+window.location.search,status:200});
+    }
+  },
+  componentDidUpdate: function(prevProps, prevState){
+    if(this.state.uri != prevState.uri){
+      ga('send', 'pageview', this.state.uri);
     }
   },
   setCurrentUser: function(current_user, current_groups){
@@ -93,8 +100,30 @@ SC.App = React.createClass({
     return (
       <div>
         {progressBar()}
-        <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} url={this.state.url}/>
+        <SC.NavbarInstance name={this.props.name} current_user={this.state.current_user} uri={this.state.uri}/>
         {getPage()}
+        <hr/>
+        <RB.Grid className="footer">
+          <RB.Row>
+            <RB.Col xs={12} md={6}>
+              <h4>Information</h4>
+              <p>
+                單位：台北市立建國高級中學 <br/>
+                地址：台北市南海路56號 <br/>
+                單位電話：(02)2303-4381 <br/>
+                維謢人員：samsam2310@gmail.com <br/>
+              </p>
+            </RB.Col>
+            <RB.Col xs={12} md={6}>
+              <h4>School CMS</h4>
+              <p>
+                版本：{ this.props.information.system_version } <br/>
+                系統開發中，有任何建議歡迎到 <a target="_blank" href="https://www.facebook.com/ckschoolcms">FaceBook 粉絲專頁</a> 留言。<br/>
+                IP: { this.props.information.ip }
+              </p>
+            </RB.Col>
+          </RB.Row>
+        </RB.Grid>
       </div>
     );
   },
@@ -147,8 +176,8 @@ SC.App = React.createClass({
 
   // Else
   notFound: function(path) {
-      return <SC.ErrorPage errorCode='404' />;
-  },
+    return <SC.ErrorPage errorCode='404' />;
+  }
 });
 
 

@@ -14,7 +14,7 @@ SC.NavbarInstance = React.createClass({
       )
     }else if(window.location.pathname.substr(0,6)!='/login'){
       return (
-        <RB.NavItem eventKey={1} href={'/login?next='+encodeURIComponent(this.props.url)}>Login</RB.NavItem>
+        <RB.NavItem eventKey={1} href={'/login?next='+encodeURIComponent(this.props.uri)}>Login</RB.NavItem>
       );
     }
   },
@@ -27,5 +27,5 @@ SC.NavbarInstance = React.createClass({
         </RB.Nav>
       </RB.Navbar>
     );
-  },
+  }
 });
